@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amine DH | متجر التسوق</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    header {
+      background: #102b46;
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #dce8f2;
+    }
+
+    .search {
+      padding: 16px;
+      background: white;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 18px 12px;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      color: #102b46;
+    }
+
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+
+    .category {
+      background: white;
+      padding: 14px;
+      border-radius: 10px;
+      white-space: nowrap;
+      border: 1px solid #eee;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #0000000d;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .product h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: #087443;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      background: #087443;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      margin-top: 30px;
+      background: #102b46;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+
+    @media (min-width: 600px) {
+      .products {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Amine DH</h1>
+    <p>مرحبا بك في عالم التسوق الإلكتروني 🇩🇿</p>
+  </header>
+
+  <div class="search">
+    <input id="searchInput" type="search"
+      placeholder="ابحث عن منتج..." oninput="searchProducts()">
+  </div>
+
+  <main class="container">
+    <h2>أقسام المتجر</h2>
+
+    <div class="categories">
+      <div class="category">🛍️ جميع المنتجات</div>
+      <div class="category">📱 إلكترونيات</div>
+      <div class="category">👕 ملابس</div>
+      <div class="category">🏠 المنزل</div>
+      <div class="category">🎁 إكسسوارات</div>
+    </div>
+
+    <h2>منتجاتنا</h2>
+
+    <div class="products" id="products">
+      <div class="empty">
+        🛍️ ستظهر منتجات المتجر هنا قريبًا
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 Amine DH - جميع الحقوق محفوظة</p>
+    <p style="margin-top:8px">التسوق الإلكتروني في الجزائر 🇩🇿</p>
+  </footer>
+
+  <script>
+    function searchProducts() {
+      const query = document.getElementById("searchInput")
+        .value.trim();
+
+      const products = document.getElementById("products");
+
+      if (query) {
+        products.innerHTML =
+          '<div class="empty">لم تتم إضافة منتجات بعد.</div>';
+      }
+    }
+  </script>
+
+</body>
+  </html>

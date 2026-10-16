@@ -43,14 +43,59 @@ header {
   gap:14px;
 }
 .logo {
-  font-size:45px;
-  font-weight:800;
-  color:var(--gold);
-  border-right:2px solid var(--gold);
-  padding-right:12px;
-  letter-spacing:-3px;
-  white-space:nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--gold);
+  border-right: 2px solid var(--gold);
+  padding-right: 12px;
+  white-space: nowrap;
 }
+
+.logo-letters {
+  font-size: 43px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  background: linear-gradient(
+    145deg,
+    #f6df91 0%,
+    #c9a34e 40%,
+    #987027 75%,
+    #e9ca70 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 2px 0 #8d6c27;
+}
+
+.logo-cart {
+  display: inline-block;
+  font-size: 24px;
+  filter: drop-shadow(2px 3px 1px #0004);
+  transform: rotate(-8deg);
+  animation: cartFloat 2s ease-in-out infinite;
+}
+
+@keyframes cartFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(0deg);
+  }
+}
+
+@media (max-width: 380px) {
+  .logo-letters {
+    font-size: 36px;
+  }
+
+  .logo-cart {
+    font-size: 20px;
+  }
+} 
 .brand-name { font-size:clamp(23px,5vw,35px); font-weight:800; }
 .brand-subtitle { font-size:10px; letter-spacing:2px; }
 .search {
@@ -215,9 +260,10 @@ footer { text-align:center; padding:25px 10px; color:var(--muted); font-size:11p
 <div class="container">
 
 <header>
-  <div class="brand">
-    <div class="logo">ADH</div>
-    <div>
+<div class="logo">
+  <span class="logo-letters">ADH</span>
+  <span class="logo-cart">🛒</span>
+</div>
       <div class="brand-name">AMINE DH</div>
       <div class="brand-subtitle">E-COMMERCE GLOBAL STORE</div>
     </div>

@@ -1,47 +1,42 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#152c3b">
-<title>AMINE DH | Boutique officielle</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root {
-  --gold:#c9a34e;
-  --dark:#152c3b;
-  --green:#244b50;
-  --cream:#f8f6ec;
-  --white:#fff;
-  --muted:#777;
-  --border:#e8e2d4;
-  --danger:#c93636;
-}
-* { box-sizing:border-box; margin:0; padding:0; }
-body {
-  font-family:'Poppins',sans-serif;
-  background:var(--cream);
-  color:var(--dark);
-  padding-bottom:90px;
-}
-button,input,select,textarea { font:inherit; }
-button { cursor:pointer; }
-button:disabled { opacity:.55; cursor:not-allowed; }
-.container { max-width:1100px; margin:auto; }
-header {
-  padding:20px 16px;
-  background:var(--cream);
-}
-.brand {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:14px;
-}
+<!DOCTYPE html>  <html lang="fr">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<meta name="theme-color" content="#152c3b">  
+<title>AMINE DH | Boutique officielle</title>  <link rel="preconnect" href="https://fonts.googleapis.com">  
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>  
+:root {  
+  --gold:#c9a34e;  
+  --dark:#152c3b;  
+  --green:#244b50;  
+  --cream:#f8f6ec;  
+  --white:#fff;  
+  --muted:#777;  
+  --border:#e8e2d4;  
+  --danger:#c93636;  
+}  
+* { box-sizing:border-box; margin:0; padding:0; }  
+body {  
+  font-family:'Poppins',sans-serif;  
+  background:var(--cream);  
+  color:var(--dark);  
+  padding-bottom:90px;  
+}  
+button,input,select,textarea { font:inherit; }  
+button { cursor:pointer; }  
+button:disabled { opacity:.55; cursor:not-allowed; }  
+.container { max-width:1100px; margin:auto; }  
+header {  
+  padding:20px 16px;  
+  background:var(--cream);  
+}  
+.brand {  
+  display:flex;  
+  justify-content:center;  
+  align-items:center;  
+  gap:14px;  
+}  
 .logo {
   font-size:45px;
   font-weight:800;
@@ -51,810 +46,776 @@ header {
   letter-spacing:-3px;
   white-space:nowrap;
 } 
-.brand-name { font-size:clamp(23px,5vw,35px); font-weight:800; }
-.brand-subtitle { font-size:10px; letter-spacing:2px; }
-.search {
-  display:flex;
-  margin:10px 15px 20px;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:7px 12px;
-}
-.search input {
-  flex:1; min-width:0; border:0; outline:0; padding:12px;
-}
-.search button {
-  border:0; background:none; color:var(--gold); font-size:24px;
-}
-.categories {
-  display:flex; overflow-x:auto; background:white;
-  scrollbar-width:none; border-block:1px solid var(--border);
-}
-.categories button {
-  flex:1; min-width:100px; padding:12px 8px;
-  border:0; border-right:1px solid var(--border);
-  background:white; color:var(--dark); font-size:12px;
-}
-.categories button span { display:block; font-size:25px; margin-bottom:4px; }
-.categories button.active {
-  background:#f0e5c7; box-shadow:inset 0 -3px var(--gold);
-}
-.hero {
-  margin:25px 15px;
-  padding:35px 24px;
-  min-height:330px;
-  border-radius:26px;
-  color:white;
-  background:radial-gradient(circle at 15% 20%,#668985,transparent 45%),
-             linear-gradient(135deg,#456b6e,#193b42);
-  display:flex; align-items:center;
-  position:relative; overflow:hidden;
-}
-.hero:after {
-  content:""; position:absolute; width:240px; height:400px;
-  border:2px solid #d6b55e; border-radius:50%;
-  left:-150px; top:-50px; transform:rotate(20deg);
-}
-.hero-content { position:relative; z-index:1; width:100%; text-align:right; }
-.hero-label {
-  display:inline-block; padding:9px 14px; border-radius:20px;
-  background:#193f43; color:#f1d991; font-size:11px; margin-bottom:20px;
-}
-.hero h1 { font-size:clamp(27px,5vw,43px); line-height:1.5; margin-bottom:12px; }
-.hero h1 span { color:#e2c36f; }
-.hero p { font-size:14px; color:#e5e9e2; margin-bottom:20px; }
-.primary,.gold-button {
-  border:0; border-radius:12px; padding:13px 18px; font-weight:700;
-}
-.primary { background:var(--dark); color:white; }
-.gold-button { background:linear-gradient(120deg,#e7ca75,#c79b37); color:#202b2d; }
-.hero-icon { position:absolute; left:18px; top:100px; font-size:65px; }
-.section { padding:20px 15px; }
-.section-heading {
-  display:flex; justify-content:space-between; align-items:center;
-  gap:10px; margin-bottom:20px;
-}
-.section-heading h2 { font-size:22px; }
-.text-button { border:0; background:none; color:#a47c29; font-size:12px; }
-.products {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;
-}
-.product {
-  background:white; border:1px solid var(--border);
-  border-radius:17px; overflow:hidden; min-width:0;
-}
-.product-image {
-  position:relative; height:175px; background:#f0eee5;
-  display:grid; place-items:center;
-}
-.product-image img { width:100%; height:100%; object-fit:contain; padding:10px; }
-.product-placeholder { font-size:55px; }
-.favorite {
-  position:absolute; top:8px; right:8px;
-  width:35px; height:35px; border:0; border-radius:50%;
-  background:white; font-size:20px; color:var(--danger);
-}
-.product-info { padding:13px; }
-.product-info h3 { font-size:13px; line-height:1.7; margin-bottom:7px; }
-.product-description { color:var(--muted); font-size:11px; line-height:1.7; margin-bottom:8px; }
-.price { color:#a47c29; font-weight:800; font-size:16px; margin-bottom:12px; }
-.product-info .primary { width:100%; font-size:12px; }
-.empty { grid-column:1/-1; text-align:center; padding:35px 10px; color:var(--muted); }
-.status { font-size:12px; padding:12px; text-align:center; color:var(--muted); }
-.overlay {
-  display:none; position:fixed; inset:0; z-index:100;
-  background:#0009; align-items:flex-end; justify-content:center;
-}
-.overlay.open { display:flex; }
-.panel {
-  width:100%; max-width:650px; max-height:90vh; overflow:auto;
-  background:white; border-radius:22px 22px 0 0; padding:22px;
-}
-.panel-header {
-  display:flex; align-items:center; justify-content:space-between;
-  gap:10px; margin-bottom:20px;
-}
-.close { border:0; background:#eee; border-radius:50%; width:36px; height:36px; }
-.field { margin-bottom:14px; }
-.field label { display:block; font-size:12px; margin-bottom:6px; font-weight:600; }
-.field input,.field select,.field textarea {
-  width:100%; border:1px solid var(--border); border-radius:10px;
-  padding:12px; outline-color:var(--gold); background:white;
-}
-.field textarea { min-height:75px; resize:vertical; }
-.cart-row {
-  display:flex; align-items:center; gap:10px;
-  padding:12px 0; border-bottom:1px solid var(--border);
-}
-.cart-row-info { flex:1; min-width:0; }
-.cart-row-info strong { display:block; font-size:13px; }
-.cart-row-info small { color:var(--muted); }
-.quantity { display:flex; align-items:center; gap:9px; }
-.quantity button { width:28px; height:28px; border:0; border-radius:7px; background:#eee; }
-.remove { border:0; background:none; color:var(--danger); padding:5px; }
-.total {
-  display:flex; justify-content:space-between; gap:10px;
-  padding:18px 0; font-weight:800; font-size:17px;
-}
-.full { width:100%; margin-top:8px; }
-.bottom-nav {
-  position:fixed; z-index:50; bottom:0; left:0; right:0;
-  display:flex; justify-content:space-around;
-  padding:10px 3px calc(10px + env(safe-area-inset-bottom));
-  background:#fffdf5; border-top:1px solid var(--border);
-  box-shadow:0 -5px 20px #00000008;
-}
-.nav-item { flex:1; border:0; background:none; color:#77756e; font-size:10px; }
-.nav-icon { display:block; font-size:23px; margin-bottom:3px; }
-.badge {
-  display:inline-grid; place-items:center; min-width:17px; height:17px;
-  border-radius:50%; background:var(--danger); color:white; font-size:10px;
-  vertical-align:top; margin-left:2px;
-}
-.toast {
-  display:none; position:fixed; z-index:200; bottom:95px; left:50%;
-  transform:translateX(-50%); background:var(--dark); color:white;
-  padding:12px 18px; border-radius:12px; font-size:12px;
-  width:max-content; max-width:90%;
-}
-footer { text-align:center; padding:25px 10px; color:var(--muted); font-size:11px; }
-@media(min-width:700px) {
-  body { background:#ecebe5; }
-  .container { background:var(--cream); min-height:100vh; box-shadow:0 0 35px #00000008; }
-  .products { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
-  .product-image { height:220px; }
-  .hero { min-height:360px; }
-  .overlay { align-items:center; }
-  .panel { border-radius:20px; }
-}
-</style>
-</head>
-
-<body>
-<div class="container">
-
-<header>
-<div class="logo">ADH</div>
-</div>
-      <div class="brand-name">AMINE DH</div>
-      <div class="brand-subtitle">E-COMMERCE GLOBAL STORE</div>
-    </div>
-  </div>
-</header>
-
-<form class="search" id="searchForm">
-  <input id="searchInput" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-  <button type="submit" aria-label="Rechercher">⌕</button>
+.brand-name { font-size:clamp(23px,5vw,35px); font-weight:800; }  
+.brand-subtitle { font-size:10px; letter-spacing:2px; }  
+.search {  
+  display:flex;  
+  margin:10px 15px 20px;  
+  background:white;  
+  border:1px solid var(--border);  
+  border-radius:16px;  
+  padding:7px 12px;  
+}  
+.search input {  
+  flex:1; min-width:0; border:0; outline:0; padding:12px;  
+}  
+.search button {  
+  border:0; background:none; color:var(--gold); font-size:24px;  
+}  
+.categories {  
+  display:flex; overflow-x:auto; background:white;  
+  scrollbar-width:none; border-block:1px solid var(--border);  
+}  
+.categories button {  
+  flex:1; min-width:100px; padding:12px 8px;  
+  border:0; border-right:1px solid var(--border);  
+  background:white; color:var(--dark); font-size:12px;  
+}  
+.categories button span { display:block; font-size:25px; margin-bottom:4px; }  
+.categories button.active {  
+  background:#f0e5c7; box-shadow:inset 0 -3px var(--gold);  
+}  
+.hero {  
+  margin:25px 15px;  
+  padding:35px 24px;  
+  min-height:330px;  
+  border-radius:26px;  
+  color:white;  
+  background:radial-gradient(circle at 15% 20%,#668985,transparent 45%),  
+             linear-gradient(135deg,#456b6e,#193b42);  
+  display:flex; align-items:center;  
+  position:relative; overflow:hidden;  
+}  
+.hero:after {  
+  content:""; position:absolute; width:240px; height:400px;  
+  border:2px solid #d6b55e; border-radius:50%;  
+  left:-150px; top:-50px; transform:rotate(20deg);  
+}  
+.hero-content { position:relative; z-index:1; width:100%; text-align:right; }  
+.hero-label {  
+  display:inline-block; padding:9px 14px; border-radius:20px;  
+  background:#193f43; color:#f1d991; font-size:11px; margin-bottom:20px;  
+}  
+.hero h1 { font-size:clamp(27px,5vw,43px); line-height:1.5; margin-bottom:12px; }  
+.hero h1 span { color:#e2c36f; }  
+.hero p { font-size:14px; color:#e5e9e2; margin-bottom:20px; }  
+.primary,.gold-button {  
+  border:0; border-radius:12px; padding:13px 18px; font-weight:700;  
+}  
+.primary { background:var(--dark); color:white; }  
+.gold-button { background:linear-gradient(120deg,#e7ca75,#c79b37); color:#202b2d; }  
+.hero-icon { position:absolute; left:18px; top:100px; font-size:65px; }  
+.section { padding:20px 15px; }  
+.section-heading {  
+  display:flex; justify-content:space-between; align-items:center;  
+  gap:10px; margin-bottom:20px;  
+}  
+.section-heading h2 { font-size:22px; }  
+.text-button { border:0; background:none; color:#a47c29; font-size:12px; }  
+.products {  
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;  
+}  
+.product {  
+  background:white; border:1px solid var(--border);  
+  border-radius:17px; overflow:hidden; min-width:0;  
+}  
+.product-image {  
+  position:relative; height:175px; background:#f0eee5;  
+  display:grid; place-items:center;  
+}  
+.product-image img { width:100%; height:100%; object-fit:contain; padding:10px; }  
+.product-placeholder { font-size:55px; }  
+.favorite {  
+  position:absolute; top:8px; right:8px;  
+  width:35px; height:35px; border:0; border-radius:50%;  
+  background:white; font-size:20px; color:var(--danger);  
+}  
+.product-info { padding:13px; }  
+.product-info h3 { font-size:13px; line-height:1.7; margin-bottom:7px; }  
+.product-description { color:var(--muted); font-size:11px; line-height:1.7; margin-bottom:8px; }  
+.price { color:#a47c29; font-weight:800; font-size:16px; margin-bottom:12px; }  
+.product-info .primary { width:100%; font-size:12px; }  
+.empty { grid-column:1/-1; text-align:center; padding:35px 10px; color:var(--muted); }  
+.status { font-size:12px; padding:12px; text-align:center; color:var(--muted); }  
+.overlay {  
+  display:none; position:fixed; inset:0; z-index:100;  
+  background:#0009; align-items:flex-end; justify-content:center;  
+}  
+.overlay.open { display:flex; }  
+.panel {  
+  width:100%; max-width:650px; max-height:90vh; overflow:auto;  
+  background:white; border-radius:22px 22px 0 0; padding:22px;  
+}  
+.panel-header {  
+  display:flex; align-items:center; justify-content:space-between;  
+  gap:10px; margin-bottom:20px;  
+}  
+.close { border:0; background:#eee; border-radius:50%; width:36px; height:36px; }  
+.field { margin-bottom:14px; }  
+.field label { display:block; font-size:12px; margin-bottom:6px; font-weight:600; }  
+.field input,.field select,.field textarea {  
+  width:100%; border:1px solid var(--border); border-radius:10px;  
+  padding:12px; outline-color:var(--gold); background:white;  
+}  
+.field textarea { min-height:75px; resize:vertical; }  
+.cart-row {  
+  display:flex; align-items:center; gap:10px;  
+  padding:12px 0; border-bottom:1px solid var(--border);  
+}  
+.cart-row-info { flex:1; min-width:0; }  
+.cart-row-info strong { display:block; font-size:13px; }  
+.cart-row-info small { color:var(--muted); }  
+.quantity { display:flex; align-items:center; gap:9px; }  
+.quantity button { width:28px; height:28px; border:0; border-radius:7px; background:#eee; }  
+.remove { border:0; background:none; color:var(--danger); padding:5px; }  
+.total {  
+  display:flex; justify-content:space-between; gap:10px;  
+  padding:18px 0; font-weight:800; font-size:17px;  
+}  
+.full { width:100%; margin-top:8px; }  
+.bottom-nav {  
+  position:fixed; z-index:50; bottom:0; left:0; right:0;  
+  display:flex; justify-content:space-around;  
+  padding:10px 3px calc(10px + env(safe-area-inset-bottom));  
+  background:#fffdf5; border-top:1px solid var(--border);  
+  box-shadow:0 -5px 20px #00000008;  
+}  
+.nav-item { flex:1; border:0; background:none; color:#77756e; font-size:10px; }  
+.nav-icon { display:block; font-size:23px; margin-bottom:3px; }  
+.badge {  
+  display:inline-grid; place-items:center; min-width:17px; height:17px;  
+  border-radius:50%; background:var(--danger); color:white; font-size:10px;  
+  vertical-align:top; margin-left:2px;  
+}  
+.toast {  
+  display:none; position:fixed; z-index:200; bottom:95px; left:50%;  
+  transform:translateX(-50%); background:var(--dark); color:white;  
+  padding:12px 18px; border-radius:12px; font-size:12px;  
+  width:max-content; max-width:90%;  
+}  
+footer { text-align:center; padding:25px 10px; color:var(--muted); font-size:11px; }  
+@media(min-width:700px) {  
+  body { background:#ecebe5; }  
+  .container { background:var(--cream); min-height:100vh; box-shadow:0 0 35px #00000008; }  
+  .products { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }  
+  .product-image { height:220px; }  
+  .hero { min-height:360px; }  
+  .overlay { align-items:center; }  
+  .panel { border-radius:20px; }  
+}  
+</style>  </head>  <body>  
+<div class="container">  <header>  
+  <div class="brand">  
+    <div class="logo">ADH</div>  
+    <div>  
+      <div class="brand-name">AMINE DH</div>  
+      <div class="brand-subtitle">E-COMMERCE GLOBAL STORE</div>  
+    </div>  
+  </div>  
+</header>  <form class="search" id="searchForm">  
+  <input id="searchInput" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">  
+  <button type="submit" aria-label="Rechercher">⌕</button>  
+</form>  <nav class="categories" id="categories">  
+  <button class="active" data-category="all"><span>🛍️</span>Tout</button>  
+  <button data-category="Cuisine"><span>🍳</span>Cuisine</button>  
+  <button data-category="Électronique"><span>🎧</span>Électronique</button>  
+  <button data-category="Informatique"><span>💻</span>Informatique</button>  
+  <button data-category="Accessoires"><span>⌚</span>Accessoires</button>  
+  <button data-category="Téléphones"><span>📱</span>Téléphones</button>  
+</nav>  <section class="hero">  
+  <div class="hero-icon">🛍️</div>  
+  <div class="hero-content">  
+    <div class="hero-label">BIENVENUE CHEZ AMINE DH</div>  
+    <h1>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br><span>AU MÊME ENDROIT !</span></h1>  
+    <p>Découvrez notre sélection de produits.</p>  
+    <button class="gold-button" id="discoverButton">Découvrir les produits →</button>  
+  </div>  
+</section>  <section class="section" id="productsSection">  
+  <div class="section-heading">  
+    <h2>Nos produits</h2>  
+    <button class="text-button" id="resetFilters">Tout afficher ↗</button>  
+  </div>  
+  <div class="status" id="loadStatus">Connexion à la boutique...</div>  
+  <div class="products" id="products"></div>  
+</section>  <footer>© <span id="year"></span> AMINE DH — Tous droits réservés.</footer>  
+</div>  <nav class="bottom-nav">  
+  <button class="nav-item" data-action="home"><span class="nav-icon">⌂</span>Accueil</button>  
+  <button class="nav-item" data-action="account"><span class="nav-icon">♙</span>Compte</button>  
+  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commander</button>  
+  <button class="nav-item" data-action="wishlist"><span class="nav-icon">♡</span>Favoris <span class="badge" id="wishCount">0</span></button>  
+  <button class="nav-item" data-action="cart"><span class="nav-icon">🛒</span>Panier <span class="badge" id="cartCount">0</span></button>  
+</nav>  <div class="overlay" id="panelOverlay">  
+  <div class="panel">  
+    <div class="panel-header">  
+      <h2 id="panelTitle">Panier</h2>  
+      <button class="close" id="closePanel" aria-label="Fermer">✕</button>  
+    </div>  
+    <div id="panelContent"></div>  
+  </div>  
+</div>  <div class="toast" id="toast" role="status"></div>  <script>  
+"use strict";  
+  
+/* Configuration de votre projet Supabase */  
+const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";  
+const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfw_-DKKY90V";  
+const STORE_ID = "b5da5b20-3479-49f3-b544-c2447c7b7cda";  
+  
+/*  
+  Le client utilise uniquement une clé publique.  
+  La sécurité doit être appliquée dans Supabase (RLS).  
+*/  
+  
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);  
+  
+const $ = id => document.getElementById(id);  
+const productsElement = $("products");  
+const panelOverlay = $("panelOverlay");  
+const panelContent = $("panelContent");  
+  
+let products = [];  
+let cart = [];  
+let wishlist = [];  
+let selectedCategory = "all";  
+let searchTerm = "";  
+let toastTimer;  
+  
+try {  
+  cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");  
+  wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");  
+  if (!Array.isArray(cart)) cart = [];  
+  if (!Array.isArray(wishlist)) wishlist = [];  
+} catch {  
+  cart = [];  
+  wishlist = [];  
+}  
+  
+function escapeHTML(value) {  
+  return String(value ?? "").replace(/[&<>"']/g, c => ({  
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"  
+  })[c]);  
+}  
+  
+function money(value) {  
+  return new Intl.NumberFormat("fr-DZ", {  
+    maximumFractionDigits: 2  
+  }).format(Number(value) || 0) + " DA";  
+}  
+  
+function showToast(message) {  
+  const toast = $("toast");  
+  toast.textContent = message;  
+  toast.style.display = "block";  
+  clearTimeout(toastTimer);  
+  toastTimer = setTimeout(() => toast.style.display = "none", 2800);  
+}  
+  
+function saveLocalData() {  
+  localStorage.setItem("amine_cart", JSON.stringify(cart));  
+  localStorage.setItem("amine_wishlist", JSON.stringify(wishlist));  
+  updateBadges();  
+}  
+  
+function updateBadges() {  
+  $("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);  
+  $("wishCount").textContent = wishlist.length;  
+}  
+  
+function getProductId(product) {  
+  return String(product.id);  
+}  
+  
+function getProductPrice(product) {  
+  return Number(product.price ?? product.sale_price ?? 0);  
+}  
+  
+function getProductName(product) {  
+  return product.name ?? product.title ?? "Produit";  
+}  
+  
+function getProductImage(product) {  
+  return product.image_url ?? product.image ?? product.photo_url ?? "";  
+}  
+  
+function getProductCategory(product) {  
+  return product.category ?? product.category_name ?? "";  
+}  
+  
+function getProductDescription(product) {  
+  return product.description ?? "";  
+}  
+  
+function productIsAvailable(product) {  
+  return product.active !== false &&  
+         product.is_active !== false &&  
+         product.status !== "inactive" &&  
+         product.status !== "draft";  
+}  
+  
+async function loadProducts() {  
+  $("loadStatus").textContent = "Chargement des produits...";  
+  productsElement.innerHTML = "";  
+  
+  /*  
+    On filtre par store_id pour afficher les produits de cette boutique.  
+    Si votre table utilise un autre nom de colonne, cette requête  
+    devra être adaptée au schéma réel de votre base de données.  
+  */  
+  const { data, error } = await db  
+    .from("products")  
+    .select("*")  
+    .eq("store_id", STORE_ID)  
+    .limit(100);  
+  
+  if (error) {  
+    console.error("Erreur de chargement :", error);  
+    $("loadStatus").textContent =  
+      "Impossible de charger les produits. Vérifiez la table products, les colonnes et les politiques RLS.";  
+    productsElement.innerHTML =  
+      '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';  
+    return;  
+  }  
+  
+  products = (data || []).filter(productIsAvailable);  
+  $("loadStatus").textContent = products.length  
+    ? products.length + " produit(s) disponible(s)"  
+    : "Aucun produit publié pour le moment.";  
+  
+  renderProducts();  
+}  
+  
+function renderProducts() {  
+  let filtered = products.filter(product => {  
+    const matchesCategory = selectedCategory === "all" ||  
+      getProductCategory(product).toLowerCase() === selectedCategory.toLowerCase();  
+  
+    const text = (  
+      getProductName(product) + " " +  
+      getProductDescription(product) + " " +  
+      getProductCategory(product)  
+    ).toLowerCase();  
+  
+    return matchesCategory && text.includes(searchTerm.toLowerCase());  
+  });  
+  
+  if (!filtered.length) {  
+    productsElement.innerHTML =  
+      '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';  
+    return;  
+  }  
+  
+  productsElement.innerHTML = filtered.map(product => {  
+    const id = getProductId(product);  
+    const name = getProductName(product);  
+    const image = getProductImage(product);  
+    const price = getProductPrice(product);  
+    const favorite = wishlist.includes(id);  
+  
+    return `  
+      <article class="product">  
+        <div class="product-image">  
+          ${  
+            image  
+              ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`  
+              : ""  
+          }  
+          <span class="product-placeholder" style="${image ? "display:none" : ""}">🛍️</span>  
+          <button class="favorite" data-favorite="${escapeHTML(id)}" aria-label="Ajouter aux favoris">${favorite ? "♥" : "♡"}</button>  
+        </div>  
+        <div class="product-info">  
+          <h3>${escapeHTML(name)}</h3>  
+          <p class="product-description">${escapeHTML(getProductDescription(product).slice(0,100))}</p>  
+          <div class="price">${money(price)}</div>  
+          <button class="primary" data-add="${escapeHTML(id)}">Ajouter au panier</button>  
+        </div>  
+      </article>  
+    `;  
+  }).join("");  
+}  
+  
+function addToCart(id) {  
+  const product = products.find(item => getProductId(item) === id);  
+  if (!product) return;  
+  
+  const existing = cart.find(item => String(item.id) === id);  
+  
+  if (existing) existing.quantity += 1;  
+  else cart.push({ id, quantity: 1 });  
+  
+  saveLocalData();  
+  showToast("Produit ajouté au panier !");  
+}  
+  
+function toggleWishlist(id) {  
+  if (wishlist.includes(id)) {  
+    wishlist = wishlist.filter(item => item !== id);  
+    showToast("Produit retiré des favoris.");  
+  } else {  
+    wishlist.push(id);  
+    showToast("Produit ajouté aux favoris !");  
+  }  
+  
+  saveLocalData();  
+  renderProducts();  
+}  
+  
+function openPanel(title, html) {  
+  $("panelTitle").textContent = title;  
+  panelContent.innerHTML = html;  
+  panelOverlay.classList.add("open");  
+  document.body.style.overflow = "hidden";  
+}  
+  
+function closePanel() {  
+  panelOverlay.classList.remove("open");  
+  document.body.style.overflow = "";  
+}  
+  
+function cartDetails() {  
+  return cart.map(item => {  
+    const product = products.find(p => getProductId(p) === String(item.id));  
+    return product ? { ...product, quantity: item.quantity } : null;  
+  }).filter(Boolean);  
+}  
+  
+function renderCart() {  
+  const items = cartDetails();  
+  
+  if (!items.length) {  
+    openPanel("Mon panier", '<div class="empty">Votre panier est vide 🛒</div>');  
+    return;  
+  }  
+  
+  const total = items.reduce((sum, item) =>  
+    sum + getProductPrice(item) * item.quantity, 0);  
+  
+  const rows = items.map(item => `  
+    <div class="cart-row">  
+      <div class="cart-row-info">  
+        <strong>${escapeHTML(getProductName(item))}</strong>  
+        <small>${money(getProductPrice(item))}</small>  
+      </div>  
+      <div class="quantity">  
+        <button data-qty-minus="${escapeHTML(getProductId(item))}">−</button>  
+        <span>${item.quantity}</span>  
+        <button data-qty-plus="${escapeHTML(getProductId(item))}">+</button>  
+      </div>  
+      <button class="remove" data-remove="${escapeHTML(getProductId(item))}">✕</button>  
+    </div>  
+  `).join("");  
+  
+  openPanel("Mon panier", `  
+    ${rows}  
+    <div class="total"><span>Total produits</span><span>${money(total)}</span></div>  
+    <p class="product-description">Les frais de livraison seront confirmés avant la validation définitive.</p>  
+    <button class="gold-button full" id="checkoutButton">Commander maintenant</button>  
+  `);  
+}  
+  
+function renderWishlist() {  
+  const items = products.filter(p => wishlist.includes(getProductId(p)));  
+  
+  if (!items.length) {  
+    openPanel("Mes favoris", '<div class="empty">Votre liste de favoris est vide ♡</div>');  
+    return;  
+  }  
+  
+  openPanel("Mes favoris", items.map(item => `  
+    <div class="cart-row">  
+      <div class="cart-row-info">  
+        <strong>${escapeHTML(getProductName(item))}</strong>  
+        <small>${money(getProductPrice(item))}</small>  
+      </div>  
+      <button class="primary" data-add="${escapeHTML(getProductId(item))}">Ajouter</button>  
+      <button class="remove" data-favorite="${escapeHTML(getProductId(item))}">♥</button>  
+    </div>  
+  `).join(""));  
+}  
+  
+function checkoutForm() {  
+  const items = cartDetails();  
+  
+  if (!items.length) {  
+    showToast("Votre panier est vide.");  
+    return;  
+  }  
+  
+  const total = items.reduce((sum, item) =>  
+    sum + getProductPrice(item) * item.quantity, 0);  
+  
+  openPanel("Informations de livraison", `  
+    <form id="checkoutForm">  
+      <div class="field">  
+        <label for="customerName">Nom et prénom *</label>  
+        <input id="customerName" name="customerName" required maxlength="100" autocomplete="name">  
+      </div>  
+      <div class="field">  
+        <label for="customerPhone">Numéro de téléphone *</label>  
+        <input id="customerPhone" name="customerPhone" required type="tel" maxlength="25" autocomplete="tel">  
+      </div>  
+      <div class="field">  
+        <label for="customerWilaya">Wilaya *</label>  
+        <input id="customerWilaya" name="customerWilaya" required maxlength="80">  
+      </div>  
+      <div class="field">  
+        <label for="customerCity">Commune *</label>  
+        <input id="customerCity" name="customerCity" required maxlength="100">  
+      </div>  
+      <div class="field">  
+        <label for="customerAddress">Adresse de livraison *</label>  
+        <textarea id="customerAddress" name="customerAddress" required maxlength="500"></textarea>  </div>  
+  <div class="field">  
+    <label for="customerNote">Remarque (facultatif)</label>  
+    <textarea id="customerNote" name="customerNote" maxlength="500"></textarea>  
+  </div>  
+  <div class="total"><span>Total des produits</span><span>${money(total)}</span></div>  
+  <p class="product-description">Paiement à la livraison. Les frais de livraison seront confirmés par le vendeur.</p>  
+  <button class="gold-button full" type="submit">Confirmer la commande</button>  
 </form>
 
-<nav class="categories" id="categories">
-  <button class="active" data-category="all"><span>🛍️</span>Tout</button>
-  <button data-category="Cuisine"><span>🍳</span>Cuisine</button>
-  <button data-category="Électronique"><span>🎧</span>Électronique</button>
-  <button data-category="Informatique"><span>💻</span>Informatique</button>
-  <button data-category="Accessoires"><span>⌚</span>Accessoires</button>
-  <button data-category="Téléphones"><span>📱</span>Téléphones</button>
-</nav>
-
-<section class="hero">
-  <div class="hero-icon">🛍️</div>
-  <div class="hero-content">
-    <div class="hero-label">BIENVENUE CHEZ AMINE DH</div>
-    <h1>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br><span>AU MÊME ENDROIT !</span></h1>
-    <p>Découvrez notre sélection de produits.</p>
-    <button class="gold-button" id="discoverButton">Découvrir les produits →</button>
-  </div>
-</section>
-
-<section class="section" id="productsSection">
-  <div class="section-heading">
-    <h2>Nos produits</h2>
-    <button class="text-button" id="resetFilters">Tout afficher ↗</button>
-  </div>
-  <div class="status" id="loadStatus">Connexion à la boutique...</div>
-  <div class="products" id="products"></div>
-</section>
-
-<footer>© <span id="year"></span> AMINE DH — Tous droits réservés.</footer>
-</div>
-
-<nav class="bottom-nav">
-  <button class="nav-item" data-action="home"><span class="nav-icon">⌂</span>Accueil</button>
-  <button class="nav-item" data-action="account"><span class="nav-icon">♙</span>Compte</button>
-  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commander</button>
-  <button class="nav-item" data-action="wishlist"><span class="nav-icon">♡</span>Favoris <span class="badge" id="wishCount">0</span></button>
-  <button class="nav-item" data-action="cart"><span class="nav-icon">🛒</span>Panier <span class="badge" id="cartCount">0</span></button>
-</nav>
-
-<div class="overlay" id="panelOverlay">
-  <div class="panel">
-    <div class="panel-header">
-      <h2 id="panelTitle">Panier</h2>
-      <button class="close" id="closePanel" aria-label="Fermer">✕</button>
-    </div>
-    <div id="panelContent"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast" role="status"></div>
-
-<script>
-"use strict";
-
-/* Configuration de votre projet Supabase */
-const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfw_-DKKY90V";
-const STORE_ID = "b5da5b20-3479-49f3-b544-c2447c7b7cda";
-
-/*
-  Le client utilise uniquement une clé publique.
-  La sécurité doit être appliquée dans Supabase (RLS).
-*/
-
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const $ = id => document.getElementById(id);
-const productsElement = $("products");
-const panelOverlay = $("panelOverlay");
-const panelContent = $("panelContent");
-
-let products = [];
-let cart = [];
-let wishlist = [];
-let selectedCategory = "all";
-let searchTerm = "";
-let toastTimer;
-
-try {
-  cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
-  wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");
-  if (!Array.isArray(cart)) cart = [];
-  if (!Array.isArray(wishlist)) wishlist = [];
-} catch {
-  cart = [];
-  wishlist = [];
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
-  })[c]);
-}
-
-function money(value) {
-  return new Intl.NumberFormat("fr-DZ", {
-    maximumFractionDigits: 2
-  }).format(Number(value) || 0) + " DA";
-}
-
-function showToast(message) {
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.style.display = "block";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.style.display = "none", 2800);
-}
-
-function saveLocalData() {
-  localStorage.setItem("amine_cart", JSON.stringify(cart));
-  localStorage.setItem("amine_wishlist", JSON.stringify(wishlist));
-  updateBadges();
-}
-
-function updateBadges() {
-  $("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-  $("wishCount").textContent = wishlist.length;
-}
-
-function getProductId(product) {
-  return String(product.id);
-}
-
-function getProductPrice(product) {
-  return Number(product.price ?? product.sale_price ?? 0);
-}
-
-function getProductName(product) {
-  return product.name ?? product.title ?? "Produit";
-}
-
-function getProductImage(product) {
-  return product.image_url ?? product.image ?? product.photo_url ?? "";
-}
-
-function getProductCategory(product) {
-  return product.category ?? product.category_name ?? "";
-}
-
-function getProductDescription(product) {
-  return product.description ?? "";
-}
-
-function productIsAvailable(product) {
-  return product.active !== false &&
-         product.is_active !== false &&
-         product.status !== "inactive" &&
-         product.status !== "draft";
-}
-
-async function loadProducts() {
-  $("loadStatus").textContent = "Chargement des produits...";
-  productsElement.innerHTML = "";
-
-  /*
-    On filtre par store_id pour afficher les produits de cette boutique.
-    Si votre table utilise un autre nom de colonne, cette requête
-    devra être adaptée au schéma réel de votre base de données.
-  */
-  const { data, error } = await db
-    .from("products")
-    .select("*")
-    .eq("store_id", STORE_ID)
-    .limit(100);
-
-  if (error) {
-    console.error("Erreur de chargement :", error);
-    $("loadStatus").textContent =
-      "Impossible de charger les produits. Vérifiez la table products, les colonnes et les politiques RLS.";
-    productsElement.innerHTML =
-      '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';
-    return;
-  }
-
-  products = (data || []).filter(productIsAvailable);
-  $("loadStatus").textContent = products.length
-    ? products.length + " produit(s) disponible(s)"
-    : "Aucun produit publié pour le moment.";
-
-  renderProducts();
-}
-
-function renderProducts() {
-  let filtered = products.filter(product => {
-    const matchesCategory = selectedCategory === "all" ||
-      getProductCategory(product).toLowerCase() === selectedCategory.toLowerCase();
-
-    const text = (
-      getProductName(product) + " " +
-      getProductDescription(product) + " " +
-      getProductCategory(product)
-    ).toLowerCase();
-
-    return matchesCategory && text.includes(searchTerm.toLowerCase());
-  });
-
-  if (!filtered.length) {
-    productsElement.innerHTML =
-      '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';
-    return;
-  }
-
-  productsElement.innerHTML = filtered.map(product => {
-    const id = getProductId(product);
-    const name = getProductName(product);
-    const image = getProductImage(product);
-    const price = getProductPrice(product);
-    const favorite = wishlist.includes(id);
-
-    return `
-      <article class="product">
-        <div class="product-image">
-          ${
-            image
-              ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
-              : ""
-          }
-          <span class="product-placeholder" style="${image ? "display:none" : ""}">🛍️</span>
-          <button class="favorite" data-favorite="${escapeHTML(id)}" aria-label="Ajouter aux favoris">${favorite ? "♥" : "♡"}</button>
-        </div>
-        <div class="product-info">
-          <h3>${escapeHTML(name)}</h3>
-          <p class="product-description">${escapeHTML(getProductDescription(product).slice(0,100))}</p>
-          <div class="price">${money(price)}</div>
-          <button class="primary" data-add="${escapeHTML(id)}">Ajouter au panier</button>
-        </div>
-      </article>
-    `;
-  }).join("");
-}
-
-function addToCart(id) {
-  const product = products.find(item => getProductId(item) === id);
-  if (!product) return;
-
-  const existing = cart.find(item => String(item.id) === id);
-
-  if (existing) existing.quantity += 1;
-  else cart.push({ id, quantity: 1 });
-
-  saveLocalData();
-  showToast("Produit ajouté au panier !");
-}
-
-function toggleWishlist(id) {
-  if (wishlist.includes(id)) {
-    wishlist = wishlist.filter(item => item !== id);
-    showToast("Produit retiré des favoris.");
-  } else {
-    wishlist.push(id);
-    showToast("Produit ajouté aux favoris !");
-  }
-
-  saveLocalData();
-  renderProducts();
-}
-
-function openPanel(title, html) {
-  $("panelTitle").textContent = title;
-  panelContent.innerHTML = html;
-  panelOverlay.classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function closePanel() {
-  panelOverlay.classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-function cartDetails() {
-  return cart.map(item => {
-    const product = products.find(p => getProductId(p) === String(item.id));
-    return product ? { ...product, quantity: item.quantity } : null;
-  }).filter(Boolean);
-}
-
-function renderCart() {
-  const items = cartDetails();
-
-  if (!items.length) {
-    openPanel("Mon panier", '<div class="empty">Votre panier est vide 🛒</div>');
-    return;
-  }
-
-  const total = items.reduce((sum, item) =>
-    sum + getProductPrice(item) * item.quantity, 0);
-
-  const rows = items.map(item => `
-    <div class="cart-row">
-      <div class="cart-row-info">
-        <strong>${escapeHTML(getProductName(item))}</strong>
-        <small>${money(getProductPrice(item))}</small>
-      </div>
-      <div class="quantity">
-        <button data-qty-minus="${escapeHTML(getProductId(item))}">−</button>
-        <span>${item.quantity}</span>
-        <button data-qty-plus="${escapeHTML(getProductId(item))}">+</button>
-      </div>
-      <button class="remove" data-remove="${escapeHTML(getProductId(item))}">✕</button>
-    </div>
-  `).join("");
-
-  openPanel("Mon panier", `
-    ${rows}
-    <div class="total"><span>Total produits</span><span>${money(total)}</span></div>
-    <p class="product-description">Les frais de livraison seront confirmés avant la validation définitive.</p>
-    <button class="gold-button full" id="checkoutButton">Commander maintenant</button>
-  `);
-}
-
-function renderWishlist() {
-  const items = products.filter(p => wishlist.includes(getProductId(p)));
-
-  if (!items.length) {
-    openPanel("Mes favoris", '<div class="empty">Votre liste de favoris est vide ♡</div>');
-    return;
-  }
-
-  openPanel("Mes favoris", items.map(item => `
-    <div class="cart-row">
-      <div class="cart-row-info">
-        <strong>${escapeHTML(getProductName(item))}</strong>
-        <small>${money(getProductPrice(item))}</small>
-      </div>
-      <button class="primary" data-add="${escapeHTML(getProductId(item))}">Ajouter</button>
-      <button class="remove" data-favorite="${escapeHTML(getProductId(item))}">♥</button>
-    </div>
-  `).join(""));
-}
-
-function checkoutForm() {
-  const items = cartDetails();
-
-  if (!items.length) {
-    showToast("Votre panier est vide.");
-    return;
-  }
-
-  const total = items.reduce((sum, item) =>
-    sum + getProductPrice(item) * item.quantity, 0);
-
-  openPanel("Informations de livraison", `
-    <form id="checkoutForm">
-      <div class="field">
-        <label for="customerName">Nom et prénom *</label>
-        <input id="customerName" name="customerName" required maxlength="100" autocomplete="name">
-      </div>
-      <div class="field">
-        <label for="customerPhone">Numéro de téléphone *</label>
-        <input id="customerPhone" name="customerPhone" required type="tel" maxlength="25" autocomplete="tel">
-      </div>
-      <div class="field">
-        <label for="customerWilaya">Wilaya *</label>
-        <input id="customerWilaya" name="customerWilaya" required maxlength="80">
-      </div>
-      <div class="field">
-        <label for="customerCity">Commune *</label>
-        <input id="customerCity" name="customerCity" required maxlength="100">
-      </div>
-      <div class="field">
-        <label for="customerAddress">Adresse de livraison *</label>
-        <textarea id="customerAddress" name="customerAddress" required maxlength="500"></textarea>
-      </div>
-      <div class="field">
-        <label for="customerNote">Remarque (facultatif)</label>
-        <textarea id="customerNote" name="customerNote" maxlength="500"></textarea>
-      </div>
-      <div class="total"><span>Total des produits</span><span>${money(total)}</span></div>
-      <p class="product-description">Paiement à la livraison. Les frais de livraison seront confirmés par le vendeur.</p>
-      <button class="gold-button full" type="submit">Confirmer la commande</button>
-    </form>
-  `);
+`);
 }
 
 /*
-  IMPORTANT :
-  Cette fonction utilise des noms de colonnes courants.
-  Vérifiez la structure réelle de orders et order_items avant l'utilisation.
-  L'insertion dans deux tables séparées n'est pas une transaction atomique.
-  Pour une boutique de production, préférez une fonction RPC sécurisée côté serveur.
+IMPORTANT :
+Cette fonction utilise des noms de colonnes courants.
+Vérifiez la structure réelle de orders et order_items avant l'utilisation.
+L'insertion dans deux tables séparées n'est pas une transaction atomique.
+Pour une boutique de production, préférez une fonction RPC sécurisée côté serveur.
 */
 async function submitOrder(form) {
-  const submitButton = form.querySelector('button[type="submit"]');
-  if (submitButton.disabled) return;
+const submitButton = form.querySelector('button[type="submit"]');
+if (submitButton.disabled) return;
 
-  const items = cartDetails();
-  if (!items.length) {
-    showToast("Votre panier est vide.");
-    return;
-  }
+const items = cartDetails();
+if (!items.length) {
+showToast("Votre panier est vide.");
+return;
+}
 
-  const formData = new FormData(form);
-  const customerName = String(formData.get("customerName") || "").trim();
-  const customerPhone = String(formData.get("customerPhone") || "").trim();
-  const wilaya = String(formData.get("customerWilaya") || "").trim();
-  const city = String(formData.get("customerCity") || "").trim();
-  const address = String(formData.get("customerAddress") || "").trim();
-  const note = String(formData.get("customerNote") || "").trim();
+const formData = new FormData(form);
+const customerName = String(formData.get("customerName") || "").trim();
+const customerPhone = String(formData.get("customerPhone") || "").trim();
+const wilaya = String(formData.get("customerWilaya") || "").trim();
+const city = String(formData.get("customerCity") || "").trim();
+const address = String(formData.get("customerAddress") || "").trim();
+const note = String(formData.get("customerNote") || "").trim();
 
-  if (!customerName || !customerPhone || !wilaya || !city || !address) {
-    showToast("Veuillez remplir tous les champs obligatoires.");
-    return;
-  }
+if (!customerName || !customerPhone || !wilaya || !city || !address) {
+showToast("Veuillez remplir tous les champs obligatoires.");
+return;
+}
 
-  submitButton.disabled = true;
-  submitButton.textContent = "Envoi en cours...";
+submitButton.disabled = true;
+submitButton.textContent = "Envoi en cours...";
 
-  try {
-    /*
-      Ne faites jamais confiance aux prix envoyés par le navigateur.
-      Pour une commande réelle, le serveur doit recalculer le total
-      depuis la base de données et valider le stock.
-    */
-    const total = items.reduce((sum, item) =>
-      sum + getProductPrice(item) * item.quantity, 0);
+try {
+/*
+Ne faites jamais confiance aux prix envoyés par le navigateur.
+Pour une commande réelle, le serveur doit recalculer le total
+depuis la base de données et valider le stock.
+*/
+const total = items.reduce((sum, item) =>
+sum + getProductPrice(item) * item.quantity, 0);
 
-    const orderPayload = {
-      store_id: STORE_ID,
-      customer_name: customerName,
-      customer_phone: customerPhone,
-      wilaya,
-      city,
-      address,
-      note,
-      total,
-      status: "pending",
-      payment_method: "cash_on_delivery"
-    };
+const orderPayload = {  
+  store_id: STORE_ID,  
+  customer_name: customerName,  
+  customer_phone: customerPhone,  
+  wilaya,  
+  city,  
+  address,  
+  note,  
+  total,  
+  status: "pending",  
+  payment_method: "cash_on_delivery"  
+};  
 
-    const { data: order, error: orderError } = await db
-      .from("orders")
-      .insert(orderPayload)
-      .select()
-      .single();
+const { data: order, error: orderError } = await db  
+  .from("orders")  
+  .insert(orderPayload)  
+  .select()  
+  .single();  
 
-    if (orderError) throw orderError;
+if (orderError) throw orderError;  
 
-    const orderItems = items.map(item => ({
-      order_id: order.id,
-      product_id: item.id,
-      quantity: item.quantity,
-      unit_price: getProductPrice(item)
-    }));
+const orderItems = items.map(item => ({  
+  order_id: order.id,  
+  product_id: item.id,  
+  quantity: item.quantity,  
+  unit_price: getProductPrice(item)  
+}));  
 
-    const { error: itemsError } = await db
-      .from("order_items")
-      .insert(orderItems);
+const { error: itemsError } = await db  
+  .from("order_items")  
+  .insert(orderItems);  
 
-    if (itemsError) {
-      console.error("Commande créée mais détails non enregistrés :", itemsError);
-      showToast("La commande a été créée, mais ses détails n'ont pas été enregistrés. Contactez le vendeur.");
-      submitButton.disabled = false;
-      submitButton.textContent = "Réessayer";
-      return;
-    }
+if (itemsError) {  
+  console.error("Commande créée mais détails non enregistrés :", itemsError);  
+  showToast("La commande a été créée, mais ses détails n'ont pas été enregistrés. Contactez le vendeur.");  
+  submitButton.disabled = false;  
+  submitButton.textContent = "Réessayer";  
+  return;  
+}  
 
-    cart = [];
-    saveLocalData();
+cart = [];  
+saveLocalData();  
 
-    openPanel("Commande reçue", `
-      <div class="empty">
-        <div style="font-size:48px">✅</div>
-        <h3>Merci pour votre commande !</h3>
-        <p>Votre numéro de commande :</p>
-        <p style="font-weight:800;overflow-wrap:anywhere">${escapeHTML(order.id)}</p>
-        <p>Montant des produits : ${money(total)}</p>
-        <p>Le vendeur pourra vous contacter pour confirmer la livraison.</p>
-      </div>
-      <button class="primary full" id="continueShopping">Continuer mes achats</button>
-    `);
+openPanel("Commande reçue", `  
+  <div class="empty">  
+    <div style="font-size:48px">✅</div>  
+    <h3>Merci pour votre commande !</h3>  
+    <p>Votre numéro de commande :</p>  
+    <p style="font-weight:800;overflow-wrap:anywhere">${escapeHTML(order.id)}</p>  
+    <p>Montant des produits : ${money(total)}</p>  
+    <p>Le vendeur pourra vous contacter pour confirmer la livraison.</p>  
+  </div>  
+  <button class="primary full" id="continueShopping">Continuer mes achats</button>  
+`);
 
-  } catch (error) {
-    console.error("Erreur de commande :", error);
-    showToast("Commande non enregistrée. Vérifiez la configuration de la base de données.");
-    submitButton.disabled = false;
-    submitButton.textContent = "Confirmer la commande";
-  }
+} catch (error) {
+console.error("Erreur de commande :", error);
+showToast("Commande non enregistrée. Vérifiez la configuration de la base de données.");
+submitButton.disabled = false;
+submitButton.textContent = "Confirmer la commande";
+}
 }
 
 function showAccount() {
-  openPanel("Mon compte", `
-    <div class="empty">
-      <div style="font-size:42px">♙</div>
-      <h3>Compte client</h3>
-      <p>La création de compte nécessite la configuration de Supabase Auth.</p>
-    </div>
-    <button class="primary full" id="loginButton">Se connecter</button>
-  `);
+openPanel("Mon compte",   <div class="empty">   <div style="font-size:42px">♙</div>   <h3>Compte client</h3>   <p>La création de compte nécessite la configuration de Supabase Auth.</p>   </div>   <button class="primary full" id="loginButton">Se connecter</button>  );
 }
 
 function showOrders() {
-  openPanel("Mes commandes", `
-    <div class="empty">
-      Pour consulter vos commandes, un système de compte client sécurisé doit être configuré.
-      <br><br>
-      Ne consultez jamais les commandes d'autres clients sans authentification.
-    </div>
-  `);
+openPanel("Mes commandes",   <div class="empty">   Pour consulter vos commandes, un système de compte client sécurisé doit être configuré.   <br><br>   Ne consultez jamais les commandes d'autres clients sans authentification.   </div>  );
 }
 
 /* Événements de l'interface */
 $("searchForm").addEventListener("submit", event => {
-  event.preventDefault();
-  searchTerm = $("searchInput").value.trim();
-  renderProducts();
+event.preventDefault();
+searchTerm = $("searchInput").value.trim();
+renderProducts();
 });
 
 $("searchInput").addEventListener("input", event => {
-  searchTerm = event.target.value.trim();
-  renderProducts();
+searchTerm = event.target.value.trim();
+renderProducts();
 });
 
 $("categories").addEventListener("click", event => {
-  const button = event.target.closest("button[data-category]");
-  if (!button) return;
+const button = event.target.closest("button[data-category]");
+if (!button) return;
 
-  selectedCategory = button.dataset.category;
+selectedCategory = button.dataset.category;
 
-  document.querySelectorAll(".categories button").forEach(item =>
-    item.classList.toggle("active", item === button));
+document.querySelectorAll(".categories button").forEach(item =>
+item.classList.toggle("active", item === button));
 
-  renderProducts();
+renderProducts();
 });
 
 $("resetFilters").addEventListener("click", () => {
-  selectedCategory = "all";
-  searchTerm = "";
-  $("searchInput").value = "";
+selectedCategory = "all";
+searchTerm = "";
+$("searchInput").value = "";
 
-  document.querySelectorAll(".categories button").forEach((button, index) =>
-    button.classList.toggle("active", index === 0));
+document.querySelectorAll(".categories button").forEach((button, index) =>
+button.classList.toggle("active", index === 0));
 
-  renderProducts();
+renderProducts();
 });
 
 $("discoverButton").addEventListener("click", () =>
-  $("productsSection").scrollIntoView({ behavior:"smooth" }));
+$("productsSection").scrollIntoView({ behavior:"smooth" }));
 
 productsElement.addEventListener("click", event => {
-  const addButton = event.target.closest("[data-add]");
-  const favoriteButton = event.target.closest("[data-favorite]");
+const addButton = event.target.closest("[data-add]");
+const favoriteButton = event.target.closest("[data-favorite]");
 
-  if (addButton) addToCart(addButton.dataset.add);
-  if (favoriteButton) toggleWishlist(favoriteButton.dataset.favorite);
+if (addButton) addToCart(addButton.dataset.add);
+if (favoriteButton) toggleWishlist(favoriteButton.dataset.favorite);
 });
 
 document.querySelector(".bottom-nav").addEventListener("click", event => {
-  const button = event.target.closest("[data-action]");
-  if (!button) return;
+const button = event.target.closest("[data-action]");
+if (!button) return;
 
-  switch (button.dataset.action) {
-    case "home":
-      window.scrollTo({ top:0, behavior:"smooth" });
-      break;
-    case "account":
-      showAccount();
-      break;
-    case "orders":
-      renderCart();
-      break;
-    case "wishlist":
-      renderWishlist();
-      break;
-    case "cart":
-      renderCart();
-      break;
-  }
+switch (button.dataset.action) {
+case "home":
+window.scrollTo({ top:0, behavior:"smooth" });
+break;
+case "account":
+showAccount();
+break;
+case "orders":
+renderCart();
+break;
+case "wishlist":
+renderWishlist();
+break;
+case "cart":
+renderCart();
+break;
+}
 });
 
 $("closePanel").addEventListener("click", closePanel);
 
 panelOverlay.addEventListener("click", event => {
-  if (event.target === panelOverlay) closePanel();
+if (event.target === panelOverlay) closePanel();
 });
 
 panelContent.addEventListener("click", event => {
-  const plus = event.target.closest("[data-qty-plus]");
-  const minus = event.target.closest("[data-qty-minus]");
-  const remove = event.target.closest("[data-remove]");
-  const add = event.target.closest("[data-add]");
-  const favorite = event.target.closest("[data-favorite]");
+const plus = event.target.closest("[data-qty-plus]");
+const minus = event.target.closest("[data-qty-minus]");
+const remove = event.target.closest("[data-remove]");
+const add = event.target.closest("[data-add]");
+const favorite = event.target.closest("[data-favorite]");
 
-  if (plus) {
-    const item = cart.find(p => String(p.id) === plus.dataset.qtyPlus);
-    if (item) item.quantity++;
-    saveLocalData();
-    renderCart();
-  }
+if (plus) {
+const item = cart.find(p => String(p.id) === plus.dataset.qtyPlus);
+if (item) item.quantity++;
+saveLocalData();
+renderCart();
+}
 
-  if (minus) {
-    const item = cart.find(p => String(p.id) === minus.dataset.qtyMinus);
-    if (item) {
-      item.quantity--;
-      if (item.quantity <= 0) cart = cart.filter(p => String(p.id) !== minus.dataset.qtyMinus);
-    }
-    saveLocalData();
-    renderCart();
-  }
+if (minus) {
+const item = cart.find(p => String(p.id) === minus.dataset.qtyMinus);
+if (item) {
+item.quantity--;
+if (item.quantity <= 0) cart = cart.filter(p => String(p.id) !== minus.dataset.qtyMinus);
+}
+saveLocalData();
+renderCart();
+}
 
-  if (remove) {
-    cart = cart.filter(p => String(p.id) !== remove.dataset.remove);
-    saveLocalData();
-    renderCart();
-  }
+if (remove) {
+cart = cart.filter(p => String(p.id) !== remove.dataset.remove);
+saveLocalData();
+renderCart();
+}
 
-  if (add) addToCart(add.dataset.add);
+if (add) addToCart(add.dataset.add);
 
-  if (favorite) toggleWishlist(favorite.dataset.favorite);
+if (favorite) toggleWishlist(favorite.dataset.favorite);
 
-  if (event.target.closest("#checkoutButton")) checkoutForm();
+if (event.target.closest("#checkoutButton")) checkoutForm();
 
-  if (event.target.closest("#continueShopping")) closePanel();
+if (event.target.closest("#continueShopping")) closePanel();
 
-  if (event.target.closest("#loginButton")) {
-    showToast("La connexion sera activée après configuration de Supabase Auth.");
-  }
+if (event.target.closest("#loginButton")) {
+showToast("La connexion sera activée après configuration de Supabase Auth.");
+}
 });
 
 panelContent.addEventListener("submit", async event => {
-  if (event.target.id !== "checkoutForm") return;
-  event.preventDefault();
-  await submitOrder(event.target);
+if (event.target.id !== "checkoutForm") return;
+event.preventDefault();
+await submitOrder(event.target);
 });
 
 $("year").textContent = new Date().getFullYear();
 updateBadges();
 loadProducts();
 </script>
-</body>
+
+</body>  
   </html>

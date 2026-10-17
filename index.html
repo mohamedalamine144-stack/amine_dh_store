@@ -2,1055 +2,834 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#152c3b">
 <title>AMINE DH | Boutique officielle</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-  --gold:#c9a34e;
-  --dark:#152c3b;
-  --green:#244b50;
-  --cream:#f8f6ec;
-  --white:#fff;
-  --muted:#777;
-  --border:#e8e2d4;
-  --danger:#c93636;
+:root{
+  --navy:#152c3b;--gold:#c9a34e;--cream:#f8f6ec;
+  --green:#244b50;--white:#fff;--muted:#718096;
+  --border:#e7e8e5;--red:#c0392b;
 }
-* {box-sizing:border-box;margin:0;padding:0}
-body {
-  font-family:'Poppins',sans-serif;
-  background:var(--cream);
-  color:var(--dark);
-  padding-bottom:90px;
-}
-button,input,select,textarea {font:inherit}
-button {cursor:pointer}
-button:disabled {opacity:.55;cursor:not-allowed}
-.container {max-width:1100px;margin:auto}
-header {padding:20px 16px}
-.brand {display:flex;justify-content:center;align-items:center;gap:14px}
-.logo {
-  font-size:45px;font-weight:800;color:var(--gold);
-  border-right:2px solid var(--gold);padding-right:12px;
-  letter-spacing:-3px;white-space:nowrap
-}
-.brand-name {font-size:clamp(23px,5vw,35px);font-weight:800}
-.brand-subtitle {font-size:10px;letter-spacing:2px}
-.search {
-  display:flex;margin:10px 15px 20px;background:white;
-  border:1px solid var(--border);border-radius:16px;padding:7px 12px
-}
-.search input {flex:1;min-width:0;border:0;outline:0;padding:12px}
-.search button {border:0;background:none;color:var(--gold);font-size:24px}
-.categories {
-  display:flex;overflow-x:auto;background:white;
-  scrollbar-width:none;border-block:1px solid var(--border)
-}
-.categories button {
-  flex:1;min-width:100px;padding:12px 8px;border:0;
-  border-right:1px solid var(--border);background:white;
-  color:var(--dark);font-size:12px
-}
-.categories button span {display:block;font-size:25px;margin-bottom:4px}
-.categories button.active {background:#f0e5c7;box-shadow:inset 0 -3px var(--gold)}
-.hero {
-  margin:25px 15px;padding:35px 24px;min-height:330px;
-  border-radius:26px;color:white;
-  background:radial-gradient(circle at 15% 20%,#668985,transparent 45%),linear-gradient(135deg,#456b6e,#193b42);
-  display:flex;align-items:center;position:relative;overflow:hidden
-}
-.hero:after {
-  content:"";position:absolute;width:240px;height:400px;
-  border:2px solid #d6b55e;border-radius:50%;
-  left:-150px;top:-50px;transform:rotate(20deg)
-}
-.hero-content {position:relative;z-index:1;width:100%;text-align:right}
-.hero-label {
-  display:inline-block;padding:9px 14px;border-radius:20px;
-  background:#193f43;color:#f1d991;font-size:11px;margin-bottom:20px
-}
-.hero h1 {font-size:clamp(27px,5vw,43px);line-height:1.5;margin-bottom:12px}
-.hero h1 span {color:#e2c36f}
-.hero p {font-size:14px;color:#e5e9e2;margin-bottom:20px}
-.primary,.gold-button {border:0;border-radius:12px;padding:13px 18px;font-weight:700}
-.primary {background:var(--dark);color:white}
-.gold-button {background:linear-gradient(120deg,#e7ca75,#c79b37);color:#202b2d}
-.hero-icon {position:absolute;left:18px;top:100px;font-size:65px}
-.section {padding:20px 15px}
-.section-heading {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
-.section-heading h2 {font-size:22px}
-.text-button {border:0;background:none;color:#a47c29;font-size:12px}
-.products {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.product {background:white;border:1px solid var(--border);border-radius:17px;overflow:hidden;min-width:0}
-.product-image {position:relative;height:175px;background:#f0eee5;display:grid;place-items:center}
-.product-image img {width:100%;height:100%;object-fit:contain;padding:10px}
-.product-placeholder {font-size:55px}
-.favorite {
-  position:absolute;top:8px;right:8px;width:35px;height:35px;
-  border:0;border-radius:50%;background:white;font-size:20px;color:var(--danger)
-}
-.product-info {padding:13px}
-.product-info h3 {font-size:13px;line-height:1.7;margin-bottom:7px}
-.product-description {color:var(--muted);font-size:11px;line-height:1.7;margin-bottom:8px}
-.price {color:#a47c29;font-weight:800;font-size:16px;margin-bottom:12px}
-.product-info .primary {width:100%;font-size:12px}
-.empty {grid-column:1/-1;text-align:center;padding:35px 10px;color:var(--muted)}
-.status {font-size:12px;padding:12px;text-align:center;color:var(--muted)}
-.overlay {
-  display:none;position:fixed;inset:0;z-index:100;background:#0009;
-  align-items:flex-end;justify-content:center
-}
-.overlay.open {display:flex}
-.panel {
-  width:100%;max-width:650px;max-height:90vh;overflow:auto;
-  background:white;border-radius:22px 22px 0 0;padding:22px
-}
-.panel-header {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
-.close {border:0;background:#eee;border-radius:50%;width:36px;height:36px}
-.field {margin-bottom:14px}
-.field label {display:block;font-size:12px;margin-bottom:6px;font-weight:600}
-.field input,.field select,.field textarea {
-  width:100%;border:1px solid var(--border);border-radius:10px;
-  padding:12px;outline-color:var(--gold);background:white
-}
-.field textarea {min-height:75px;resize:vertical}
-.cart-row {display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
-.cart-row-info {flex:1;min-width:0}
-.cart-row-info strong {display:block;font-size:13px}
-.cart-row-info small {color:var(--muted)}
-.quantity {display:flex;align-items:center;gap:9px}
-.quantity button {width:28px;height:28px;border:0;border-radius:7px;background:#eee}
-.remove {border:0;background:none;color:var(--danger);padding:5px}
-.total {display:flex;justify-content:space-between;gap:10px;padding:18px 0;font-weight:800;font-size:17px}
-.full {width:100%;margin-top:8px}
-.bottom-nav {
-  position:fixed;z-index:50;bottom:0;left:0;right:0;
-  display:flex;justify-content:space-around;
-  padding:10px 3px calc(10px + env(safe-area-inset-bottom));
-  background:#fffdf5;border-top:1px solid var(--border);box-shadow:0 -5px 20px #00000008
-}
-.nav-item {flex:1;border:0;background:none;color:#77756e;font-size:10px}
-.nav-icon {display:block;font-size:23px;margin-bottom:3px}
-.badge {
-  display:inline-grid;place-items:center;min-width:17px;height:17px;
-  border-radius:50%;background:var(--danger);color:white;font-size:10px;
-  vertical-align:top;margin-left:2px
-}
-.toast {
-  display:none;position:fixed;z-index:200;bottom:95px;left:50%;
-  transform:translateX(-50%);background:var(--dark);color:white;
-  padding:12px 18px;border-radius:12px;font-size:12px;width:max-content;max-width:90%
-}
-footer {text-align:center;padding:25px 10px;color:var(--muted);font-size:11px}
-.hint {font-size:12px;color:var(--muted);line-height:1.7;margin:8px 0}
-@media(min-width:700px) {
-  body {background:#ecebe5}
-  .container {background:var(--cream);min-height:100vh;box-shadow:0 0 35px #00000008}
-  .products {grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-  .product-image {height:220px}
-  .hero {min-height:360px}
-  .overlay {align-items:center}
-  .panel {border-radius:20px}
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,Arial,sans-serif;background:#f7f8f7;color:var(--navy)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{background:var(--gold);color:var(--navy);font-size:21px;font-weight:800;padding:10px;border-radius:12px}
+.brand h1{font-size:19px;margin:0}
+.brand small{font-size:10px;letter-spacing:2px;color:#e3d3a9}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:600}
+.primary{background:var(--gold);color:var(--navy)}
+.dark{background:var(--navy);color:white}
+.light{background:white;color:var(--navy);border:1px solid var(--border)}
+.danger{background:#fff0ee;color:var(--red)}
+main{max-width:1200px;margin:auto;padding:22px 16px 90px}
+.hero{background:linear-gradient(120deg,#152c3b,#244b50);border-radius:22px;padding:35px 25px;color:white;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.hero h2{font-size:clamp(26px,5vw,43px);line-height:1.25;margin:0 0 13px}
+.hero p{color:#e1e8e7;max-width:500px;line-height:1.8}
+.hero .badge{background:#ffffff18;border:1px solid #ffffff30;border-radius:50%;width:115px;height:115px;display:grid;place-items:center;font-size:25px;font-weight:800;color:var(--gold)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:30px 0 16px}
+.section-head h2{margin:0;font-size:22px}
+.muted{color:var(--muted);font-size:13px}
+.searchbar{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}
+.searchbar input{flex:1;min-width:180px}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:white;color:var(--navy);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+.categories{display:flex;gap:8px;overflow:auto;padding:3px 0 12px}
+.cat{white-space:nowrap;background:white;border:1px solid var(--border);border-radius:25px;padding:9px 15px;color:var(--navy)}
+.cat.active{background:var(--navy);color:white}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.card{background:white;border:1px solid var(--border);border-radius:15px;overflow:hidden;min-width:0}
+.product-img{width:100%;height:185px;object-fit:cover;background:#eef0eb;display:block}
+.product-info{padding:13px}
+.product-info h3{font-size:15px;margin:0 0 7px;overflow-wrap:anywhere}
+.description{font-size:12px;color:var(--muted);line-height:1.6;min-height:36px;overflow-wrap:anywhere}
+.price{font-size:18px;font-weight:800;color:var(--green);margin:10px 0}
+.stock{font-size:11px;color:var(--muted)}
+.card-actions{display:flex;gap:7px;margin-top:10px}
+.card-actions button{flex:1;padding:9px 5px;font-size:12px}
+.panel{background:white;border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:22px}
+.panel h2,.panel h3{margin-top:0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.full{grid-column:1/-1}
+.notice{padding:12px;border-radius:10px;background:#f2f5f4;color:var(--green);font-size:13px;line-height:1.7;margin:12px 0}
+.error{background:#fff0ee;color:var(--red)}
+.hidden{display:none!important}
+.empty{text-align:center;padding:35px 10px;color:var(--muted);background:white;border:1px dashed #d7dbd7;border-radius:15px;grid-column:1/-1}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--border);white-space:nowrap}
+footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:12px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:9px 4px;z-index:5}
+.bottom-nav button{border:0;background:none;color:var(--navy);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bottom-nav span{font-size:19px}
+#toast{position:fixed;top:15px;left:50%;transform:translateX(-50%);z-index:20;background:var(--navy);color:white;padding:12px 18px;border-radius:12px;box-shadow:0 5px 25px #0002;max-width:90%;font-size:13px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.product-img{height:160px}}
+@media(max-width:600px){header{padding:12px}.brand h1{font-size:16px}.hero{padding:25px 18px}.hero .badge{width:75px;height:75px;font-size:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-img{height:145px}.product-info{padding:10px}.product-info h3{font-size:13px}.price{font-size:16px}.card-actions button{font-size:11px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.panel{padding:14px}nav .btn{padding:9px;font-size:12px}}
 </style>
 </head>
 
 <body>
-<div class="container">
+<div id="toast" class="hidden"></div>
+
 <header>
   <div class="brand">
     <div class="logo">ADH</div>
     <div>
-      <div class="brand-name">AMINE DH</div>
-      <div class="brand-subtitle">E-COMMERCE GLOBAL STORE</div>
+      <h1>AMINE DH</h1>
+      <small>E-COMMERCE GLOBAL STORE</small>
     </div>
   </div>
+  <nav>
+    <button class="btn light" onclick="showProducts()">Accueil</button>
+    <button class="btn light" onclick="showAccount()">Mon compte</button>
+    <button class="btn primary" onclick="showSeller()">Espace vendeur</button>
+    <button class="btn light" onclick="showCart()">Panier <span id="cartCount">0</span></button>
+  </nav>
 </header>
 
-<form class="search" id="searchForm">
-  <input id="searchInput" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-  <button type="submit" aria-label="Rechercher">⌕</button>
-</form>
-
-<nav class="categories" id="categories">
-  <button class="active" data-category="all"><span>🛍️</span>Tout</button>
-  <button data-category="Cuisine"><span>🍳</span>Cuisine</button>
-  <button data-category="Électronique"><span>🎧</span>Électronique</button>
-  <button data-category="Informatique"><span>💻</span>Informatique</button>
-  <button data-category="Accessoires"><span>⌚</span>Accessoires</button>
-  <button data-category="Téléphones"><span>📱</span>Téléphones</button>
-</nav>
-
-<section class="hero">
-  <div class="hero-icon">🛍️</div>
-  <div class="hero-content">
-    <div class="hero-label">BIENVENUE CHEZ AMINE DH</div>
-    <h1>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br><span>AU MÊME ENDROIT !</span></h1>
-    <p>Découvrez notre sélection de produits.</p>
-    <button class="gold-button" id="discoverButton">Découvrir les produits →</button>
-  </div>
-</section>
-
-<section class="section" id="productsSection">
-  <div class="section-heading">
-    <h2>Nos produits</h2>
-    <button class="text-button" id="resetFilters">Tout afficher ↗</button>
-  </div>
-  <div class="status" id="loadStatus">Connexion à la boutique...</div>
-  <div class="products" id="products"></div>
-</section>
-
-<footer>© <span id="year"></span> AMINE DH — Tous droits réservés.</footer>
-</div>
-
-<nav class="bottom-nav">
-  <button class="nav-item" data-action="home"><span class="nav-icon">⌂</span>Accueil</button>
-  <button class="nav-item" data-action="account"><span class="nav-icon">♙</span>Compte</button>
-  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commandes</button>
-  <button class="nav-item" data-action="wishlist"><span class="nav-icon">♡</span>Favoris <span class="badge" id="wishCount">0</span></button>
-  <button class="nav-item" data-action="cart"><span class="nav-icon">🛒</span>Panier <span class="badge" id="cartCount">0</span></button>
-</nav>
-
-<div class="overlay" id="panelOverlay">
-  <div class="panel">
-    <div class="panel-header">
-      <h2 id="panelTitle">Panier</h2>
-      <button class="close" id="closePanel" aria-label="Fermer">✕</button>
+<main>
+  <section id="home">
+    <div class="hero">
+      <div>
+        <h2>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br>AU MÊME ENDROIT !</h2>
+        <p>Découvrez des produits, comparez les offres et commandez facilement avec AMINE DH.</p>
+        <button class="btn primary" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Découvrir les produits →</button>
+      </div>
+      <div class="badge">AMINE<br>DH</div>
     </div>
-    <div id="panelContent"></div>
-  </div>
-</div>
 
-<div class="toast" id="toast" role="status"></div>
+    <div class="searchbar">
+      <input id="search" type="search" placeholder="Rechercher un produit..." oninput="renderProducts()">
+      <button class="btn dark" onclick="loadProducts()">Actualiser</button>
+    </div>
+
+    <div class="categories" id="categories">
+      <button class="cat active" onclick="setCategory('Tous',this)">Tous</button>
+      <button class="cat" onclick="setCategory('Cuisine',this)">Cuisine</button>
+      <button class="cat" onclick="setCategory('Électronique',this)">Électronique</button>
+      <button class="cat" onclick="setCategory('Informatique',this)">Informatique</button>
+      <button class="cat" onclick="setCategory('Accessoires',this)">Accessoires</button>
+      <button class="cat" onclick="setCategory('Téléphones',this)">Téléphones</button>
+      <button class="cat" onclick="setCategory('Autres',this)">Autres</button>
+    </div>
+
+    <section id="productsSection">
+      <div class="section-head">
+        <h2>Nos produits</h2>
+        <span class="muted" id="productCount">Chargement...</span>
+      </div>
+      <div id="productsGrid" class="grid">
+        <div class="empty">Chargement des produits...</div>
+      </div>
+    </section>
+  </section>
+
+  <section id="accountSection" class="panel hidden">
+    <h2>Mon compte</h2>
+    <div id="accountContent"></div>
+  </section>
+
+  <section id="sellerSection" class="panel hidden">
+    <h2>🏪 Espace vendeur</h2>
+    <div id="sellerContent">
+      <p class="muted">Connectez-vous pour gérer votre boutique et vos produits.</p>
+      <button class="btn primary" onclick="showAccount()">Connexion / Inscription</button>
+    </div>
+  </section>
+
+  <section id="cartSection" class="panel hidden">
+    <h2>🛒 Mon panier</h2>
+    <div id="cartContent"></div>
+  </section>
+
+  <section id="ordersSection" class="panel hidden">
+    <h2>Mes commandes</h2>
+    <div id="ordersContent"></div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> AMINE DH — Votre boutique en ligne</footer>
+
+<div class="bottom-nav">
+  <button onclick="showProducts()"><span>⌂</span>Accueil</button>
+  <button onclick="showAccount()"><span>♙</span>Compte</button>
+  <button onclick="showSeller()"><span>▣</span>Vendeur</button>
+  <button onclick="showCart()"><span>🛒</span>Panier</button>
+  <button onclick="showOrders()"><span>☷</span>Commandes</button>
+</div>
 
 <script>
-"use strict";
-
-/* Configuration Supabase */
+/* CONFIGURATION SUPABASE */
 const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfw_-DKKY90V";
+const IMAGE_BUCKET = "product-images";
 
-/* Cette clé publique peut être utilisée côté navigateur.
-   Ne jamais mettre une clé service_role dans ce fichier. */
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const $ = id => document.getElementById(id);
-const productsElement = $("products");
-const panelOverlay = $("panelOverlay");
-const panelContent = $("panelContent");
-
-let products = [];
-let cart = [];
-let wishlist = [];
-let selectedCategory = "all";
-let searchTerm = "";
-let toastTimer = null;
 let currentUser = null;
+let products = [];
+let myStore = null;
+let selectedCategory = "Tous";
+let editingProductId = null;
+let selectedImageFile = null;
 
-try {
-  cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
-  wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");
-  if (!Array.isArray(cart)) cart = [];
-  if (!Array.isArray(wishlist)) wishlist = [];
-} catch {
-  cart = [];
-  wishlist = [];
+let cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
+let wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");
+
+document.getElementById("year").textContent = new Date().getFullYear();
+updateCartCount();
+
+function toast(message, error=false) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.classList.remove("hidden");
+  el.style.background = error ? "#a52a2a" : "#152c3b";
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>el.classList.add("hidden"),4000);
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
+function escapeHTML(value="") {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
 
 function money(value) {
-  return new Intl.NumberFormat("fr-DZ", {
-    maximumFractionDigits: 2
-  }).format(Number(value) || 0) + " DA";
+  return Number(value || 0).toLocaleString("fr-DZ") + " DA";
 }
 
-function showToast(message) {
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.style.display = "block";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.style.display = "none";
-  }, 3000);
+function showOnly(id) {
+  ["home","accountSection","sellerSection","cartSection","ordersSection"].forEach(x=>{
+    document.getElementById(x).classList.toggle("hidden",x!==id);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function saveLocalData() {
-  localStorage.setItem("amine_cart", JSON.stringify(cart));
-  localStorage.setItem("amine_wishlist", JSON.stringify(wishlist));
-  updateBadges();
+function showProducts() {
+  showOnly("home");
 }
 
-function updateBadges() {
-  $("cartCount").textContent = cart.reduce(
-    (sum, item) => sum + (Number(item.quantity) || 0), 0
-  );
-  $("wishCount").textContent = wishlist.length;
+function setCategory(category,button) {
+  selectedCategory=category;
+  document.querySelectorAll(".cat").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderProducts();
 }
 
-function getProductId(product) {
-  return String(product.id);
-}
-
-function getProductName(product) {
-  return product.name || "Produit";
-}
-
-function getProductPrice(product) {
-  return Number(product.price) || 0;
-}
-
-function getProductImage(product) {
-  return product.image_url || "";
-}
-
-function getProductCategory(product) {
-  return product.category || product.category_name || "";
-}
-
-function getProductDescription(product) {
-  return product.description || "";
-}
-
-function productIsAvailable(product) {
-  return product.is_active === true && Number(product.stock) > 0;
-}
-
-/* تحميل المنتجات المنشورة من جميع المتاجر المعتمدة.
-   يجب أن تسمح سياسة SELECT العامة في Supabase برؤية المنتجات المعتمدة فقط. */
 async function loadProducts() {
-  $("loadStatus").textContent = "Chargement des produits...";
-  productsElement.innerHTML = "";
+  const grid=document.getElementById("productsGrid");
+  grid.innerHTML='<div class="empty">Chargement des produits...</div>';
 
   try {
-    const { data, error } = await db
-      .from("products")
-      .select("id,store_id,name,description,price,image_url,stock,is_active,created_at")
-      .eq("is_active", true)
-      .gt("stock", 0)
-      .order("created_at", { ascending: false })
-      .limit(100);
+    const {data:stores,error:storeError}=await db
+      .from("stores").select("id").eq("status","approved");
 
-    if (error) throw error;
+    if(storeError) throw storeError;
 
-    products = (data || []).filter(productIsAvailable);
+    const storeIds=(stores||[]).map(s=>s.id);
 
-    $("loadStatus").textContent = products.length
-      ? products.length + " produit(s) disponible(s)"
-      : "Aucun produit publié pour le moment.";
+    if(!storeIds.length) {
+      products=[];
+      renderProducts();
+      return;
+    }
 
+    const {data,error}=await db.from("products")
+      .select("id,store_id,name,description,price,image_url,stock,is_active,created_at,category")
+      .in("store_id",storeIds)
+      .eq("is_active",true)
+      .gt("stock",0)
+      .order("created_at",{ascending:false})
+      .limit(200);
+
+    if(error) throw error;
+    products=data||[];
     renderProducts();
-  } catch (error) {
-    console.error("Erreur de chargement :", error);
-    $("loadStatus").textContent = "Impossible de charger les produits. Vérifiez les autorisations Supabase.";
-    productsElement.innerHTML =
-      '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';
+  } catch(e) {
+    console.error(e);
+    grid.innerHTML='<div class="empty">Impossible de charger les produits. Vérifiez la configuration Supabase et les autorisations RLS.</div>';
+    document.getElementById("productCount").textContent="Erreur";
   }
 }
 
 function renderProducts() {
-  const filtered = products.filter(product => {
-    const matchesCategory = selectedCategory === "all" ||
-      getProductCategory(product).toLocaleLowerCase("fr") ===
-      selectedCategory.toLocaleLowerCase("fr");
+  const grid=document.getElementById("productsGrid");
+  const q=(document.getElementById("search").value||"").trim().toLowerCase();
 
-    const text = (
-      getProductName(product) + " " +
-      getProductDescription(product) + " " +
-      getProductCategory(product)
-    ).toLocaleLowerCase("fr");
-
-    return matchesCategory && text.includes(searchTerm.toLocaleLowerCase("fr"));
+  const filtered=products.filter(p=>{
+    const category=p.category||"Autres";
+    const matchesCategory=selectedCategory==="Tous"||category===selectedCategory;
+    const text=[p.name,p.description,category].join(" ").toLowerCase();
+    return matchesCategory&&text.includes(q);
   });
 
-  if (!filtered.length) {
-    productsElement.innerHTML =
-      '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';
+  document.getElementById("productCount").textContent=filtered.length+" produit(s)";
+
+  if(!filtered.length) {
+    grid.innerHTML='<div class="empty">Aucun produit disponible pour le moment.</div>';
     return;
   }
 
-  productsElement.innerHTML = filtered.map(product => {
-    const id = getProductId(product);
-    const name = getProductName(product);
-    const image = getProductImage(product);
-    const favorite = wishlist.includes(id);
-
+  grid.innerHTML=filtered.map(p=>{
+    const image=p.image_url||"https://placehold.co/600x400/f0f0e8/152c3b?text=AMINE+DH";
+    const fav=wishlist.includes(p.id);
     return `
-      <article class="product">
-        <div class="product-image">
-          ${image
-            ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
-            : ""}
-          <span class="product-placeholder" style="${image ? "display:none" : ""}">🛍️</span>
-          <button class="favorite" data-favorite="${escapeHTML(id)}"
-            aria-label="Ajouter aux favoris">${favorite ? "♥" : "♡"}</button>
-        </div>
+      <article class="card">
+        <img class="product-img" src="${escapeHTML(image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f0f0e8/152c3b?text=AMINE+DH'">
         <div class="product-info">
-          <h3>${escapeHTML(name)}</h3>
-          <p class="product-description">${escapeHTML(getProductDescription(product).slice(0, 100))}</p>
-          <div class="price">${money(getProductPrice(product))}</div>
-          <button class="primary" data-add="${escapeHTML(id)}">Ajouter au panier</button>
+          <h3>${escapeHTML(p.name)}</h3>
+          <div class="description">${escapeHTML(p.description||"Découvrez ce produit.")}</div>
+          <div class="price">${money(p.price)}</div>
+          <div class="stock">Stock : ${Number(p.stock)||0}</div>
+          <div class="card-actions">
+            <button class="btn primary" onclick="addToCart('${p.id}')">Ajouter</button>
+            <button class="btn light" onclick="toggleWishlist('${p.id}')">${fav?"♥":"♡"}</button>
+          </div>
         </div>
       </article>`;
   }).join("");
 }
 
+function updateCartCount() {
+  document.getElementById("cartCount").textContent=cart.reduce((sum,p)=>sum+Number(p.quantity||0),0);
+}
+
+function saveCart() {
+  localStorage.setItem("amine_cart",JSON.stringify(cart));
+  updateCartCount();
+}
+
 function addToCart(id) {
-  const product = products.find(item => getProductId(item) === String(id));
-  if (!product) return;
-
-  const stock = Number(product.stock) || 0;
-  const existing = cart.find(item => String(item.id) === String(id));
-  const currentQuantity = existing ? Number(existing.quantity) || 0 : 0;
-
-  if (currentQuantity >= stock) {
-    showToast("Quantité maximale disponible atteinte.");
-    return;
-  }
-
-  if (existing) {
-    existing.quantity++;
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+  const item=cart.find(x=>x.id===id);
+  if(item) {
+    if(item.quantity>=Number(p.stock)) return toast("Quantité maximale disponible atteinte.",true);
+    item.quantity++;
   } else {
-    cart.push({ id: String(id), quantity: 1 });
+    cart.push({id:p.id,name:p.name,price:Number(p.price),quantity:1,store_id:p.store_id});
   }
-
-  saveLocalData();
-  showToast("Produit ajouté au panier !");
+  saveCart();
+  toast("Produit ajouté au panier.");
 }
 
 function toggleWishlist(id) {
-  id = String(id);
-
-  if (wishlist.includes(id)) {
-    wishlist = wishlist.filter(item => item !== id);
-    showToast("Produit retiré des favoris.");
-  } else {
-    wishlist.push(id);
-    showToast("Produit ajouté aux favoris !");
-  }
-
-  saveLocalData();
+  wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];
+  localStorage.setItem("amine_wishlist",JSON.stringify(wishlist));
   renderProducts();
-
-  if (
-    panelOverlay.classList.contains("open") &&
-    $("panelTitle").textContent === "Mes favoris"
-  ) {
-    renderWishlist();
-  }
 }
 
-function openPanel(title, html) {
-  $("panelTitle").textContent = title;
-  panelContent.innerHTML = html;
-  panelOverlay.classList.add("open");
-  document.body.style.overflow = "hidden";
+async function syncUser() {
+  const {data}=await db.auth.getSession();
+  currentUser=data.session?.user||null;
 }
 
-function closePanel() {
-  panelOverlay.classList.remove("open");
-  document.body.style.overflow = "";
-}
+async function showAccount() {
+  showOnly("accountSection");
+  await syncUser();
+  const el=document.getElementById("accountContent");
 
-function cartDetails() {
-  return cart.map(item => {
-    const product = products.find(p => getProductId(p) === String(item.id));
-    return product
-      ? { ...product, quantity: Number(item.quantity) || 1 }
-      : null;
-  }).filter(Boolean);
-}
-
-function renderCart() {
-  const items = cartDetails();
-
-  if (!items.length) {
-    openPanel("Mon panier", '<div class="empty">Votre panier est vide 🛒</div>');
+  if(!currentUser) {
+    el.innerHTML=`
+      <div class="notice">Connectez-vous ou créez votre compte pour commander et vendre vos produits.</div>
+      <div class="form-grid">
+        <div class="field full"><label>Email</label><input id="authEmail" type="email" placeholder="votre@email.com" autocomplete="email"></div>
+        <div class="field full"><label>Mot de passe</label><input id="authPassword" type="password" placeholder="Minimum 6 caractères" autocomplete="current-password"></div>
+        <div class="field full"><label>Nom complet</label><input id="authName" placeholder="Votre nom (pour l'inscription)"></div>
+        <div><button class="btn dark" onclick="login()">Se connecter</button></div>
+        <div><button class="btn primary" onclick="signup()">Créer un compte</button></div>
+      </div>
+      <p class="muted">Selon les paramètres Supabase, une confirmation par email peut être nécessaire.</p>`;
     return;
   }
 
-  const total = items.reduce(
-    (sum, item) => sum + getProductPrice(item) * item.quantity, 0
-  );
-
-  const rows = items.map(item => `
-    <div class="cart-row">
-      <div class="cart-row-info">
-        <strong>${escapeHTML(getProductName(item))}</strong>
-        <small>${money(getProductPrice(item))}</small>
-      </div>
-      <div class="quantity">
-        <button data-qty-minus="${escapeHTML(getProductId(item))}">−</button>
-        <span>${item.quantity}</span>
-        <button data-qty-plus="${escapeHTML(getProductId(item))}">+</button>
-      </div>
-      <button class="remove" data-remove="${escapeHTML(getProductId(item))}">✕</button>
-    </div>
-  `).join("");
-
-  openPanel("Mon panier", `
-    ${rows}
-    <div class="total"><span>Total produits</span><span>${money(total)}</span></div>
-    <p class="product-description">Les produits de plusieurs boutiques seront envoyés dans des commandes séparées.</p>
-    <p class="product-description">Les frais de livraison seront confirmés par le vendeur.</p>
-    <button class="gold-button full" id="checkoutButton">Commander maintenant</button>
-  `);
+  el.innerHTML=`
+    <div class="notice">Connecté : ${escapeHTML(currentUser.email||"Compte utilisateur")}</div>
+    <button class="btn primary" onclick="showSeller()">Gérer ma boutique</button>
+    <button class="btn light" onclick="showOrders()">Mes commandes</button>
+    <button class="btn danger" onclick="logout()">Déconnexion</button>`;
 }
 
-function renderWishlist() {
-  const items = products.filter(product =>
-    wishlist.includes(getProductId(product))
-  );
+async function login() {
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  if(!email||!password) return toast("Remplissez l'email et le mot de passe.",true);
 
-  if (!items.length) {
-    openPanel("Mes favoris", '<div class="empty">Votre liste de favoris est vide ♡</div>');
-    return;
-  }
+  const {error}=await db.auth.signInWithPassword({email,password});
+  if(error) return toast(error.message,true);
 
-  openPanel("Mes favoris", items.map(item => `
-    <div class="cart-row">
-      <div class="cart-row-info">
-        <strong>${escapeHTML(getProductName(item))}</strong>
-        <small>${money(getProductPrice(item))}</small>
-      </div>
-      <button class="primary" data-add="${escapeHTML(getProductId(item))}">Ajouter</button>
-      <button class="remove" data-favorite="${escapeHTML(getProductId(item))}">♥</button>
-    </div>
-  `).join(""));
-}
-
-async function getUser() {
-  const { data, error } = await db.auth.getUser();
-
-  if (error) console.warn(error);
-
-  currentUser = data && data.user ? data.user : null;
-  return currentUser;
-}
-
-function showAccount() {
-  openPanel("Mon compte", `
-    <div class="hint">
-      ${currentUser
-        ? "Connecté : " + escapeHTML(currentUser.email || "Compte client")
-        : "Connectez-vous ou créez un compte pour commander."}
-    </div>
-    ${currentUser
-      ? `
-        <button class="primary full" id="myOrdersButton">Mes commandes</button>
-        <button class="gold-button full" id="logoutButton">Se déconnecter</button>
-      `
-      : `
-        <form id="authForm">
-          <div class="field">
-            <label for="authEmail">Adresse e-mail</label>
-            <input id="authEmail" type="email" required autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="authPassword">Mot de passe (6 caractères minimum)</label>
-            <input id="authPassword" type="password" minlength="6" required autocomplete="current-password">
-          </div>
-          <div class="field">
-            <label for="authName">Nom complet (pour créer un compte)</label>
-            <input id="authName" maxlength="100" autocomplete="name">
-          </div>
-          <button class="primary full" type="submit">Se connecter</button>
-          <button class="gold-button full" type="button" id="signupButton">Créer un compte</button>
-        </form>
-        <p class="hint">Après inscription, confirmez votre e-mail si Supabase vous le demande.</p>
-      `}
-  `);
+  await syncUser();
+  toast("Connexion réussie.");
+  await showAccount();
 }
 
 async function signup() {
-  const email = $("authEmail").value.trim();
-  const password = $("authPassword").value;
-  const name = $("authName").value.trim();
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const fullName=(document.getElementById("authName").value||"").trim();
 
-  if (!email || password.length < 6) {
-    showToast("Entrez un e-mail valide et un mot de passe d'au moins 6 caractères.");
-    return;
-  }
+  if(!email||password.length<6) return toast("Saisissez un email valide et un mot de passe d'au moins 6 caractères.",true);
 
-  const button = $("signupButton");
-  button.disabled = true;
+  const {data,error}=await db.auth.signUp({
+    email,password,
+    options:{data:{full_name:fullName}}
+  });
 
-  try {
-    const { data, error } = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: name }
-      }
-    });
+  if(error) return toast(error.message,true);
 
-    if (error) throw error;
-
-    if (data.user && data.session) {
-      currentUser = data.user;
-      showToast("Compte créé avec succès.");
-      showAccount();
-    } else {
-      showToast("Inscription envoyée. Vérifiez votre e-mail puis connectez-vous.");
-    }
-  } catch (error) {
-    console.error("Erreur inscription :", error);
-    showToast("Inscription impossible : " + (error.message || "vérifiez Supabase Auth."));
-  } finally {
-    const currentButton = $("signupButton");
-    if (currentButton) currentButton.disabled = false;
+  if(data.user && data.session) {
+    currentUser=data.user;
+    await ensureProfile();
+    toast("Compte créé avec succès.");
+    await showSeller();
+  } else {
+    toast("Compte créé. Confirmez votre email, puis connectez-vous.");
   }
 }
 
-async function login(form) {
-  const email = $("authEmail").value.trim();
-  const password = $("authPassword").value;
-  const button = form.querySelector('button[type="submit"]');
-
-  button.disabled = true;
-
-  try {
-    const { data, error } = await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) throw error;
-
-    currentUser = data.user;
-    showToast("Connexion réussie.");
-    showAccount();
-  } catch (error) {
-    console.error("Erreur connexion :", error);
-    showToast("Connexion impossible. Vérifiez l'e-mail et le mot de passe.");
-  } finally {
-    if (button) button.disabled = false;
-  }
+async function ensureProfile() {
+  if(!currentUser) return;
+  const {error}=await db.from("profiles").upsert({
+    id:currentUser.id,
+    full_name:currentUser.user_metadata?.full_name||"",
+    role:"seller"
+  },{onConflict:"id"});
+  if(error) console.warn("Profil:",error.message);
 }
 
 async function logout() {
-  const { error } = await db.auth.signOut();
-
-  if (error) {
-    showToast("Impossible de se déconnecter.");
-    return;
-  }
-
-  currentUser = null;
-  showAccount();
-  showToast("Déconnexion réussie.");
+  const {error}=await db.auth.signOut();
+  if(error) return toast(error.message,true);
+  currentUser=null;
+  myStore=null;
+  toast("Déconnexion réussie.");
+  await showAccount();
 }
 
-function checkoutForm() {
-  const items = cartDetails();
+async function showSeller() {
+  showOnly("sellerSection");
+  await syncUser();
+  const el=document.getElementById("sellerContent");
 
-  if (!items.length) {
-    showToast("Votre panier est vide.");
+  if(!currentUser) {
+    el.innerHTML='<div class="notice">Connectez-vous pour ouvrir et gérer votre boutique.</div><button class="btn primary" onclick="showAccount()">Connexion / Inscription</button>';
     return;
   }
 
-  if (!currentUser) {
-    showAccount();
-    showToast("Connectez-vous avant de commander.");
+  const {data:store,error}=await db.from("stores")
+    .select("id,owner_id,name,description,status")
+    .eq("owner_id",currentUser.id)
+    .maybeSingle();
+
+  if(error) {
+    el.innerHTML='<div class="notice error">Erreur de lecture de la boutique : '+escapeHTML(error.message)+'</div>';
     return;
   }
 
-  const total = items.reduce(
-    (sum, item) => sum + getProductPrice(item) * item.quantity, 0
-  );
+  myStore=store||null;
 
-  openPanel("Informations de livraison", `
-    <form id="checkoutForm">
-      <div class="field">
-        <label for="customerName">Nom et prénom *</label>
-        <input id="customerName" name="customerName" required maxlength="100" autocomplete="name">
-      </div>
-      <div class="field">
-        <label for="customerPhone">Numéro de téléphone *</label>
-        <input id="customerPhone" name="customerPhone" required type="tel" maxlength="25" autocomplete="tel">
-      </div>
-      <div class="field">
-        <label for="customerWilaya">Wilaya *</label>
-        <input id="customerWilaya" name="customerWilaya" required maxlength="80">
-      </div>
-      <div class="field">
-        <label for="customerCity">Commune *</label>
-        <input id="customerCity" name="customerCity" required maxlength="100">
-      </div>
-      <div class="field">
-        <label for="customerAddress">Adresse de livraison *</label>
-        <textarea id="customerAddress" name="customerAddress" required maxlength="500"></textarea>
-      </div>
-      <div class="field">
-        <label for="customerNote">Remarque (facultatif)</label>
-        <textarea id="customerNote" name="customerNote" maxlength="500"></textarea>
-      </div>
-      <div class="total"><span>Total des produits</span><span>${money(total)}</span></div>
-      <p class="product-description">Paiement à la livraison. Les frais de livraison seront confirmés par le vendeur.</p>
-      <button class="gold-button full" type="submit">Confirmer la commande</button>
-    </form>
-  `);
+  if(!myStore) {
+    el.innerHTML=`
+      <p>Créez votre boutique pour commencer à ajouter vos produits.</p>
+      <div class="field"><label>Nom de la boutique</label><input id="newStoreName" placeholder="Nom de votre boutique"></div>
+      <div class="field"><label>Description</label><textarea id="newStoreDescription" rows="3" placeholder="Présentez votre boutique"></textarea></div>
+      <button class="btn primary" onclick="createStore()">Créer ma boutique</button>`;
+    return;
+  }
+
+  const approved=myStore.status==="approved";
+  el.innerHTML=`
+    <div class="notice">Boutique : <b>${escapeHTML(myStore.name)}</b><br>
+    État : <b>${approved?"Approuvée":escapeHTML(myStore.status)}</b>
+    ${approved?"— vos produits peuvent être publiés.":"— votre boutique doit être approuvée par l'administrateur avant publication."}</div>
+    <button class="btn primary" onclick="productForm()">＋ Ajouter un produit</button>
+    <button class="btn light" onclick="loadSellerProducts()">Actualiser mes produits</button>
+    <div id="sellerForm"></div>
+    <div id="sellerProducts" class="panel"><p class="muted">Chargement de vos produits...</p></div>`;
+  await loadSellerProducts();
 }
 
-async function submitOrder(form) {
-  const button = form.querySelector('button[type="submit"]');
+async function createStore() {
+  const name=document.getElementById("newStoreName").value.trim();
+  const description=document.getElementById("newStoreDescription").value.trim();
+  if(!name) return toast("Saisissez le nom de votre boutique.",true);
+  if(!currentUser) return toast("Connectez-vous d'abord.",true);
 
-  if (button.disabled) return;
+  const {data,error}=await db.from("stores").insert({
+    owner_id:currentUser.id,name,description,status:"pending"
+  }).select("id,owner_id,name,description,status").single();
 
-  const user = await getUser();
-
-  if (!user) {
-    showToast("Connectez-vous avant de commander.");
-    showAccount();
-    return;
+  if(error) {
+    console.error(error);
+    return toast("Impossible de créer la boutique : "+error.message,true);
   }
 
-  const items = cartDetails();
+  myStore=data;
+  toast("Boutique créée. Elle doit être approuvée.");
+  await showSeller();
+}
 
-  if (!items.length) {
-    showToast("Votre panier est vide.");
-    return;
-  }
+function productForm(p=null) {
+  if(!myStore) return toast("Créez d'abord votre boutique.",true);
+  editingProductId=p?.id||null;
+  selectedImageFile=null;
 
-  const formData = new FormData(form);
-  const value = key => String(formData.get(key) || "").trim();
+  document.getElementById("sellerForm").innerHTML=`
+    <div class="panel">
+      <h3>${p?"Modifier le produit":"Ajouter un produit"}</h3>
+      <div class="form-grid">
+        <div class="field full"><label>Nom du produit *</label><input id="pName" value="${escapeHTML(p?.name||"")}" placeholder="Nom du produit"></div>
+        <div class="field"><label>Prix en DA *</label><input id="pPrice" type="number" min="0" step="0.01" value="${p?.price??""}" placeholder="1500"></div>
+        <div class="field"><label>Quantité disponible *</label><input id="pStock" type="number" min="0" step="1" value="${p?.stock??1}"></div>
+        <div class="field full"><label>Catégorie</label>
+          <select id="pCategory">
+            ${["Cuisine","Électronique","Informatique","Accessoires","Téléphones","Autres"].map(c=>`<option ${((p?.category||"Autres")===c)?"selected":""}>${c}</option>`).join("")}
+          </select>
+        </div>
+        <div class="field full"><label>Description</label><textarea id="pDescription" rows="3">${escapeHTML(p?.description||"")}</textarea></div>
+        <div class="field full"><label>Image du produit ${p?"(facultatif si vous gardez l'image actuelle)":"*"}</label><input id="pImage" type="file" accept="image/jpeg,image/png,image/webp" onchange="selectedImageFile=this.files?.[0]||null"></div>
+      </div>
+      <div class="notice">Images JPEG, PNG ou WebP. Choisissez une image raisonnable en taille.</div>
+      <button class="btn primary" onclick="saveProduct()">${p?"Enregistrer les modifications":"Publier le produit"}</button>
+      <button class="btn light" onclick="document.getElementById('sellerForm').innerHTML=''">Annuler</button>
+    </div>`;
+  document.getElementById("sellerForm").scrollIntoView({behavior:"smooth",block:"start"});
+}
 
-  const customerName = value("customerName");
-  const phone = value("customerPhone");
-  const wilaya = value("customerWilaya");
-  const city = value("customerCity");
-  const address = value("customerAddress");
-  const note = value("customerNote");
+async function uploadProductImage(file) {
+  if(!file) return null;
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)) throw new Error("Format d'image non autorisé.");
+  if(file.size>5*1024*1024) throw new Error("L'image doit faire moins de 5 Mo.");
 
-  if (!customerName || !phone || !wilaya || !city || !address) {
-    showToast("Veuillez remplir tous les champs obligatoires.");
-    return;
-  }
+  const ext=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg";
+  const path=currentUser.id+"/"+crypto.randomUUID()+"."+ext;
+  const {error}=await db.storage.from(IMAGE_BUCKET).upload(path,file,{
+    cacheControl:"3600",upsert:false,contentType:file.type
+  });
+  if(error) throw error;
 
-  button.disabled = true;
-  button.textContent = "Envoi en cours...";
+  const {data}=db.storage.from(IMAGE_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function saveProduct() {
+  if(!currentUser||!myStore) return toast("Connectez-vous et créez votre boutique.",true);
+  const name=document.getElementById("pName").value.trim();
+  const price=Number(document.getElementById("pPrice").value);
+  const stock=Number(document.getElementById("pStock").value);
+  const category=document.getElementById("pCategory").value;
+  const description=document.getElementById("pDescription").value.trim();
+
+  if(!name||document.getElementById("pPrice").value===""||price<0||!Number.isFinite(price)) return toast("Vérifiez le nom et le prix.",true);
+  if(document.getElementById("pStock").value===""||stock<0||!Number.isInteger(stock)) return toast("Vérifiez la quantité.",true);
+
+  const button=document.querySelector("#sellerForm button.btn.primary");
+  if(button){button.disabled=true;button.textContent="Enregistrement...";}
 
   try {
-    /* Une commande séparée est créée pour chaque boutique. */
-    const groups = new Map();
+    let image_url=null;
+    const existing=editingProductId?products.find(p=>p.id===editingProductId):null;
 
-    for (const item of items) {
-      if (!item.store_id) {
-        throw new Error("Un produit n'est pas associé à une boutique.");
-      }
+    if(selectedImageFile) image_url=await uploadProductImage(selectedImageFile);
+    else image_url=existing?.image_url||null;
 
-      if (!groups.has(item.store_id)) {
-        groups.set(item.store_id, []);
-      }
+    if(!editingProductId&&!image_url) throw new Error("Choisissez une image pour le produit.");
 
-      groups.get(item.store_id).push(item);
+    const payload={
+      store_id:myStore.id,name,description,category,
+      price,stock,image_url,is_active:true
+    };
+
+    let result;
+    if(editingProductId) {
+      result=await db.from("products").update(payload)
+        .eq("id",editingProductId).eq("store_id",myStore.id);
+    } else {
+      result=await db.from("products").insert(payload);
     }
 
-    const createdOrders = [];
+    if(result.error) throw result.error;
 
-    for (const [storeId, group] of groups) {
-      const total = group.reduce(
-        (sum, item) => sum + getProductPrice(item) * item.quantity, 0
-      );
+    toast(editingProductId?"Produit modifié.":"Produit ajouté.");
+    editingProductId=null;
+    selectedImageFile=null;
+    document.getElementById("sellerForm").innerHTML="";
+    await loadSellerProducts();
+    await loadProducts();
+  } catch(e) {
+    console.error(e);
+    toast("Erreur : "+e.message,true);
+  } finally {
+    if(button){button.disabled=false;button.textContent=editingProductId?"Enregistrer les modifications":"Publier le produit";}
+  }
+}
 
-      const orderPayload = {
-        customer_id: user.id,
-        store_id: storeId,
-        customer_name: customerName,
-        phone: phone,
-        customer_phone: phone,
-        wilaya: wilaya,
-        city: city,
-        address: address,
-        note: note,
-        total: total,
-        status: "pending",
-        payment_method: "cash_on_delivery"
+async function loadSellerProducts() {
+  if(!currentUser||!myStore) return;
+  const box=document.getElementById("sellerProducts");
+  if(!box) return;
+  box.innerHTML="<p class='muted'>Chargement...</p>";
+
+  const {data,error}=await db.from("products")
+    .select("id,store_id,name,description,price,image_url,stock,is_active,created_at,category")
+    .eq("store_id",myStore.id)
+    .order("created_at",{ascending:false});
+
+  if(error) {
+    box.innerHTML='<div class="notice error">Erreur : '+escapeHTML(error.message)+'</div>';
+    return;
+  }
+
+  const mine=data||[];
+  if(!mine.length) {
+    box.innerHTML="<h3>Mes produits</h3><p class='muted'>Vous n'avez pas encore ajouté de produits.</p>";
+    return;
+  }
+
+  box.innerHTML=`
+    <h3>Mes produits (${mine.length})</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Produit</th><th>Prix</th><th>Stock</th><th>État</th><th>Actions</th></tr></thead>
+      <tbody>${mine.map(p=>`
+        <tr>
+          <td>${escapeHTML(p.name)}</td>
+          <td>${money(p.price)}</td>
+          <td>${Number(p.stock)}</td>
+          <td>${p.is_active?"Actif":"Désactivé"}</td>
+          <td>
+            <button class="btn light" onclick="editMyProduct('${p.id}')">Modifier</button>
+            <button class="btn danger" onclick="deleteMyProduct('${p.id}')">Supprimer</button>
+          </td>
+        </tr>`).join("")}
+      </tbody>
+    </table></div>`;
+}
+
+async function editMyProduct(id) {
+  if(!myStore) return;
+  const {data,error}=await db.from("products").select("*")
+    .eq("id",id).eq("store_id",myStore.id).single();
+  if(error) return toast(error.message,true);
+  productForm(data);
+}
+
+async function deleteMyProduct(id) {
+  if(!myStore||!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
+  const {error}=await db.from("products").delete()
+    .eq("id",id).eq("store_id",myStore.id);
+  if(error) return toast("Suppression impossible : "+error.message,true);
+  toast("Produit supprimé.");
+  await loadSellerProducts();
+  await loadProducts();
+}
+
+function showCart() {
+  showOnly("cartSection");
+  renderCart();
+}
+
+function renderCart() {
+  const box=document.getElementById("cartContent");
+  if(!cart.length) {
+    box.innerHTML="<div class='empty'>Votre panier est vide.</div>";
+    return;
+  }
+
+  const total=cart.reduce((s,p)=>s+Number(p.price)*Number(p.quantity),0);
+  box.innerHTML=`
+    ${cart.map(p=>`
+      <div class="panel">
+        <b>${escapeHTML(p.name)}</b>
+        <p>${money(p.price)} × ${p.quantity}</p>
+        <button class="btn light" onclick="changeQty('${p.id}',-1)">−</button>
+        <button class="btn light" onclick="changeQty('${p.id}',1)">+</button>
+        <button class="btn danger" onclick="removeCart('${p.id}')">Retirer</button>
+      </div>`).join("")}
+    <h3>Total : ${money(total)}</h3>
+    <button class="btn primary" onclick="checkout()">Confirmer la commande</button>
+    <button class="btn light" onclick="clearCart()">Vider le panier</button>`;
+}
+
+function changeQty(id,delta) {
+  const item=cart.find(p=>p.id===id);
+  if(!item) return;
+  const live=products.find(p=>p.id===id);
+  const max=Number(live?.stock??item.quantity);
+  item.quantity+=delta;
+  if(item.quantity<=0) cart=cart.filter(p=>p.id!==id);
+  else if(item.quantity>max) {
+    item.quantity=max;
+    toast("Quantité maximale disponible atteinte.",true);
+  }
+  saveCart();
+  renderCart();
+}
+
+function removeCart(id) {
+  cart=cart.filter(p=>p.id!==id);
+  saveCart();
+  renderCart();
+}
+
+function clearCart() {
+  if(!confirm("Vider le panier ?")) return;
+  cart=[];
+  saveCart();
+  renderCart();
+}
+
+async function checkout() {
+  await syncUser();
+  if(!currentUser) {
+    toast("Connectez-vous avant de commander.",true);
+    return showAccount();
+  }
+  if(!cart.length) return toast("Votre panier est vide.",true);
+
+  const box=document.getElementById("cartContent");
+  box.innerHTML=`
+    <h3>Informations de livraison</h3>
+    <div class="field"><label>Nom complet *</label><input id="orderName" placeholder="Nom et prénom"></div>
+    <div class="field"><label>Téléphone *</label><input id="orderPhone" type="tel" placeholder="05 / 06 / 07 ..."></div>
+    <div class="field"><label>Wilaya *</label><input id="orderWilaya" placeholder="Votre wilaya"></div>
+    <div class="field"><label>Adresse *</label><textarea id="orderAddress" rows="3" placeholder="Adresse de livraison"></textarea></div>
+    <button class="btn primary" onclick="submitOrder()">Envoyer la commande</button>
+    <button class="btn light" onclick="renderCart()">Retour au panier</button>
+    <p class="muted">Le site enregistre la commande. Le vendeur doit confirmer la disponibilité et les modalités de livraison.</p>`;
+}
+
+async function submitOrder() {
+  const customer_name=document.getElementById("orderName").value.trim();
+  const phone=document.getElementById("orderPhone").value.trim();
+  const wilaya=document.getElementById("orderWilaya").value.trim();
+  const address=document.getElementById("orderAddress").value.trim();
+
+  if(!customer_name||!phone||!wilaya||!address) return toast("Remplissez tous les champs obligatoires.",true);
+  if(!cart.length) return toast("Votre panier est vide.",true);
+
+  toast("Vérification de la commande...");
+
+  const grouped={};
+  for(const item of cart) {
+    if(!grouped[item.store_id]) grouped[item.store_id]=[];
+    grouped[item.store_id].push(item);
+  }
+
+  try {
+    for(const storeId of Object.keys(grouped)) {
+      const items=grouped[storeId];
+      const ids=items.map(p=>p.id);
+
+      const {data:liveProducts,error:productError}=await db.from("products")
+        .select("id,store_id,name,price,stock,is_active")
+        .in("id",ids).eq("store_id",storeId);
+
+      if(productError) throw productError;
+      if((liveProducts||[]).length!==items.length) throw new Error("Un produit n'est plus disponible.");
+
+      let total=0;
+      for(const item of items) {
+        const live=liveProducts.find(p=>p.id===item.id);
+        if(!live||!live.is_active||Number(live.stock)<item.quantity) {
+          throw new Error("Stock insuffisant pour : "+item.name);
+        }
+        total+=Number(live.price)*item.quantity;
+      }
+
+      const orderPayload={
+        customer_id:currentUser.id,
+        customer_name,
+        phone,
+        wilaya,
+        address,
+        status:"pending",
+        total
       };
 
-      const { data: order, error: orderError } = await db
-        .from("orders")
-        .insert(orderPayload)
-        .select("id,total")
-        .single();
+      const {data:order,error:orderError}=await db.from("orders")
+        .insert(orderPayload).select("id").single();
 
-      if (orderError) throw orderError;
+      if(orderError) throw orderError;
 
-      const orderItems = group.map(item => ({
-        order_id: order.id,
-        store_id: storeId,
-        product_id: item.id,
-        product_name: getProductName(item),
-        quantity: item.quantity,
-        unit_price: getProductPrice(item)
+      const rows=items.map(item=>({
+        order_id:order.id,
+        product_id:item.id,
+        quantity:item.quantity,
+        unit_price:Number(item.price)
       }));
 
-      const { error: itemsError } = await db
-        .from("order_items")
-        .insert(orderItems);
-
-      if (itemsError) {
-        console.error("Erreur détails commande :", itemsError);
-        throw new Error(
-          "La commande " + order.id +
-          " a été créée, mais les détails n'ont pas été enregistrés. Contactez le vendeur avant de repasser commande."
-        );
-      }
-
-      createdOrders.push(order);
+      const {error:itemError}=await db.from("order_items").insert(rows);
+      if(itemError) throw itemError;
     }
 
-    cart = [];
-    saveLocalData();
-
-    openPanel("Commande reçue", `
-      <div class="empty">
-        <div style="font-size:48px">✅</div>
-        <h3>Merci pour votre commande !</h3>
-        <p>${createdOrders.length} commande(s) enregistrée(s).</p>
-        ${createdOrders.map(order => `
-          <p class="hint">
-            Référence : <strong>${escapeHTML(order.id)}</strong>
-            — ${money(order.total)}
-          </p>
-        `).join("")}
-        <p>Le vendeur pourra vous contacter pour confirmer la livraison.</p>
-      </div>
-      <button class="primary full" id="continueShopping">Continuer mes achats</button>
-    `);
-
-  } catch (error) {
-    console.error("Erreur de commande :", error);
-    showToast("Commande non enregistrée : " + (error.message || "vérifiez les autorisations Supabase."));
-    button.disabled = false;
-    button.textContent = "Confirmer la commande";
+    cart=[];
+    saveCart();
+    toast("Commande enregistrée avec succès.");
+    await loadProducts();
+    await showOrders();
+  } catch(e) {
+    console.error(e);
+    toast("La commande n'a pas pu être enregistrée : "+e.message,true);
   }
 }
 
 async function showOrders() {
-  const user = await getUser();
+  showOnly("ordersSection");
+  await syncUser();
+  const box=document.getElementById("ordersContent");
 
-  if (!user) {
-    showAccount();
-    showToast("Connectez-vous pour voir vos commandes.");
+  if(!currentUser) {
+    box.innerHTML='<p>Connectez-vous pour consulter vos commandes.</p><button class="btn primary" onclick="showAccount()">Connexion</button>';
     return;
   }
 
-  openPanel("Mes commandes", '<div class="empty">Chargement de vos commandes...</div>');
+  const {data,error}=await db.from("orders")
+    .select("id,customer_name,phone,wilaya,address,status,total,created_at")
+    .eq("customer_id",currentUser.id)
+    .order("created_at",{ascending:false});
 
-  try {
-    const { data, error } = await db
-      .from("orders")
-      .select("id,total,status,created_at,store_id")
-      .eq("customer_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if (error) throw error;
-
-    if (data && data.length) {
-      panelContent.innerHTML = data.map(order => `
-        <div class="cart-row">
-          <div class="cart-row-info">
-            <strong>Commande ${escapeHTML(order.id.slice(0, 8))}</strong>
-            <small>
-              ${escapeHTML(order.status || "pending")}
-              · ${escapeHTML(new Date(order.created_at).toLocaleDateString("fr-DZ"))}
-            </small>
-          </div>
-          <strong>${money(order.total)}</strong>
-        </div>
-      `).join("");
-    } else {
-      panelContent.innerHTML = '<div class="empty">Vous n’avez pas encore de commande.</div>';
-    }
-
-  } catch (error) {
-    console.error("Erreur commandes :", error);
-    panelContent.innerHTML =
-      '<div class="empty">Impossible de charger les commandes. Vérifiez les politiques RLS.</div>';
+  if(error) {
+    box.innerHTML='<div class="notice error">Impossible de charger les commandes : '+escapeHTML(error.message)+'</div>';
+    return;
   }
+
+  if(!data?.length) {
+    box.innerHTML="<div class='empty'>Vous n'avez pas encore de commandes.</div>";
+    return;
+  }
+
+  box.innerHTML=`<div class="table-wrap"><table>
+    <thead><tr><th>Numéro</th><th>Date</th><th>Total</th><th>État</th></tr></thead>
+    <tbody>${data.map(o=>`
+      <tr><td>${escapeHTML(o.id.slice(0,8))}</td>
+      <td>${o.created_at?new Date(o.created_at).toLocaleDateString("fr-DZ"):"—"}</td>
+      <td>${money(o.total)}</td><td>${escapeHTML(o.status||"pending")}</td></tr>`).join("")}
+    </tbody></table></div>`;
 }
 
-/* Recherche */
-$("searchForm").addEventListener("submit", event => {
-  event.preventDefault();
-  searchTerm = $("searchInput").value.trim();
-  renderProducts();
+db.auth.onAuthStateChange((_event,session)=>{
+  currentUser=session?.user||null;
 });
 
-$("searchInput").addEventListener("input", event => {
-  searchTerm = event.target.value.trim();
-  renderProducts();
-});
-
-/* Catégories */
-$("categories").addEventListener("click", event => {
-  const button = event.target.closest("button[data-category]");
-  if (!button) return;
-
-  selectedCategory = button.dataset.category;
-
-  document.querySelectorAll(".categories button").forEach(item => {
-    item.classList.toggle("active", item === button);
-  });
-
-  renderProducts();
-});
-
-$("resetFilters").addEventListener("click", () => {
-  selectedCategory = "all";
-  searchTerm = "";
-  $("searchInput").value = "";
-
-  document.querySelectorAll(".categories button").forEach((button, index) => {
-    button.classList.toggle("active", index === 0);
-  });
-
-  renderProducts();
-});
-
-$("discoverButton").addEventListener("click", () => {
-  $("productsSection").scrollIntoView({ behavior: "smooth" });
-});
-
-/* أزرار المنتجات */
-productsElement.addEventListener("click", event => {
-  const addButton = event.target.closest("[data-add]");
-  const favoriteButton = event.target.closest("[data-favorite]");
-
-  if (addButton) addToCart(addButton.dataset.add);
-  if (favoriteButton) toggleWishlist(favoriteButton.dataset.favorite);
-});
-
-/* شريط التنقل */
-document.querySelector(".bottom-nav").addEventListener("click", event => {
-  const button = event.target.closest("[data-action]");
-  if (!button) return;
-
-  switch (button.dataset.action) {
-    case "home":
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      break;
-    case "account":
-      showAccount();
-      break;
-    case "orders":
-      showOrders();
-      break;
-    case "wishlist":
-      renderWishlist();
-      break;
-    case "cart":
-      renderCart();
-      break;
+(async function init(){
+  if(SUPABASE_KEY==="REMPLACE_PAR_TON_SB_PUBLISHABLE_KEY") {
+    document.getElementById("productsGrid").innerHTML=
+      '<div class="empty">Configuration nécessaire : remplacez la clé Supabase dans le code.</div>';
+    toast("Ajoutez votre clé Supabase publishable.",true);
+    return;
   }
-});
-
-/* إغلاق النافذة */
-$("closePanel").addEventListener("click", closePanel);
-
-panelOverlay.addEventListener("click", event => {
-  if (event.target === panelOverlay) closePanel();
-});
-
-/* أزرار السلة والنوافذ */
-panelContent.addEventListener("click", event => {
-  const plus = event.target.closest("[data-qty-plus]");
-  const minus = event.target.closest("[data-qty-minus]");
-  const remove = event.target.closest("[data-remove]");
-  const add = event.target.closest("[data-add]");
-  const favorite = event.target.closest("[data-favorite]");
-
-  if (plus) {
-    const item = cart.find(p => String(p.id) === plus.dataset.qtyPlus);
-    const product = products.find(p => getProductId(p) === plus.dataset.qtyPlus);
-
-    if (item && product) {
-      const stock = Number(product.stock) || 0;
-
-      if (item.quantity < stock) {
-        item.quantity++;
-      } else {
-        showToast("Quantité maximale disponible atteinte.");
-      }
-    }
-
-    saveLocalData();
-    renderCart();
-  }
-
-  if (minus) {
-    const item = cart.find(p => String(p.id) === minus.dataset.qtyMinus);
-
-    if (item) {
-      item.quantity--;
-
-      if (item.quantity <= 0) {
-        cart = cart.filter(p => String(p.id) !== minus.dataset.qtyMinus);
-      }
-    }
-
-    saveLocalData();
-    renderCart();
-  }
-
-  if (remove) {
-    cart = cart.filter(p => String(p.id) !== remove.dataset.remove);
-    saveLocalData();
-    renderCart();
-  }
-
-  if (add) addToCart(add.dataset.add);
-  if (favorite) toggleWishlist(favorite.dataset.favorite);
-
-  if (event.target.closest("#checkoutButton")) checkoutForm();
-  if (event.target.closest("#continueShopping")) closePanel();
-  if (event.target.closest("#signupButton")) signup();
-  if (event.target.closest("#logoutButton")) logout();
-  if (event.target.closest("#myOrdersButton")) showOrders();
-});
-
-/* إرسال النماذج */
-panelContent.addEventListener("submit", async event => {
-  if (event.target.id === "checkoutForm") {
-    event.preventDefault();
-    await submitOrder(event.target);
-  }
-
-  if (event.target.id === "authForm") {
-    event.preventDefault();
-    await login(event.target);
-  }
-});
-
-/* تشغيل المتجر */
-$("year").textContent = new Date().getFullYear();
-updateBadges();
-
-db.auth.getSession().then(({ data }) => {
-  currentUser = data && data.session ? data.session.user : null;
-});
-
-db.auth.onAuthStateChange((_event, session) => {
-  currentUser = session ? session.user : null;
-});
-
-loadProducts();
+  await syncUser();
+  await loadProducts();
+})();
 </script>
 </body>
-  </html>
+      </html>

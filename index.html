@@ -147,6 +147,7 @@ header {padding:20px 16px}
   padding:12px 18px;border-radius:12px;font-size:12px;width:max-content;max-width:90%
 }
 footer {text-align:center;padding:25px 10px;color:var(--muted);font-size:11px}
+.hint {font-size:12px;color:var(--muted);line-height:1.7;margin:8px 0}
 @media(min-width:700px) {
   body {background:#ecebe5}
   .container {background:var(--cream);min-height:100vh;box-shadow:0 0 35px #00000008}
@@ -210,7 +211,7 @@ footer {text-align:center;padding:25px 10px;color:var(--muted);font-size:11px}
 <nav class="bottom-nav">
   <button class="nav-item" data-action="home"><span class="nav-icon">⌂</span>Accueil</button>
   <button class="nav-item" data-action="account"><span class="nav-icon">♙</span>Compte</button>
-  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commander</button>
+  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commandes</button>
   <button class="nav-item" data-action="wishlist"><span class="nav-icon">♡</span>Favoris <span class="badge" id="wishCount">0</span></button>
   <button class="nav-item" data-action="cart"><span class="nav-icon">🛒</span>Panier <span class="badge" id="cartCount">0</span></button>
 </nav>
@@ -233,8 +234,9 @@ footer {text-align:center;padding:25px 10px;color:var(--muted);font-size:11px}
 /* Configuration Supabase */
 const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfw_-DKKY90V";
-const STORE_ID = "b5da5b20-3479-49f3-b544-c2447c7b7cda";
 
+/* Cette clé publique peut être utilisée côté navigateur.
+   Ne jamais mettre une clé service_role dans ce fichier. */
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
@@ -247,7 +249,8 @@ let cart = [];
 let wishlist = [];
 let selectedCategory = "all";
 let searchTerm = "";
-let toastTimer;
+let toastTimer = null;
+let currentUser = null;
 
 try {
   cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
@@ -260,14 +263,19 @@ try {
 }
 
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  })[c]);
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
 }
 
 function money(value) {
-  return new Intl.NumberFormat("fr-DZ", {maximumFractionDigits:2})
-    .format(Number(value) || 0) + " DA";
+  return new Intl.NumberFormat("fr-DZ", {
+    maximumFractionDigits: 2
+  }).format(Number(value) || 0) + " DA";
 }
 
 function showToast(message) {
@@ -275,7 +283,9 @@ function showToast(message) {
   toast.textContent = message;
   toast.style.display = "block";
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.style.display = "none", 2800);
+  toastTimer = setTimeout(() => {
+    toast.style.display = "none";
+  }, 3000);
 }
 
 function saveLocalData() {
@@ -285,7 +295,9 @@ function saveLocalData() {
 }
 
 function updateBadges() {
-  $("cartCount").textContent = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+  $("cartCount").textContent = cart.reduce(
+    (sum, item) => sum + (Number(item.quantity) || 0), 0
+  );
   $("wishCount").textContent = wishlist.length;
 }
 
@@ -293,47 +305,49 @@ function getProductId(product) {
   return String(product.id);
 }
 
-function getProductPrice(product) {
-  return Number(product.price ?? product.sale_price ?? 0);
+function getProductName(product) {
+  return product.name || "Produit";
 }
 
-function getProductName(product) {
-  return product.name ?? product.title ?? "Produit";
+function getProductPrice(product) {
+  return Number(product.price) || 0;
 }
 
 function getProductImage(product) {
-  return product.image_url ?? product.image ?? product.photo_url ?? "";
+  return product.image_url || "";
 }
 
 function getProductCategory(product) {
-  return product.category ?? product.category_name ?? "";
+  return product.category || product.category_name || "";
 }
 
 function getProductDescription(product) {
-  return product.description ?? "";
+  return product.description || "";
 }
 
 function productIsAvailable(product) {
-  return product.active !== false &&
-    product.is_active !== false &&
-    product.status !== "inactive" &&
-    product.status !== "draft";
+  return product.is_active === true && Number(product.stock) > 0;
 }
 
+/* تحميل المنتجات المنشورة من جميع المتاجر المعتمدة.
+   يجب أن تسمح سياسة SELECT العامة في Supabase برؤية المنتجات المعتمدة فقط. */
 async function loadProducts() {
   $("loadStatus").textContent = "Chargement des produits...";
   productsElement.innerHTML = "";
 
   try {
-    const {data, error} = await db
+    const { data, error } = await db
       .from("products")
-      .select("*")
-      .eq("store_id", STORE_ID)
+      .select("id,store_id,name,description,price,image_url,stock,is_active,created_at")
+      .eq("is_active", true)
+      .gt("stock", 0)
+      .order("created_at", { ascending: false })
       .limit(100);
 
     if (error) throw error;
 
     products = (data || []).filter(productIsAvailable);
+
     $("loadStatus").textContent = products.length
       ? products.length + " produit(s) disponible(s)"
       : "Aucun produit publié pour le moment.";
@@ -341,15 +355,17 @@ async function loadProducts() {
     renderProducts();
   } catch (error) {
     console.error("Erreur de chargement :", error);
-    $("loadStatus").textContent = "Impossible de charger les produits. Vérifiez la configuration Supabase.";
-    productsElement.innerHTML = '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';
+    $("loadStatus").textContent = "Impossible de charger les produits. Vérifiez les autorisations Supabase.";
+    productsElement.innerHTML =
+      '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';
   }
 }
 
 function renderProducts() {
   const filtered = products.filter(product => {
     const matchesCategory = selectedCategory === "all" ||
-      getProductCategory(product).toLocaleLowerCase("fr") === selectedCategory.toLocaleLowerCase("fr");
+      getProductCategory(product).toLocaleLowerCase("fr") ===
+      selectedCategory.toLocaleLowerCase("fr");
 
     const text = (
       getProductName(product) + " " +
@@ -361,7 +377,8 @@ function renderProducts() {
   });
 
   if (!filtered.length) {
-    productsElement.innerHTML = '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';
+    productsElement.innerHTML =
+      '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';
     return;
   }
 
@@ -375,14 +392,16 @@ function renderProducts() {
       <article class="product">
         <div class="product-image">
           ${image
-            ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+            ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(name)}" loading="lazy"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
             : ""}
           <span class="product-placeholder" style="${image ? "display:none" : ""}">🛍️</span>
-          <button class="favorite" data-favorite="${escapeHTML(id)}" aria-label="Ajouter aux favoris">${favorite ? "♥" : "♡"}</button>
+          <button class="favorite" data-favorite="${escapeHTML(id)}"
+            aria-label="Ajouter aux favoris">${favorite ? "♥" : "♡"}</button>
         </div>
         <div class="product-info">
           <h3>${escapeHTML(name)}</h3>
-          <p class="product-description">${escapeHTML(getProductDescription(product).slice(0,100))}</p>
+          <p class="product-description">${escapeHTML(getProductDescription(product).slice(0, 100))}</p>
           <div class="price">${money(getProductPrice(product))}</div>
           <button class="primary" data-add="${escapeHTML(id)}">Ajouter au panier</button>
         </div>
@@ -394,9 +413,20 @@ function addToCart(id) {
   const product = products.find(item => getProductId(item) === String(id));
   if (!product) return;
 
+  const stock = Number(product.stock) || 0;
   const existing = cart.find(item => String(item.id) === String(id));
-  if (existing) existing.quantity = (Number(existing.quantity) || 0) + 1;
-  else cart.push({id:String(id), quantity:1});
+  const currentQuantity = existing ? Number(existing.quantity) || 0 : 0;
+
+  if (currentQuantity >= stock) {
+    showToast("Quantité maximale disponible atteinte.");
+    return;
+  }
+
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({ id: String(id), quantity: 1 });
+  }
 
   saveLocalData();
   showToast("Produit ajouté au panier !");
@@ -415,6 +445,13 @@ function toggleWishlist(id) {
 
   saveLocalData();
   renderProducts();
+
+  if (
+    panelOverlay.classList.contains("open") &&
+    $("panelTitle").textContent === "Mes favoris"
+  ) {
+    renderWishlist();
+  }
 }
 
 function openPanel(title, html) {
@@ -432,7 +469,9 @@ function closePanel() {
 function cartDetails() {
   return cart.map(item => {
     const product = products.find(p => getProductId(p) === String(item.id));
-    return product ? {...product, quantity:Number(item.quantity) || 1} : null;
+    return product
+      ? { ...product, quantity: Number(item.quantity) || 1 }
+      : null;
   }).filter(Boolean);
 }
 
@@ -444,7 +483,9 @@ function renderCart() {
     return;
   }
 
-  const total = items.reduce((sum,item) => sum + getProductPrice(item) * item.quantity, 0);
+  const total = items.reduce(
+    (sum, item) => sum + getProductPrice(item) * item.quantity, 0
+  );
 
   const rows = items.map(item => `
     <div class="cart-row">
@@ -458,18 +499,22 @@ function renderCart() {
         <button data-qty-plus="${escapeHTML(getProductId(item))}">+</button>
       </div>
       <button class="remove" data-remove="${escapeHTML(getProductId(item))}">✕</button>
-    </div>`).join("");
+    </div>
+  `).join("");
 
   openPanel("Mon panier", `
     ${rows}
     <div class="total"><span>Total produits</span><span>${money(total)}</span></div>
+    <p class="product-description">Les produits de plusieurs boutiques seront envoyés dans des commandes séparées.</p>
     <p class="product-description">Les frais de livraison seront confirmés par le vendeur.</p>
     <button class="gold-button full" id="checkoutButton">Commander maintenant</button>
   `);
 }
 
 function renderWishlist() {
-  const items = products.filter(p => wishlist.includes(getProductId(p)));
+  const items = products.filter(product =>
+    wishlist.includes(getProductId(product))
+  );
 
   if (!items.length) {
     openPanel("Mes favoris", '<div class="empty">Votre liste de favoris est vide ♡</div>');
@@ -484,7 +529,130 @@ function renderWishlist() {
       </div>
       <button class="primary" data-add="${escapeHTML(getProductId(item))}">Ajouter</button>
       <button class="remove" data-favorite="${escapeHTML(getProductId(item))}">♥</button>
-    </div>`).join(""));
+    </div>
+  `).join(""));
+}
+
+async function getUser() {
+  const { data, error } = await db.auth.getUser();
+
+  if (error) console.warn(error);
+
+  currentUser = data && data.user ? data.user : null;
+  return currentUser;
+}
+
+function showAccount() {
+  openPanel("Mon compte", `
+    <div class="hint">
+      ${currentUser
+        ? "Connecté : " + escapeHTML(currentUser.email || "Compte client")
+        : "Connectez-vous ou créez un compte pour commander."}
+    </div>
+    ${currentUser
+      ? `
+        <button class="primary full" id="myOrdersButton">Mes commandes</button>
+        <button class="gold-button full" id="logoutButton">Se déconnecter</button>
+      `
+      : `
+        <form id="authForm">
+          <div class="field">
+            <label for="authEmail">Adresse e-mail</label>
+            <input id="authEmail" type="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="authPassword">Mot de passe (6 caractères minimum)</label>
+            <input id="authPassword" type="password" minlength="6" required autocomplete="current-password">
+          </div>
+          <div class="field">
+            <label for="authName">Nom complet (pour créer un compte)</label>
+            <input id="authName" maxlength="100" autocomplete="name">
+          </div>
+          <button class="primary full" type="submit">Se connecter</button>
+          <button class="gold-button full" type="button" id="signupButton">Créer un compte</button>
+        </form>
+        <p class="hint">Après inscription, confirmez votre e-mail si Supabase vous le demande.</p>
+      `}
+  `);
+}
+
+async function signup() {
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  const name = $("authName").value.trim();
+
+  if (!email || password.length < 6) {
+    showToast("Entrez un e-mail valide et un mot de passe d'au moins 6 caractères.");
+    return;
+  }
+
+  const button = $("signupButton");
+  button.disabled = true;
+
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: name }
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.user && data.session) {
+      currentUser = data.user;
+      showToast("Compte créé avec succès.");
+      showAccount();
+    } else {
+      showToast("Inscription envoyée. Vérifiez votre e-mail puis connectez-vous.");
+    }
+  } catch (error) {
+    console.error("Erreur inscription :", error);
+    showToast("Inscription impossible : " + (error.message || "vérifiez Supabase Auth."));
+  } finally {
+    const currentButton = $("signupButton");
+    if (currentButton) currentButton.disabled = false;
+  }
+}
+
+async function login(form) {
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  const button = form.querySelector('button[type="submit"]');
+
+  button.disabled = true;
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    currentUser = data.user;
+    showToast("Connexion réussie.");
+    showAccount();
+  } catch (error) {
+    console.error("Erreur connexion :", error);
+    showToast("Connexion impossible. Vérifiez l'e-mail et le mot de passe.");
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+async function logout() {
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    showToast("Impossible de se déconnecter.");
+    return;
+  }
+
+  currentUser = null;
+  showAccount();
+  showToast("Déconnexion réussie.");
 }
 
 function checkoutForm() {
@@ -495,7 +663,15 @@ function checkoutForm() {
     return;
   }
 
-  const total = items.reduce((sum,item) => sum + getProductPrice(item) * item.quantity, 0);
+  if (!currentUser) {
+    showAccount();
+    showToast("Connectez-vous avant de commander.");
+    return;
+  }
+
+  const total = items.reduce(
+    (sum, item) => sum + getProductPrice(item) * item.quantity, 0
+  );
 
   openPanel("Informations de livraison", `
     <form id="checkoutForm">
@@ -531,76 +707,111 @@ function checkoutForm() {
 }
 
 async function submitOrder(form) {
-  const submitButton = form.querySelector('button[type="submit"]');
-  if (submitButton.disabled) return;
+  const button = form.querySelector('button[type="submit"]');
+
+  if (button.disabled) return;
+
+  const user = await getUser();
+
+  if (!user) {
+    showToast("Connectez-vous avant de commander.");
+    showAccount();
+    return;
+  }
 
   const items = cartDetails();
+
   if (!items.length) {
     showToast("Votre panier est vide.");
     return;
   }
 
   const formData = new FormData(form);
-  const customerName = String(formData.get("customerName") || "").trim();
-  const customerPhone = String(formData.get("customerPhone") || "").trim();
-  const wilaya = String(formData.get("customerWilaya") || "").trim();
-  const city = String(formData.get("customerCity") || "").trim();
-  const address = String(formData.get("customerAddress") || "").trim();
-  const note = String(formData.get("customerNote") || "").trim();
+  const value = key => String(formData.get(key) || "").trim();
 
-  if (!customerName || !customerPhone || !wilaya || !city || !address) {
+  const customerName = value("customerName");
+  const phone = value("customerPhone");
+  const wilaya = value("customerWilaya");
+  const city = value("customerCity");
+  const address = value("customerAddress");
+  const note = value("customerNote");
+
+  if (!customerName || !phone || !wilaya || !city || !address) {
     showToast("Veuillez remplir tous les champs obligatoires.");
     return;
   }
 
-  submitButton.disabled = true;
-  submitButton.textContent = "Envoi en cours...";
+  button.disabled = true;
+  button.textContent = "Envoi en cours...";
 
   try {
-    const total = items.reduce((sum,item) => sum + getProductPrice(item) * item.quantity, 0);
+    /* Une commande séparée est créée pour chaque boutique. */
+    const groups = new Map();
 
-    const orderPayload = {
-      store_id:STORE_ID,
-      customer_name:customerName,
-      customer_phone:customerPhone,
-      wilaya,
-      city,
-      address,
-      note,
-      total,
-      status:"pending",
-      payment_method:"cash_on_delivery"
-    };
+    for (const item of items) {
+      if (!item.store_id) {
+        throw new Error("Un produit n'est pas associé à une boutique.");
+      }
 
-    const {data:order, error:orderError} = await db
-      .from("orders")
-      .insert(orderPayload)
-      .select()
-      .single();
+      if (!groups.has(item.store_id)) {
+        groups.set(item.store_id, []);
+      }
 
-    if (orderError) throw orderError;
+      groups.get(item.store_id).push(item);
+    }
 
-    const orderItems = items.map(item => ({
-      order_id:order.id,
-      product_id:item.id,
-      quantity:item.quantity,
-      unit_price:getProductPrice(item)
-    }));
+    const createdOrders = [];
 
-    const {error:itemsError} = await db
-      .from("order_items")
-      .insert(orderItems);
+    for (const [storeId, group] of groups) {
+      const total = group.reduce(
+        (sum, item) => sum + getProductPrice(item) * item.quantity, 0
+      );
 
-    if (itemsError) {
-      console.error("Erreur détails commande :", itemsError);
-      openPanel("Commande à vérifier", `
-        <div class="empty">
-          <h3>La commande a été créée, mais ses détails n'ont pas été enregistrés.</h3>
-          <p>Numéro : ${escapeHTML(order.id)}</p>
-          <p>Contactez le vendeur avant de repasser commande.</p>
-        </div>
-      `);
-      return;
+      const orderPayload = {
+        customer_id: user.id,
+        store_id: storeId,
+        customer_name: customerName,
+        phone: phone,
+        customer_phone: phone,
+        wilaya: wilaya,
+        city: city,
+        address: address,
+        note: note,
+        total: total,
+        status: "pending",
+        payment_method: "cash_on_delivery"
+      };
+
+      const { data: order, error: orderError } = await db
+        .from("orders")
+        .insert(orderPayload)
+        .select("id,total")
+        .single();
+
+      if (orderError) throw orderError;
+
+      const orderItems = group.map(item => ({
+        order_id: order.id,
+        store_id: storeId,
+        product_id: item.id,
+        product_name: getProductName(item),
+        quantity: item.quantity,
+        unit_price: getProductPrice(item)
+      }));
+
+      const { error: itemsError } = await db
+        .from("order_items")
+        .insert(orderItems);
+
+      if (itemsError) {
+        console.error("Erreur détails commande :", itemsError);
+        throw new Error(
+          "La commande " + order.id +
+          " a été créée, mais les détails n'ont pas été enregistrés. Contactez le vendeur avant de repasser commande."
+        );
+      }
+
+      createdOrders.push(order);
     }
 
     cart = [];
@@ -610,38 +821,69 @@ async function submitOrder(form) {
       <div class="empty">
         <div style="font-size:48px">✅</div>
         <h3>Merci pour votre commande !</h3>
-        <p>Votre numéro de commande :</p>
-        <p style="font-weight:800;overflow-wrap:anywhere">${escapeHTML(order.id)}</p>
-        <p>Montant des produits : ${money(total)}</p>
+        <p>${createdOrders.length} commande(s) enregistrée(s).</p>
+        ${createdOrders.map(order => `
+          <p class="hint">
+            Référence : <strong>${escapeHTML(order.id)}</strong>
+            — ${money(order.total)}
+          </p>
+        `).join("")}
         <p>Le vendeur pourra vous contacter pour confirmer la livraison.</p>
       </div>
       <button class="primary full" id="continueShopping">Continuer mes achats</button>
     `);
+
   } catch (error) {
     console.error("Erreur de commande :", error);
-    showToast("Commande non enregistrée. Vérifiez les colonnes et les autorisations Supabase.");
-    submitButton.disabled = false;
-    submitButton.textContent = "Confirmer la commande";
+    showToast("Commande non enregistrée : " + (error.message || "vérifiez les autorisations Supabase."));
+    button.disabled = false;
+    button.textContent = "Confirmer la commande";
   }
 }
 
-function showAccount() {
-  openPanel("Mon compte", `
-    <div class="empty">
-      <div style="font-size:42px">♙</div>
-      <h3>Compte client</h3>
-      <p>La création de compte nécessite la configuration de Supabase Auth.</p>
-    </div>
-    <button class="primary full" id="loginButton">Se connecter</button>
-  `);
-}
+async function showOrders() {
+  const user = await getUser();
 
-function showOrders() {
-  openPanel("Mes commandes", `
-    <div class="empty">
-      Pour consulter vos commandes, un compte client sécurisé doit être configuré.
-    </div>
-  `);
+  if (!user) {
+    showAccount();
+    showToast("Connectez-vous pour voir vos commandes.");
+    return;
+  }
+
+  openPanel("Mes commandes", '<div class="empty">Chargement de vos commandes...</div>');
+
+  try {
+    const { data, error } = await db
+      .from("orders")
+      .select("id,total,status,created_at,store_id")
+      .eq("customer_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    if (error) throw error;
+
+    if (data && data.length) {
+      panelContent.innerHTML = data.map(order => `
+        <div class="cart-row">
+          <div class="cart-row-info">
+            <strong>Commande ${escapeHTML(order.id.slice(0, 8))}</strong>
+            <small>
+              ${escapeHTML(order.status || "pending")}
+              · ${escapeHTML(new Date(order.created_at).toLocaleDateString("fr-DZ"))}
+            </small>
+          </div>
+          <strong>${money(order.total)}</strong>
+        </div>
+      `).join("");
+    } else {
+      panelContent.innerHTML = '<div class="empty">Vous n’avez pas encore de commande.</div>';
+    }
+
+  } catch (error) {
+    console.error("Erreur commandes :", error);
+    panelContent.innerHTML =
+      '<div class="empty">Impossible de charger les commandes. Vérifiez les politiques RLS.</div>';
+  }
 }
 
 /* Recherche */
@@ -662,8 +904,11 @@ $("categories").addEventListener("click", event => {
   if (!button) return;
 
   selectedCategory = button.dataset.category;
-  document.querySelectorAll(".categories button").forEach(item =>
-    item.classList.toggle("active", item === button));
+
+  document.querySelectorAll(".categories button").forEach(item => {
+    item.classList.toggle("active", item === button);
+  });
+
   renderProducts();
 });
 
@@ -672,14 +917,16 @@ $("resetFilters").addEventListener("click", () => {
   searchTerm = "";
   $("searchInput").value = "";
 
-  document.querySelectorAll(".categories button").forEach((button,index) =>
-    button.classList.toggle("active", index === 0));
+  document.querySelectorAll(".categories button").forEach((button, index) => {
+    button.classList.toggle("active", index === 0);
+  });
 
   renderProducts();
 });
 
-$("discoverButton").addEventListener("click", () =>
-  $("productsSection").scrollIntoView({behavior:"smooth"}));
+$("discoverButton").addEventListener("click", () => {
+  $("productsSection").scrollIntoView({ behavior: "smooth" });
+});
 
 /* أزرار المنتجات */
 productsElement.addEventListener("click", event => {
@@ -697,7 +944,7 @@ document.querySelector(".bottom-nav").addEventListener("click", event => {
 
   switch (button.dataset.action) {
     case "home":
-      window.scrollTo({top:0,behavior:"smooth"});
+      window.scrollTo({ top: 0, behavior: "smooth" });
       break;
     case "account":
       showAccount();
@@ -731,19 +978,33 @@ panelContent.addEventListener("click", event => {
 
   if (plus) {
     const item = cart.find(p => String(p.id) === plus.dataset.qtyPlus);
-    if (item) item.quantity++;
+    const product = products.find(p => getProductId(p) === plus.dataset.qtyPlus);
+
+    if (item && product) {
+      const stock = Number(product.stock) || 0;
+
+      if (item.quantity < stock) {
+        item.quantity++;
+      } else {
+        showToast("Quantité maximale disponible atteinte.");
+      }
+    }
+
     saveLocalData();
     renderCart();
   }
 
   if (minus) {
     const item = cart.find(p => String(p.id) === minus.dataset.qtyMinus);
+
     if (item) {
       item.quantity--;
+
       if (item.quantity <= 0) {
         cart = cart.filter(p => String(p.id) !== minus.dataset.qtyMinus);
       }
     }
+
     saveLocalData();
     renderCart();
   }
@@ -759,22 +1020,37 @@ panelContent.addEventListener("click", event => {
 
   if (event.target.closest("#checkoutButton")) checkoutForm();
   if (event.target.closest("#continueShopping")) closePanel();
+  if (event.target.closest("#signupButton")) signup();
+  if (event.target.closest("#logoutButton")) logout();
+  if (event.target.closest("#myOrdersButton")) showOrders();
+});
 
-  if (event.target.closest("#loginButton")) {
-    showToast("La connexion sera activée après configuration de Supabase Auth.");
+/* إرسال النماذج */
+panelContent.addEventListener("submit", async event => {
+  if (event.target.id === "checkoutForm") {
+    event.preventDefault();
+    await submitOrder(event.target);
+  }
+
+  if (event.target.id === "authForm") {
+    event.preventDefault();
+    await login(event.target);
   }
 });
 
-/* إرسال الطلب */
-panelContent.addEventListener("submit", async event => {
-  if (event.target.id !== "checkoutForm") return;
-  event.preventDefault();
-  await submitOrder(event.target);
-});
-
+/* تشغيل المتجر */
 $("year").textContent = new Date().getFullYear();
 updateBadges();
+
+db.auth.getSession().then(({ data }) => {
+  currentUser = data && data.session ? data.session.user : null;
+});
+
+db.auth.onAuthStateChange((_event, session) => {
+  currentUser = session ? session.user : null;
+});
+
 loadProducts();
 </script>
 </body>
-</html>
+  </html>

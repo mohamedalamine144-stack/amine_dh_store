@@ -5,831 +5,998 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#152c3b">
 <title>AMINE DH | Boutique officielle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --navy:#152c3b;--gold:#c9a34e;--cream:#f8f6ec;
-  --green:#244b50;--white:#fff;--muted:#718096;
-  --border:#e7e8e5;--red:#c0392b;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Poppins,Arial,sans-serif;background:#f7f8f7;color:var(--navy)}
-button,input,textarea,select{font:inherit}
+:root{--gold:#c9a34e;--dark:#152c3b;--green:#244b50;--cream:#f8f6ec;--white:#fff;--muted:#777;--border:#e8e2d4;--danger:#c93636}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Poppins,sans-serif;background:var(--cream);color:var(--dark);padding-bottom:85px}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-header{background:var(--navy);color:white;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{background:var(--gold);color:var(--navy);font-size:21px;font-weight:800;padding:10px;border-radius:12px}
-.brand h1{font-size:19px;margin:0}
-.brand small{font-size:10px;letter-spacing:2px;color:#e3d3a9}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:600}
-.primary{background:var(--gold);color:var(--navy)}
-.dark{background:var(--navy);color:white}
-.light{background:white;color:var(--navy);border:1px solid var(--border)}
-.danger{background:#fff0ee;color:var(--red)}
-main{max-width:1200px;margin:auto;padding:22px 16px 90px}
-.hero{background:linear-gradient(120deg,#152c3b,#244b50);border-radius:22px;padding:35px 25px;color:white;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-.hero h2{font-size:clamp(26px,5vw,43px);line-height:1.25;margin:0 0 13px}
-.hero p{color:#e1e8e7;max-width:500px;line-height:1.8}
-.hero .badge{background:#ffffff18;border:1px solid #ffffff30;border-radius:50%;width:115px;height:115px;display:grid;place-items:center;font-size:25px;font-weight:800;color:var(--gold)}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:30px 0 16px}
-.section-head h2{margin:0;font-size:22px}
-.muted{color:var(--muted);font-size:13px}
-.searchbar{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}
-.searchbar input{flex:1;min-width:180px}
-input,textarea,select{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:white;color:var(--navy);outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--gold)}
-.categories{display:flex;gap:8px;overflow:auto;padding:3px 0 12px}
-.cat{white-space:nowrap;background:white;border:1px solid var(--border);border-radius:25px;padding:9px 15px;color:var(--navy)}
-.cat.active{background:var(--navy);color:white}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
-.card{background:white;border:1px solid var(--border);border-radius:15px;overflow:hidden;min-width:0}
-.product-img{width:100%;height:185px;object-fit:cover;background:#eef0eb;display:block}
+button:disabled{opacity:.55;cursor:not-allowed}
+.container{max-width:1100px;margin:auto}
+header{padding:20px 16px}
+.brand{display:flex;justify-content:center;align-items:center;gap:14px}
+.logo{font-size:42px;font-weight:800;color:var(--gold);border-right:2px solid var(--gold);padding-right:12px;letter-spacing:-3px}
+.brand-name{font-size:clamp(23px,5vw,35px);font-weight:800}
+.brand-subtitle{font-size:10px;letter-spacing:2px}
+.search{display:flex;margin:10px 15px 20px;background:white;border:1px solid var(--border);border-radius:16px;padding:7px 12px}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:12px}
+.search button{border:0;background:none;color:var(--gold);font-size:24px}
+.categories{display:flex;overflow-x:auto;background:white;scrollbar-width:none;border-block:1px solid var(--border)}
+.categories button{flex:1;min-width:100px;padding:12px 8px;border:0;border-right:1px solid var(--border);background:white;color:var(--dark);font-size:12px}
+.categories button span{display:block;font-size:25px;margin-bottom:4px}
+.categories button.active{background:#f0e5c7;box-shadow:inset 0 -3px var(--gold)}
+.hero{margin:25px 15px;padding:35px 24px;min-height:310px;border-radius:26px;color:white;background:radial-gradient(circle at 15% 20%,#668985,transparent 45%),linear-gradient(135deg,#456b6e,#193b42);display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-content{position:relative;z-index:1;width:100%;text-align:right}
+.hero-label{display:inline-block;padding:9px 14px;border-radius:20px;background:#193f43;color:#f1d991;font-size:11px;margin-bottom:20px}
+.hero h1{font-size:clamp(27px,5vw,43px);line-height:1.5;margin-bottom:12px}
+.hero h1 span{color:#e2c36f}
+.hero p{font-size:14px;color:#e5e9e2;margin-bottom:20px}
+.primary,.gold-button{border:0;border-radius:12px;padding:13px 18px;font-weight:700}
+.primary{background:var(--dark);color:white}
+.gold-button{background:linear-gradient(120deg,#e7ca75,#c79b37);color:#202b2d}
+.section{padding:20px 15px}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+.section-heading h2{font-size:22px}
+.text-button{border:0;background:none;color:#a47c29;font-size:12px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.product{background:white;border:1px solid var(--border);border-radius:17px;overflow:hidden;min-width:0}
+.product-image{position:relative;height:175px;background:#f0eee5;display:grid;place-items:center}
+.product-image img{width:100%;height:100%;object-fit:contain;padding:10px}
+.placeholder{font-size:55px}
+.favorite{position:absolute;top:8px;right:8px;width:35px;height:35px;border:0;border-radius:50%;background:white;font-size:20px;color:var(--danger)}
 .product-info{padding:13px}
-.product-info h3{font-size:15px;margin:0 0 7px;overflow-wrap:anywhere}
-.description{font-size:12px;color:var(--muted);line-height:1.6;min-height:36px;overflow-wrap:anywhere}
-.price{font-size:18px;font-weight:800;color:var(--green);margin:10px 0}
-.stock{font-size:11px;color:var(--muted)}
-.card-actions{display:flex;gap:7px;margin-top:10px}
-.card-actions button{flex:1;padding:9px 5px;font-size:12px}
-.panel{background:white;border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:22px}
-.panel h2,.panel h3{margin-top:0}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-.full{grid-column:1/-1}
-.notice{padding:12px;border-radius:10px;background:#f2f5f4;color:var(--green);font-size:13px;line-height:1.7;margin:12px 0}
-.error{background:#fff0ee;color:var(--red)}
-.hidden{display:none!important}
-.empty{text-align:center;padding:35px 10px;color:var(--muted);background:white;border:1px dashed #d7dbd7;border-radius:15px;grid-column:1/-1}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:12px;border-bottom:1px solid var(--border);white-space:nowrap}
-footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:12px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:9px 4px;z-index:5}
-.bottom-nav button{border:0;background:none;color:var(--navy);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px}
-.bottom-nav span{font-size:19px}
-#toast{position:fixed;top:15px;left:50%;transform:translateX(-50%);z-index:20;background:var(--navy);color:white;padding:12px 18px;border-radius:12px;box-shadow:0 5px 25px #0002;max-width:90%;font-size:13px}
-@media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.product-img{height:160px}}
-@media(max-width:600px){header{padding:12px}.brand h1{font-size:16px}.hero{padding:25px 18px}.hero .badge{width:75px;height:75px;font-size:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-img{height:145px}.product-info{padding:10px}.product-info h3{font-size:13px}.price{font-size:16px}.card-actions button{font-size:11px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.panel{padding:14px}nav .btn{padding:9px;font-size:12px}}
+.product-info h3{font-size:13px;line-height:1.7;margin-bottom:7px}
+.description{color:var(--muted);font-size:11px;line-height:1.7;margin-bottom:8px}
+.price{color:#a47c29;font-weight:800;font-size:16px;margin-bottom:12px}
+.product-info .primary{width:100%;font-size:12px}
+.empty{grid-column:1/-1;text-align:center;padding:35px 10px;color:var(--muted)}
+.status{font-size:12px;padding:12px;text-align:center;color:var(--muted)}
+.overlay{display:none;position:fixed;inset:0;z-index:100;background:#0009;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.panel{width:100%;max-width:650px;max-height:90vh;overflow:auto;background:white;border-radius:22px 22px 0 0;padding:22px}
+.panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
+.close{border:0;background:#eee;border-radius:50%;width:36px;height:36px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;margin-bottom:6px;font-weight:600}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px;outline-color:var(--gold);background:white}
+.field textarea{min-height:75px;resize:vertical}
+.cart-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-row-info{flex:1;min-width:0}
+.cart-row-info strong{display:block;font-size:13px}
+.cart-row-info small{color:var(--muted)}
+.quantity{display:flex;align-items:center;gap:9px}
+.quantity button{width:28px;height:28px;border:0;border-radius:7px;background:#eee}
+.remove{border:0;background:none;color:var(--danger);padding:5px}
+.total{display:flex;justify-content:space-between;gap:10px;padding:18px 0;font-weight:800;font-size:17px}
+.full{width:100%;margin-top:8px}
+.bottom-nav{position:fixed;z-index:50;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom));background:#fffdf5;border-top:1px solid var(--border);box-shadow:0 -5px 20px #00000008}
+.nav-item{flex:1;border:0;background:none;color:#77756e;font-size:10px}
+.nav-icon{display:block;font-size:23px;margin-bottom:3px}
+.badge{display:inline-grid;place-items:center;min-width:17px;height:17px;border-radius:50%;background:var(--danger);color:white;font-size:10px;vertical-align:top;margin-left:2px}
+.toast{display:none;position:fixed;z-index:200;bottom:95px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:12px 18px;border-radius:12px;font-size:12px;width:max-content;max-width:90%}
+footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:11px}
+.hint{font-size:12px;color:var(--muted);line-height:1.7;margin:8px 0}
+@media(min-width:700px){
+body{background:#ecebe5}
+.container{background:var(--cream);min-height:100vh;box-shadow:0 0 35px #00000008}
+.products{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.product-image{height:220px}
+.hero{min-height:350px}
+.overlay{align-items:center}
+.panel{border-radius:20px}
+}
 </style>
 </head>
 
 <body>
-<div id="toast" class="hidden"></div>
+<div class="container">
 
 <header>
   <div class="brand">
     <div class="logo">ADH</div>
     <div>
-      <h1>AMINE DH</h1>
-      <small>E-COMMERCE GLOBAL STORE</small>
+      <div class="brand-name">AMINE DH</div>
+      <div class="brand-subtitle">E-COMMERCE GLOBAL STORE</div>
     </div>
   </div>
-  <nav>
-    <button class="btn light" onclick="showProducts()">Accueil</button>
-    <button class="btn light" onclick="showAccount()">Mon compte</button>
-    <button class="btn primary" onclick="showSeller()">Espace vendeur</button>
-    <button class="btn light" onclick="showCart()">Panier <span id="cartCount">0</span></button>
-  </nav>
 </header>
 
-<main>
-  <section id="home">
-    <div class="hero">
-      <div>
-        <h2>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br>AU MÊME ENDROIT !</h2>
-        <p>Découvrez des produits, comparez les offres et commandez facilement avec AMINE DH.</p>
-        <button class="btn primary" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Découvrir les produits →</button>
-      </div>
-      <div class="badge">AMINE<br>DH</div>
-    </div>
+<form class="search" id="searchForm">
+  <input id="searchInput" type="search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+  <button type="submit" aria-label="Rechercher">⌕</button>
+</form>
 
-    <div class="searchbar">
-      <input id="search" type="search" placeholder="Rechercher un produit..." oninput="renderProducts()">
-      <button class="btn dark" onclick="loadProducts()">Actualiser</button>
-    </div>
+<nav class="categories" id="categories">
+  <button class="active" data-category="all"><span>🛍️</span>Tout</button>
+  <button data-category="Cuisine"><span>🍳</span>Cuisine</button>
+  <button data-category="Électronique"><span>🎧</span>Électronique</button>
+  <button data-category="Informatique"><span>💻</span>Informatique</button>
+  <button data-category="Accessoires"><span>⌚</span>Accessoires</button>
+  <button data-category="Téléphones"><span>📱</span>Téléphones</button>
+</nav>
 
-    <div class="categories" id="categories">
-      <button class="cat active" onclick="setCategory('Tous',this)">Tous</button>
-      <button class="cat" onclick="setCategory('Cuisine',this)">Cuisine</button>
-      <button class="cat" onclick="setCategory('Électronique',this)">Électronique</button>
-      <button class="cat" onclick="setCategory('Informatique',this)">Informatique</button>
-      <button class="cat" onclick="setCategory('Accessoires',this)">Accessoires</button>
-      <button class="cat" onclick="setCategory('Téléphones',this)">Téléphones</button>
-      <button class="cat" onclick="setCategory('Autres',this)">Autres</button>
-    </div>
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">BIENVENUE CHEZ AMINE DH</div>
+    <h1>TOUT CE DONT<br>VOUS AVEZ BESOIN,<br><span>AU MÊME ENDROIT !</span></h1>
+    <p>Découvrez notre sélection de produits.</p>
+    <button class="gold-button" id="discoverButton">Découvrir les produits →</button>
+  </div>
+</section>
 
-    <section id="productsSection">
-      <div class="section-head">
-        <h2>Nos produits</h2>
-        <span class="muted" id="productCount">Chargement...</span>
-      </div>
-      <div id="productsGrid" class="grid">
-        <div class="empty">Chargement des produits...</div>
-      </div>
-    </section>
-  </section>
-
-  <section id="accountSection" class="panel hidden">
-    <h2>Mon compte</h2>
-    <div id="accountContent"></div>
-  </section>
-
-  <section id="sellerSection" class="panel hidden">
-    <h2>🏪 Espace vendeur</h2>
-    <div id="sellerContent">
-      <p class="muted">Connectez-vous pour gérer votre boutique et vos produits.</p>
-      <button class="btn primary" onclick="showAccount()">Connexion / Inscription</button>
-    </div>
-  </section>
-
-  <section id="cartSection" class="panel hidden">
-    <h2>🛒 Mon panier</h2>
-    <div id="cartContent"></div>
-  </section>
-
-  <section id="ordersSection" class="panel hidden">
-    <h2>Mes commandes</h2>
-    <div id="ordersContent"></div>
-  </section>
-</main>
-
-<footer>© <span id="year"></span> AMINE DH — Votre boutique en ligne</footer>
-
-<div class="bottom-nav">
-  <button onclick="showProducts()"><span>⌂</span>Accueil</button>
-  <button onclick="showAccount()"><span>♙</span>Compte</button>
-  <button onclick="showSeller()"><span>▣</span>Vendeur</button>
-  <button onclick="showCart()"><span>🛒</span>Panier</button>
-  <button onclick="showOrders()"><span>☷</span>Commandes</button>
+<div class="section" style="padding-top:0;padding-bottom:0">
+  <button class="gold-button full" id="addProductButton" type="button">＋ Ajouter un produit à la boutique</button>
 </div>
 
-<script>
-/* CONFIGURATION SUPABASE */
-const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfw_-DKKY90V";
-const IMAGE_BUCKET = "product-images";
+<section class="section" id="productsSection">
+  <div class="section-heading">
+    <h2>Nos produits</h2>
+    <button class="text-button" id="resetFilters">Tout afficher ↗</button>
+  </div>
+  <div class="status" id="loadStatus">Connexion à la boutique...</div>
+  <div class="products" id="products"></div>
+</section>
 
+<footer>© <span id="year"></span> AMINE DH — Tous droits réservés.</footer>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-item" data-action="home"><span class="nav-icon">⌂</span>Accueil</button>
+  <button class="nav-item" data-action="account"><span class="nav-icon">♙</span>Compte</button>
+  <button class="nav-item" data-action="orders"><span class="nav-icon">▣</span>Commandes</button>
+  <button class="nav-item" data-action="wishlist"><span class="nav-icon">♡</span>Favoris <span class="badge" id="wishCount">0</span></button>
+  <button class="nav-item" data-action="cart"><span class="nav-icon">🛒</span>Panier <span class="badge" id="cartCount">0</span></button>
+</nav>
+
+<div class="overlay" id="panelOverlay">
+  <div class="panel">
+    <div class="panel-header">
+      <h2 id="panelTitle">Panier</h2>
+      <button class="close" id="closePanel" aria-label="Fermer">✕</button>
+    </div>
+    <div id="panelContent"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+
+/* إعدادات Supabase العامة فقط. لا تضع service_role key في هذا الملف. */
+const SUPABASE_URL = "https://dsdsphbldkmirrcxvwwj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ZyLJneC_AFCb2YLdfPwdfW_-DKKY90V";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let currentUser = null;
+const $ = id => document.getElementById(id);
+const productsElement = $("products");
+const panelOverlay = $("panelOverlay");
+const panelContent = $("panelContent");
+
 let products = [];
-let myStore = null;
-let selectedCategory = "Tous";
-let editingProductId = null;
-let selectedImageFile = null;
+let cart = [];
+let wishlist = [];
+let selectedCategory = "all";
+let searchTerm = "";
+let toastTimer = null;
+let currentUser = null;
 
-let cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
-let wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");
-
-document.getElementById("year").textContent = new Date().getFullYear();
-updateCartCount();
-
-function toast(message, error=false) {
-  const el = document.getElementById("toast");
-  el.textContent = message;
-  el.classList.remove("hidden");
-  el.style.background = error ? "#a52a2a" : "#152c3b";
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(()=>el.classList.add("hidden"),4000);
+try {
+  cart = JSON.parse(localStorage.getItem("amine_cart") || "[]");
+  wishlist = JSON.parse(localStorage.getItem("amine_wishlist") || "[]");
+  if (!Array.isArray(cart)) cart = [];
+  if (!Array.isArray(wishlist)) wishlist = [];
+} catch {
+  cart = [];
+  wishlist = [];
 }
 
-function escapeHTML(value="") {
-  return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+function escapeHTML(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
   }[c]));
 }
 
-function money(value) {
-  return Number(value || 0).toLocaleString("fr-DZ") + " DA";
+function money(v) {
+  return new Intl.NumberFormat("fr-DZ", {maximumFractionDigits:2}).format(Number(v) || 0) + " DA";
 }
 
-function showOnly(id) {
-  ["home","accountSection","sellerSection","cartSection","ordersSection"].forEach(x=>{
-    document.getElementById(x).classList.toggle("hidden",x!==id);
-  });
-  window.scrollTo({top:0,behavior:"smooth"});
+function toast(message) {
+  $("toast").textContent = message;
+  $("toast").style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").style.display = "none", 3000);
 }
 
-function showProducts() {
-  showOnly("home");
+function save() {
+  localStorage.setItem("amine_cart", JSON.stringify(cart));
+  localStorage.setItem("amine_wishlist", JSON.stringify(wishlist));
+  badges();
 }
 
-function setCategory(category,button) {
-  selectedCategory=category;
-  document.querySelectorAll(".cat").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-  renderProducts();
+function badges() {
+  $("cartCount").textContent = cart.reduce((s,i) => s + (Number(i.quantity) || 0), 0);
+  $("wishCount").textContent = wishlist.length;
+}
+
+const pid = p => String(p.id);
+const pname = p => p.name ?? p.title ?? "Produit";
+const price = p => Number(p.price ?? 0);
+const image = p => p.image_url ?? "";
+const category = p => p.category ?? p.category_name ?? "";
+const desc = p => p.description ?? "";
+
+function available(p) {
+  return p.is_active !== false &&
+    p.status !== "inactive" &&
+    p.status !== "draft" &&
+    Number(p.stock ?? 1) > 0;
 }
 
 async function loadProducts() {
-  const grid=document.getElementById("productsGrid");
-  grid.innerHTML='<div class="empty">Chargement des produits...</div>';
-
+  $("loadStatus").textContent = "Chargement des produits...";
   try {
-    const {data:stores,error:storeError}=await db
-      .from("stores").select("id").eq("status","approved");
-
-    if(storeError) throw storeError;
-
-    const storeIds=(stores||[]).map(s=>s.id);
-
-    if(!storeIds.length) {
-      products=[];
-      renderProducts();
-      return;
-    }
-
-    const {data,error}=await db.from("products")
+    const {data, error} = await db.from("products")
       .select("id,store_id,name,description,price,image_url,stock,is_active,created_at,category")
-      .in("store_id",storeIds)
-      .eq("is_active",true)
-      .gt("stock",0)
-      .order("created_at",{ascending:false})
-      .limit(200);
+      .eq("is_active", true)
+      .limit(100);
 
-    if(error) throw error;
-    products=data||[];
+    if (error) throw error;
+
+    products = (data || []).filter(available);
+    $("loadStatus").textContent = products.length
+      ? `${products.length} produit(s) disponible(s)`
+      : "Aucun produit publié pour le moment.";
+
     renderProducts();
-  } catch(e) {
+  } catch (e) {
     console.error(e);
-    grid.innerHTML='<div class="empty">Impossible de charger les produits. Vérifiez la configuration Supabase et les autorisations RLS.</div>';
-    document.getElementById("productCount").textContent="Erreur";
+    $("loadStatus").textContent = "Impossible de charger les produits. Vérifiez les autorisations Supabase.";
+    productsElement.innerHTML = '<div class="empty">Les produits ne sont pas disponibles pour le moment.</div>';
   }
 }
 
 function renderProducts() {
-  const grid=document.getElementById("productsGrid");
-  const q=(document.getElementById("search").value||"").trim().toLowerCase();
+  const filtered = products.filter(p =>
+    (selectedCategory === "all" ||
+     category(p).toLocaleLowerCase("fr") === selectedCategory.toLocaleLowerCase("fr")) &&
+    (pname(p) + " " + desc(p) + " " + category(p))
+      .toLocaleLowerCase("fr").includes(searchTerm.toLocaleLowerCase("fr"))
+  );
 
-  const filtered=products.filter(p=>{
-    const category=p.category||"Autres";
-    const matchesCategory=selectedCategory==="Tous"||category===selectedCategory;
-    const text=[p.name,p.description,category].join(" ").toLowerCase();
-    return matchesCategory&&text.includes(q);
-  });
-
-  document.getElementById("productCount").textContent=filtered.length+" produit(s)";
-
-  if(!filtered.length) {
-    grid.innerHTML='<div class="empty">Aucun produit disponible pour le moment.</div>';
+  if (!filtered.length) {
+    productsElement.innerHTML = '<div class="empty">Aucun produit trouvé.<br>Essayez une autre recherche.</div>';
     return;
   }
 
-  grid.innerHTML=filtered.map(p=>{
-    const image=p.image_url||"https://placehold.co/600x400/f0f0e8/152c3b?text=AMINE+DH";
-    const fav=wishlist.includes(p.id);
+  productsElement.innerHTML = filtered.map(p => {
+    const id = pid(p);
+    const img = image(p);
     return `
-      <article class="card">
-        <img class="product-img" src="${escapeHTML(image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.src='https://placehold.co/600x400/f0f0e8/152c3b?text=AMINE+DH'">
+      <article class="product">
+        <div class="product-image">
+          ${img ? `<img src="${escapeHTML(img)}" alt="${escapeHTML(pname(p))}" loading="lazy" onerror="this.style.display='none'">` : ""}
+          <span class="placeholder" ${img ? 'style="display:none"' : ""}>🛍️</span>
+          <button class="favorite" data-favorite="${escapeHTML(id)}">${wishlist.includes(id) ? "♥" : "♡"}</button>
+        </div>
         <div class="product-info">
-          <h3>${escapeHTML(p.name)}</h3>
-          <div class="description">${escapeHTML(p.description||"Découvrez ce produit.")}</div>
-          <div class="price">${money(p.price)}</div>
-          <div class="stock">Stock : ${Number(p.stock)||0}</div>
-          <div class="card-actions">
-            <button class="btn primary" onclick="addToCart('${p.id}')">Ajouter</button>
-            <button class="btn light" onclick="toggleWishlist('${p.id}')">${fav?"♥":"♡"}</button>
-          </div>
+          <h3>${escapeHTML(pname(p))}</h3>
+          <p class="description">${escapeHTML(desc(p).slice(0,100))}</p>
+          <div class="price">${money(price(p))}</div>
+          <button class="primary" data-add="${escapeHTML(id)}">Ajouter au panier</button>
         </div>
       </article>`;
   }).join("");
 }
 
-function updateCartCount() {
-  document.getElementById("cartCount").textContent=cart.reduce((sum,p)=>sum+Number(p.quantity||0),0);
-}
-
-function saveCart() {
-  localStorage.setItem("amine_cart",JSON.stringify(cart));
-  updateCartCount();
-}
-
 function addToCart(id) {
-  const p=products.find(x=>x.id===id);
-  if(!p) return;
-  const item=cart.find(x=>x.id===id);
-  if(item) {
-    if(item.quantity>=Number(p.stock)) return toast("Quantité maximale disponible atteinte.",true);
-    item.quantity++;
-  } else {
-    cart.push({id:p.id,name:p.name,price:Number(p.price),quantity:1,store_id:p.store_id});
-  }
-  saveCart();
-  toast("Produit ajouté au panier.");
+  const p = products.find(x => pid(x) === String(id));
+  if (!p) return;
+
+  const item = cart.find(x => String(x.id) === String(id));
+  if (item) item.quantity = Math.min((Number(item.quantity) || 0) + 1, Number(p.stock) || 99);
+  else cart.push({id:String(id), quantity:1});
+
+  save();
+  toast("Produit ajouté au panier !");
 }
 
-function toggleWishlist(id) {
-  wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];
-  localStorage.setItem("amine_wishlist",JSON.stringify(wishlist));
+function toggleWish(id) {
+  id = String(id);
+  wishlist = wishlist.includes(id)
+    ? wishlist.filter(x => x !== id)
+    : [...wishlist, id];
+
+  save();
   renderProducts();
-}
 
-async function syncUser() {
-  const {data}=await db.auth.getSession();
-  currentUser=data.session?.user||null;
-}
-
-async function showAccount() {
-  showOnly("accountSection");
-  await syncUser();
-  const el=document.getElementById("accountContent");
-
-  if(!currentUser) {
-    el.innerHTML=`
-      <div class="notice">Connectez-vous ou créez votre compte pour commander et vendre vos produits.</div>
-      <div class="form-grid">
-        <div class="field full"><label>Email</label><input id="authEmail" type="email" placeholder="votre@email.com" autocomplete="email"></div>
-        <div class="field full"><label>Mot de passe</label><input id="authPassword" type="password" placeholder="Minimum 6 caractères" autocomplete="current-password"></div>
-        <div class="field full"><label>Nom complet</label><input id="authName" placeholder="Votre nom (pour l'inscription)"></div>
-        <div><button class="btn dark" onclick="login()">Se connecter</button></div>
-        <div><button class="btn primary" onclick="signup()">Créer un compte</button></div>
-      </div>
-      <p class="muted">Selon les paramètres Supabase, une confirmation par email peut être nécessaire.</p>`;
-    return;
-  }
-
-  el.innerHTML=`
-    <div class="notice">Connecté : ${escapeHTML(currentUser.email||"Compte utilisateur")}</div>
-    <button class="btn primary" onclick="showSeller()">Gérer ma boutique</button>
-    <button class="btn light" onclick="showOrders()">Mes commandes</button>
-    <button class="btn danger" onclick="logout()">Déconnexion</button>`;
-}
-
-async function login() {
-  const email=document.getElementById("authEmail").value.trim();
-  const password=document.getElementById("authPassword").value;
-  if(!email||!password) return toast("Remplissez l'email et le mot de passe.",true);
-
-  const {error}=await db.auth.signInWithPassword({email,password});
-  if(error) return toast(error.message,true);
-
-  await syncUser();
-  toast("Connexion réussie.");
-  await showAccount();
-}
-
-async function signup() {
-  const email=document.getElementById("authEmail").value.trim();
-  const password=document.getElementById("authPassword").value;
-  const fullName=(document.getElementById("authName").value||"").trim();
-
-  if(!email||password.length<6) return toast("Saisissez un email valide et un mot de passe d'au moins 6 caractères.",true);
-
-  const {data,error}=await db.auth.signUp({
-    email,password,
-    options:{data:{full_name:fullName}}
-  });
-
-  if(error) return toast(error.message,true);
-
-  if(data.user && data.session) {
-    currentUser=data.user;
-    await ensureProfile();
-    toast("Compte créé avec succès.");
-    await showSeller();
-  } else {
-    toast("Compte créé. Confirmez votre email, puis connectez-vous.");
+  if (panelOverlay.classList.contains("open") &&
+      $("panelTitle").textContent === "Mes favoris") {
+    renderWishlist();
   }
 }
 
-async function ensureProfile() {
-  if(!currentUser) return;
-  const {error}=await db.from("profiles").upsert({
-    id:currentUser.id,
-    full_name:currentUser.user_metadata?.full_name||"",
-    role:"seller"
-  },{onConflict:"id"});
-  if(error) console.warn("Profil:",error.message);
+function openPanel(title, html) {
+  $("panelTitle").textContent = title;
+  panelContent.innerHTML = html;
+  panelOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
 }
 
-async function logout() {
-  const {error}=await db.auth.signOut();
-  if(error) return toast(error.message,true);
-  currentUser=null;
-  myStore=null;
-  toast("Déconnexion réussie.");
-  await showAccount();
+function closePanel() {
+  panelOverlay.classList.remove("open");
+  document.body.style.overflow = "";
 }
 
-async function showSeller() {
-  showOnly("sellerSection");
-  await syncUser();
-  const el=document.getElementById("sellerContent");
-
-  if(!currentUser) {
-    el.innerHTML='<div class="notice">Connectez-vous pour ouvrir et gérer votre boutique.</div><button class="btn primary" onclick="showAccount()">Connexion / Inscription</button>';
-    return;
-  }
-
-  const {data:store,error}=await db.from("stores")
-    .select("id,owner_id,name,description,status")
-    .eq("owner_id",currentUser.id)
-    .maybeSingle();
-
-  if(error) {
-    el.innerHTML='<div class="notice error">Erreur de lecture de la boutique : '+escapeHTML(error.message)+'</div>';
-    return;
-  }
-
-  myStore=store||null;
-
-  if(!myStore) {
-    el.innerHTML=`
-      <p>Créez votre boutique pour commencer à ajouter vos produits.</p>
-      <div class="field"><label>Nom de la boutique</label><input id="newStoreName" placeholder="Nom de votre boutique"></div>
-      <div class="field"><label>Description</label><textarea id="newStoreDescription" rows="3" placeholder="Présentez votre boutique"></textarea></div>
-      <button class="btn primary" onclick="createStore()">Créer ma boutique</button>`;
-    return;
-  }
-
-  const approved=myStore.status==="approved";
-  el.innerHTML=`
-    <div class="notice">Boutique : <b>${escapeHTML(myStore.name)}</b><br>
-    État : <b>${approved?"Approuvée":escapeHTML(myStore.status)}</b>
-    ${approved?"— vos produits peuvent être publiés.":"— votre boutique doit être approuvée par l'administrateur avant publication."}</div>
-    <button class="btn primary" onclick="productForm()">＋ Ajouter un produit</button>
-    <button class="btn light" onclick="loadSellerProducts()">Actualiser mes produits</button>
-    <div id="sellerForm"></div>
-    <div id="sellerProducts" class="panel"><p class="muted">Chargement de vos produits...</p></div>`;
-  await loadSellerProducts();
-}
-
-async function createStore() {
-  const name=document.getElementById("newStoreName").value.trim();
-  const description=document.getElementById("newStoreDescription").value.trim();
-  if(!name) return toast("Saisissez le nom de votre boutique.",true);
-  if(!currentUser) return toast("Connectez-vous d'abord.",true);
-
-  const {data,error}=await db.from("stores").insert({
-    owner_id:currentUser.id,name,description,status:"pending"
-  }).select("id,owner_id,name,description,status").single();
-
-  if(error) {
-    console.error(error);
-    return toast("Impossible de créer la boutique : "+error.message,true);
-  }
-
-  myStore=data;
-  toast("Boutique créée. Elle doit être approuvée.");
-  await showSeller();
-}
-
-function productForm(p=null) {
-  if(!myStore) return toast("Créez d'abord votre boutique.",true);
-  editingProductId=p?.id||null;
-  selectedImageFile=null;
-
-  document.getElementById("sellerForm").innerHTML=`
-    <div class="panel">
-      <h3>${p?"Modifier le produit":"Ajouter un produit"}</h3>
-      <div class="form-grid">
-        <div class="field full"><label>Nom du produit *</label><input id="pName" value="${escapeHTML(p?.name||"")}" placeholder="Nom du produit"></div>
-        <div class="field"><label>Prix en DA *</label><input id="pPrice" type="number" min="0" step="0.01" value="${p?.price??""}" placeholder="1500"></div>
-        <div class="field"><label>Quantité disponible *</label><input id="pStock" type="number" min="0" step="1" value="${p?.stock??1}"></div>
-        <div class="field full"><label>Catégorie</label>
-          <select id="pCategory">
-            ${["Cuisine","Électronique","Informatique","Accessoires","Téléphones","Autres"].map(c=>`<option ${((p?.category||"Autres")===c)?"selected":""}>${c}</option>`).join("")}
-          </select>
-        </div>
-        <div class="field full"><label>Description</label><textarea id="pDescription" rows="3">${escapeHTML(p?.description||"")}</textarea></div>
-        <div class="field full"><label>Image du produit ${p?"(facultatif si vous gardez l'image actuelle)":"*"}</label><input id="pImage" type="file" accept="image/jpeg,image/png,image/webp" onchange="selectedImageFile=this.files?.[0]||null"></div>
-      </div>
-      <div class="notice">Images JPEG, PNG ou WebP. Choisissez une image raisonnable en taille.</div>
-      <button class="btn primary" onclick="saveProduct()">${p?"Enregistrer les modifications":"Publier le produit"}</button>
-      <button class="btn light" onclick="document.getElementById('sellerForm').innerHTML=''">Annuler</button>
-    </div>`;
-  document.getElementById("sellerForm").scrollIntoView({behavior:"smooth",block:"start"});
-}
-
-async function uploadProductImage(file) {
-  if(!file) return null;
-  if(!["image/jpeg","image/png","image/webp"].includes(file.type)) throw new Error("Format d'image non autorisé.");
-  if(file.size>5*1024*1024) throw new Error("L'image doit faire moins de 5 Mo.");
-
-  const ext=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg";
-  const path=currentUser.id+"/"+crypto.randomUUID()+"."+ext;
-  const {error}=await db.storage.from(IMAGE_BUCKET).upload(path,file,{
-    cacheControl:"3600",upsert:false,contentType:file.type
-  });
-  if(error) throw error;
-
-  const {data}=db.storage.from(IMAGE_BUCKET).getPublicUrl(path);
-  return data.publicUrl;
-}
-
-async function saveProduct() {
-  if(!currentUser||!myStore) return toast("Connectez-vous et créez votre boutique.",true);
-  const name=document.getElementById("pName").value.trim();
-  const price=Number(document.getElementById("pPrice").value);
-  const stock=Number(document.getElementById("pStock").value);
-  const category=document.getElementById("pCategory").value;
-  const description=document.getElementById("pDescription").value.trim();
-
-  if(!name||document.getElementById("pPrice").value===""||price<0||!Number.isFinite(price)) return toast("Vérifiez le nom et le prix.",true);
-  if(document.getElementById("pStock").value===""||stock<0||!Number.isInteger(stock)) return toast("Vérifiez la quantité.",true);
-
-  const button=document.querySelector("#sellerForm button.btn.primary");
-  if(button){button.disabled=true;button.textContent="Enregistrement...";}
-
-  try {
-    let image_url=null;
-    const existing=editingProductId?products.find(p=>p.id===editingProductId):null;
-
-    if(selectedImageFile) image_url=await uploadProductImage(selectedImageFile);
-    else image_url=existing?.image_url||null;
-
-    if(!editingProductId&&!image_url) throw new Error("Choisissez une image pour le produit.");
-
-    const payload={
-      store_id:myStore.id,name,description,category,
-      price,stock,image_url,is_active:true
-    };
-
-    let result;
-    if(editingProductId) {
-      result=await db.from("products").update(payload)
-        .eq("id",editingProductId).eq("store_id",myStore.id);
-    } else {
-      result=await db.from("products").insert(payload);
-    }
-
-    if(result.error) throw result.error;
-
-    toast(editingProductId?"Produit modifié.":"Produit ajouté.");
-    editingProductId=null;
-    selectedImageFile=null;
-    document.getElementById("sellerForm").innerHTML="";
-    await loadSellerProducts();
-    await loadProducts();
-  } catch(e) {
-    console.error(e);
-    toast("Erreur : "+e.message,true);
-  } finally {
-    if(button){button.disabled=false;button.textContent=editingProductId?"Enregistrer les modifications":"Publier le produit";}
-  }
-}
-
-async function loadSellerProducts() {
-  if(!currentUser||!myStore) return;
-  const box=document.getElementById("sellerProducts");
-  if(!box) return;
-  box.innerHTML="<p class='muted'>Chargement...</p>";
-
-  const {data,error}=await db.from("products")
-    .select("id,store_id,name,description,price,image_url,stock,is_active,created_at,category")
-    .eq("store_id",myStore.id)
-    .order("created_at",{ascending:false});
-
-  if(error) {
-    box.innerHTML='<div class="notice error">Erreur : '+escapeHTML(error.message)+'</div>';
-    return;
-  }
-
-  const mine=data||[];
-  if(!mine.length) {
-    box.innerHTML="<h3>Mes produits</h3><p class='muted'>Vous n'avez pas encore ajouté de produits.</p>";
-    return;
-  }
-
-  box.innerHTML=`
-    <h3>Mes produits (${mine.length})</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Produit</th><th>Prix</th><th>Stock</th><th>État</th><th>Actions</th></tr></thead>
-      <tbody>${mine.map(p=>`
-        <tr>
-          <td>${escapeHTML(p.name)}</td>
-          <td>${money(p.price)}</td>
-          <td>${Number(p.stock)}</td>
-          <td>${p.is_active?"Actif":"Désactivé"}</td>
-          <td>
-            <button class="btn light" onclick="editMyProduct('${p.id}')">Modifier</button>
-            <button class="btn danger" onclick="deleteMyProduct('${p.id}')">Supprimer</button>
-          </td>
-        </tr>`).join("")}
-      </tbody>
-    </table></div>`;
-}
-
-async function editMyProduct(id) {
-  if(!myStore) return;
-  const {data,error}=await db.from("products").select("*")
-    .eq("id",id).eq("store_id",myStore.id).single();
-  if(error) return toast(error.message,true);
-  productForm(data);
-}
-
-async function deleteMyProduct(id) {
-  if(!myStore||!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
-  const {error}=await db.from("products").delete()
-    .eq("id",id).eq("store_id",myStore.id);
-  if(error) return toast("Suppression impossible : "+error.message,true);
-  toast("Produit supprimé.");
-  await loadSellerProducts();
-  await loadProducts();
-}
-
-function showCart() {
-  showOnly("cartSection");
-  renderCart();
+function cartDetails() {
+  return cart.map(i => {
+    const p = products.find(x => pid(x) === String(i.id));
+    return p ? {...p, quantity:Number(i.quantity) || 1} : null;
+  }).filter(Boolean);
 }
 
 function renderCart() {
-  const box=document.getElementById("cartContent");
-  if(!cart.length) {
-    box.innerHTML="<div class='empty'>Votre panier est vide.</div>";
+  const items = cartDetails();
+
+  if (!items.length) {
+    openPanel("Mon panier", '<div class="empty">Votre panier est vide 🛒</div>');
     return;
   }
 
-  const total=cart.reduce((s,p)=>s+Number(p.price)*Number(p.quantity),0);
-  box.innerHTML=`
-    ${cart.map(p=>`
-      <div class="panel">
-        <b>${escapeHTML(p.name)}</b>
-        <p>${money(p.price)} × ${p.quantity}</p>
-        <button class="btn light" onclick="changeQty('${p.id}',-1)">−</button>
-        <button class="btn light" onclick="changeQty('${p.id}',1)">+</button>
-        <button class="btn danger" onclick="removeCart('${p.id}')">Retirer</button>
-      </div>`).join("")}
-    <h3>Total : ${money(total)}</h3>
-    <button class="btn primary" onclick="checkout()">Confirmer la commande</button>
-    <button class="btn light" onclick="clearCart()">Vider le panier</button>`;
+  const total = items.reduce((s,p) => s + price(p) * p.quantity, 0);
+
+  openPanel("Mon panier",
+    items.map(p => `
+      <div class="cart-row">
+        <div class="cart-row-info">
+          <strong>${escapeHTML(pname(p))}</strong>
+          <small>${money(price(p))}</small>
+        </div>
+        <div class="quantity">
+          <button data-minus="${pid(p)}">−</button>
+          <span>${p.quantity}</span>
+          <button data-plus="${pid(p)}">+</button>
+        </div>
+        <button class="remove" data-remove="${pid(p)}">✕</button>
+      </div>`).join("") +
+    `<div class="total"><span>Total produits</span><span>${money(total)}</span></div>
+     <p class="hint">Les produits de plusieurs boutiques seront envoyés dans des commandes séparées.</p>
+     <button class="gold-button full" id="checkoutButton">Commander maintenant</button>`
+  );
 }
 
-function changeQty(id,delta) {
-  const item=cart.find(p=>p.id===id);
-  if(!item) return;
-  const live=products.find(p=>p.id===id);
-  const max=Number(live?.stock??item.quantity);
-  item.quantity+=delta;
-  if(item.quantity<=0) cart=cart.filter(p=>p.id!==id);
-  else if(item.quantity>max) {
-    item.quantity=max;
-    toast("Quantité maximale disponible atteinte.",true);
+function renderWishlist() {
+  const items = products.filter(p => wishlist.includes(pid(p)));
+
+  openPanel("Mes favoris",
+    items.length
+      ? items.map(p => `
+        <div class="cart-row">
+          <div class="cart-row-info">
+            <strong>${escapeHTML(pname(p))}</strong>
+            <small>${money(price(p))}</small>
+          </div>
+          <button class="primary" data-add="${pid(p)}">Ajouter</button>
+          <button class="remove" data-favorite="${pid(p)}">♥</button>
+        </div>`).join("")
+      : '<div class="empty">Votre liste de favoris est vide ♡</div>'
+  );
+}
+
+async function getUser() {
+  const {data, error} = await db.auth.getUser();
+  if (error) console.warn(error);
+  currentUser = data?.user || null;
+  return currentUser;
+}
+
+/* Espace vendeur : ajout d'un produit avec image dans Supabase Storage. */
+async function openAddProduct() {
+  const user = await getUser();
+
+  if (!user) {
+    accountPanel();
+    toast("Connectez-vous avec le compte propriétaire de la boutique.");
+    return;
   }
-  saveCart();
-  renderCart();
-}
 
-function removeCart(id) {
-  cart=cart.filter(p=>p.id!==id);
-  saveCart();
-  renderCart();
-}
-
-function clearCart() {
-  if(!confirm("Vider le panier ?")) return;
-  cart=[];
-  saveCart();
-  renderCart();
-}
-
-async function checkout() {
-  await syncUser();
-  if(!currentUser) {
-    toast("Connectez-vous avant de commander.",true);
-    return showAccount();
-  }
-  if(!cart.length) return toast("Votre panier est vide.",true);
-
-  const box=document.getElementById("cartContent");
-  box.innerHTML=`
-    <h3>Informations de livraison</h3>
-    <div class="field"><label>Nom complet *</label><input id="orderName" placeholder="Nom et prénom"></div>
-    <div class="field"><label>Téléphone *</label><input id="orderPhone" type="tel" placeholder="05 / 06 / 07 ..."></div>
-    <div class="field"><label>Wilaya *</label><input id="orderWilaya" placeholder="Votre wilaya"></div>
-    <div class="field"><label>Adresse *</label><textarea id="orderAddress" rows="3" placeholder="Adresse de livraison"></textarea></div>
-    <button class="btn primary" onclick="submitOrder()">Envoyer la commande</button>
-    <button class="btn light" onclick="renderCart()">Retour au panier</button>
-    <p class="muted">Le site enregistre la commande. Le vendeur doit confirmer la disponibilité et les modalités de livraison.</p>`;
-}
-
-async function submitOrder() {
-  const customer_name=document.getElementById("orderName").value.trim();
-  const phone=document.getElementById("orderPhone").value.trim();
-  const wilaya=document.getElementById("orderWilaya").value.trim();
-  const address=document.getElementById("orderAddress").value.trim();
-
-  if(!customer_name||!phone||!wilaya||!address) return toast("Remplissez tous les champs obligatoires.",true);
-  if(!cart.length) return toast("Votre panier est vide.",true);
-
-  toast("Vérification de la commande...");
-
-  const grouped={};
-  for(const item of cart) {
-    if(!grouped[item.store_id]) grouped[item.store_id]=[];
-    grouped[item.store_id].push(item);
-  }
+  openPanel("Ajouter un produit", '<div class="empty">Vérification de votre boutique...</div>');
 
   try {
-    for(const storeId of Object.keys(grouped)) {
-      const items=grouped[storeId];
-      const ids=items.map(p=>p.id);
+    const {data:store, error} = await db.from("stores")
+      .select("id,name,status")
+      .eq("owner_id", user.id)
+      .maybeSingle();
 
-      const {data:liveProducts,error:productError}=await db.from("products")
-        .select("id,store_id,name,price,stock,is_active")
-        .in("id",ids).eq("store_id",storeId);
+    if (error) throw error;
 
-      if(productError) throw productError;
-      if((liveProducts||[]).length!==items.length) throw new Error("Un produit n'est plus disponible.");
-
-      let total=0;
-      for(const item of items) {
-        const live=liveProducts.find(p=>p.id===item.id);
-        if(!live||!live.is_active||Number(live.stock)<item.quantity) {
-          throw new Error("Stock insuffisant pour : "+item.name);
-        }
-        total+=Number(live.price)*item.quantity;
-      }
-
-      const orderPayload={
-        customer_id:currentUser.id,
-        customer_name,
-        phone,
-        wilaya,
-        address,
-        status:"pending",
-        total
-      };
-
-      const {data:order,error:orderError}=await db.from("orders")
-        .insert(orderPayload).select("id").single();
-
-      if(orderError) throw orderError;
-
-      const rows=items.map(item=>({
-        order_id:order.id,
-        product_id:item.id,
-        quantity:item.quantity,
-        unit_price:Number(item.price)
-      }));
-
-      const {error:itemError}=await db.from("order_items").insert(rows);
-      if(itemError) throw itemError;
+    if (!store) {
+      openPanel("Boutique introuvable",
+        '<p class="hint">Aucune boutique n’est liée à ce compte. Connectez-vous avec le compte propriétaire de la boutique AMINE DH.</p>');
+      return;
     }
 
-    cart=[];
-    saveCart();
-    toast("Commande enregistrée avec succès.");
+    const statusNote = store.status === "approved"
+      ? "Votre boutique est approuvée."
+      : "Votre boutique n’est pas encore approuvée : les produits peuvent rester invisibles aux clients.";
+
+    openPanel("Ajouter un produit", `
+      <p class="hint">Boutique : <strong>${escapeHTML(store.name)}</strong>. ${escapeHTML(statusNote)}</p>
+      <form id="addProductForm" data-store-id="${escapeHTML(store.id)}">
+        <div class="field">
+          <label for="newProductName">Nom du produit *</label>
+          <input id="newProductName" name="name" required maxlength="150" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="newProductPrice">Prix (DA) *</label>
+          <input id="newProductPrice" name="price" type="number" min="0.01" step="0.01" required>
+        </div>
+        <div class="field">
+          <label for="newProductStock">Quantité disponible *</label>
+          <input id="newProductStock" name="stock" type="number" min="0" step="1" value="1" required>
+        </div>
+        <div class="field">
+          <label for="newProductCategory">Catégorie *</label>
+          <select id="newProductCategory" name="category" required>
+            <option value="Cuisine">Cuisine</option>
+            <option value="Électronique">Électronique</option>
+            <option value="Informatique">Informatique</option>
+            <option value="Accessoires">Accessoires</option>
+            <option value="Téléphones">Téléphones</option>
+            <option value="Autres">Autres</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="newProductDescription">Description</label>
+          <textarea id="newProductDescription" name="description" maxlength="1000" placeholder="Décrivez votre produit..."></textarea>
+        </div>
+        <div class="field">
+          <label for="newProductImage">Photo du produit *</label>
+          <input id="newProductImage" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+          <p class="hint">JPG, PNG ou WEBP — maximum 5 Mo.</p>
+        </div>
+        <button class="gold-button full" type="submit">Publier le produit</button>
+      </form>`
+    );
+  } catch (e) {
+    console.error("Store lookup", e);
+    openPanel("Erreur",
+      `<p class="hint">Impossible de vérifier la boutique. ${escapeHTML(e.message || "Vérifiez les politiques RLS de la table stores.")}</p>`);
+  }
+}
+
+async function publishProduct(form) {
+  const user = await getUser();
+
+  if (!user) {
+    toast("Votre session a expiré. Reconnectez-vous.");
+    accountPanel();
+    return;
+  }
+
+  const btn = form.querySelector('button[type="submit"]');
+  const name = form.elements.name.value.trim();
+  const description = form.elements.description.value.trim();
+  const priceValue = Number(form.elements.price.value);
+  const stockValue = Number(form.elements.stock.value);
+  const categoryValue = form.elements.category.value;
+  const file = form.elements.image.files[0];
+  const storeId = form.dataset.storeId;
+
+  if (!name || !storeId || !Number.isFinite(priceValue) ||
+      priceValue <= 0 || !Number.isInteger(stockValue) || stockValue < 0) {
+    toast("Vérifiez le nom, le prix et la quantité.");
+    return;
+  }
+
+  if (!file) {
+    toast("Choisissez une photo du produit.");
+    return;
+  }
+
+  if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+    toast("Format refusé : utilisez JPG, PNG ou WEBP.");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast("La photo doit faire 5 Mo maximum.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Publication en cours...";
+
+  try {
+    const {data:store, error:storeError} = await db.from("stores")
+      .select("id,status")
+      .eq("id", storeId)
+      .eq("owner_id", user.id)
+      .maybeSingle();
+
+    if (storeError) throw storeError;
+    if (!store) throw new Error("Cette boutique n'appartient pas au compte connecté.");
+
+    const ext = file.type === "image/png" ? "png" :
+                file.type === "image/webp" ? "webp" : "jpg";
+
+    const uploadedPath = `${user.id}/${crypto.randomUUID()}.${ext}`;
+
+    const {error:uploadError} = await db.storage
+      .from("product-images")
+      .upload(uploadedPath, file, {
+        contentType:file.type,
+        upsert:false
+      });
+
+    if (uploadError) {
+      throw new Error("Échec du téléversement de la photo : " + uploadError.message);
+    }
+
+    const {data:publicData} = db.storage
+      .from("product-images")
+      .getPublicUrl(uploadedPath);
+
+    const {error:insertError} = await db.from("products").insert({
+      store_id:store.id,
+      name,
+      description,
+      price:priceValue,
+      image_url:publicData.publicUrl,
+      stock:stockValue,
+      is_active:true,
+      category:categoryValue
+    });
+
+    if (insertError) {
+      throw new Error("Photo envoyée, mais produit non enregistré : " + insertError.message);
+    }
+
+    toast("Produit publié avec succès !");
     await loadProducts();
-    await showOrders();
-  } catch(e) {
+
+    openPanel("Produit publié", `
+      <div class="empty">
+        <div style="font-size:42px">✅</div>
+        <h3>Votre produit est en ligne.</h3>
+        <p class="hint">Il a été enregistré dans votre boutique AMINE DH.</p>
+      </div>
+      <button class="primary full" id="continueShopping">Retour à la boutique</button>
+      <button class="gold-button full" id="addAnotherProduct">Ajouter un autre produit</button>
+    `);
+  } catch (e) {
+    console.error("Product publish error", e);
+    toast(e.message || "Impossible de publier le produit. Vérifiez les règles Supabase.");
+    btn.disabled = false;
+    btn.textContent = "Publier le produit";
+  }
+}
+
+function accountPanel() {
+  openPanel("Mon compte", `
+    <div id="authState" class="hint">
+      ${currentUser
+        ? `Connecté : ${escapeHTML(currentUser.email || "compte client")}`
+        : "Connectez-vous ou créez un compte pour commander."}
+    </div>
+    ${currentUser
+      ? `<button class="primary full" id="myOrdersButton">Mes commandes</button>
+         <button class="gold-button full" id="logoutButton">Se déconnecter</button>`
+      : `<form id="authForm">
+          <div class="field">
+            <label for="authEmail">Adresse e-mail</label>
+            <input id="authEmail" type="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="authPassword">Mot de passe (6 caractères minimum)</label>
+            <input id="authPassword" type="password" minlength="6" required autocomplete="current-password">
+          </div>
+          <div class="field">
+            <label for="authName">Nom complet (pour créer un compte)</label>
+            <input id="authName" maxlength="100" autocomplete="name">
+          </div>
+          <button class="primary full" type="submit" name="mode" value="login">Se connecter</button>
+          <button class="gold-button full" type="button" id="signupButton">Créer un compte</button>
+        </form>
+        <p class="hint">Après inscription, confirmez votre e-mail si Supabase vous le demande. Ne partagez jamais votre mot de passe.</p>`
+    }`
+  );
+}
+
+async function signup() {
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  const name = $("authName").value.trim();
+
+  if (!email || password.length < 6) {
+    toast("Entrez un e-mail valide et un mot de passe d'au moins 6 caractères.");
+    return;
+  }
+
+  const b = $("signupButton");
+  b.disabled = true;
+
+  try {
+    const {data,error} = await db.auth.signUp({
+      email,
+      password,
+      options:{data:{full_name:name}}
+    });
+
+    if (error) throw error;
+
+    if (data.user && data.session) {
+      currentUser = data.user;
+      toast("Compte créé. Vérifiez le profil avant de commander.");
+      accountPanel();
+    } else {
+      toast("Inscription envoyée. Vérifiez votre e-mail puis connectez-vous.");
+    }
+  } catch (e) {
     console.error(e);
-    toast("La commande n'a pas pu être enregistrée : "+e.message,true);
+    toast("Inscription impossible : " + (e.message || "vérifiez Supabase Auth."));
+  } finally {
+    if ($("signupButton")) $("signupButton").disabled = false;
+  }
+}
+
+async function login(form) {
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  const b = form.querySelector('button[type="submit"]');
+  b.disabled = true;
+
+  try {
+    const {data,error} = await db.auth.signInWithPassword({email,password});
+    if (error) throw error;
+
+    currentUser = data.user;
+    toast("Connexion réussie.");
+    accountPanel();
+  } catch (e) {
+    console.error(e);
+    toast("Connexion impossible : vérifiez l'e-mail et le mot de passe.");
+  } finally {
+    if (b) b.disabled = false;
+  }
+}
+
+async function logout() {
+  const {error} = await db.auth.signOut();
+  if (error) {
+    toast("Impossible de se déconnecter.");
+    return;
+  }
+
+  currentUser = null;
+  accountPanel();
+  toast("Déconnexion réussie.");
+}
+
+function checkoutForm() {
+  const items = cartDetails();
+
+  if (!items.length) {
+    toast("Votre panier est vide.");
+    return;
+  }
+
+  if (!currentUser) {
+    accountPanel();
+    toast("Connectez-vous avant de commander.");
+    return;
+  }
+
+  const total = items.reduce((s,p) => s + price(p) * p.quantity, 0);
+
+  openPanel("Informations de livraison", `
+    <form id="checkoutForm">
+      <div class="field">
+        <label>Nom et prénom *</label>
+        <input name="customerName" required maxlength="100" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Téléphone *</label>
+        <input name="customerPhone" required type="tel" maxlength="25" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label>Wilaya *</label>
+        <input name="wilaya" required maxlength="80">
+      </div>
+      <div class="field">
+        <label>Commune *</label>
+        <input name="city" required maxlength="100">
+      </div>
+      <div class="field">
+        <label>Adresse *</label>
+        <textarea name="address" required maxlength="500"></textarea>
+      </div>
+      <div class="field">
+        <label>Remarque (facultatif)</label>
+        <textarea name="note" maxlength="500"></textarea>
+      </div>
+      <div class="total"><span>Total des produits</span><span>${money(total)}</span></div>
+      <p class="hint">Paiement à la livraison. Les frais de livraison seront confirmés par le vendeur.</p>
+      <button class="gold-button full" type="submit">Confirmer la commande</button>
+    </form>`
+  );
+}
+
+async function submitOrder(form) {
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn.disabled) return;
+
+  const user = await getUser();
+  if (!user) {
+    toast("Connectez-vous avant de commander.");
+    accountPanel();
+    return;
+  }
+
+  const items = cartDetails();
+  if (!items.length) {
+    toast("Votre panier est vide.");
+    return;
+  }
+
+  const fd = new FormData(form);
+  const v = key => String(fd.get(key) || "").trim();
+
+  const name = v("customerName");
+  const phone = v("customerPhone");
+  const wilaya = v("wilaya");
+  const city = v("city");
+  const address = v("address");
+  const note = v("note");
+
+  if (!name || !phone || !wilaya || !city || !address) {
+    toast("Remplissez les champs obligatoires.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Envoi en cours...";
+
+  try {
+    const groups = new Map();
+
+    for (const p of items) {
+      if (!p.store_id) throw new Error("Un produit n'est pas associé à une boutique.");
+      if (!groups.has(p.store_id)) groups.set(p.store_id, []);
+      groups.get(p.store_id).push(p);
+    }
+
+    const created = [];
+
+    for (const [storeId, group] of groups) {
+      const total = group.reduce((s,p) => s + price(p) * p.quantity, 0);
+
+      const payload = {
+        customer_id:user.id,
+        store_id:storeId,
+        customer_name:name,
+        phone,
+        customer_phone:phone,
+        wilaya,
+        city,
+        address,
+        note,
+        total,
+        status:"pending",
+        payment_method:"cash_on_delivery"
+      };
+
+      const {data:order,error:oe} = await db.from("orders")
+        .insert(payload).select("id,total").single();
+
+      if (oe) throw oe;
+
+      const lines = group.map(p => ({
+        order_id:order.id,
+        store_id:storeId,
+        product_id:p.id,
+        product_name:pname(p),
+        quantity:p.quantity,
+        unit_price:price(p)
+      }));
+
+      const {error:ie} = await db.from("order_items").insert(lines);
+
+      if (ie) {
+        throw new Error("Commande créée mais détails non enregistrés. Référence : " + order.id);
+      }
+
+      created.push(order);
+    }
+
+    cart = [];
+    save();
+
+    openPanel("Commande reçue", `
+      <div class="empty">
+        <div style="font-size:48px">✅</div>
+        <h3>Merci pour votre commande !</h3>
+        <p>${created.length} commande(s) enregistrée(s).</p>
+        ${created.map(o => `<p class="hint">Référence : <strong>${escapeHTML(o.id)}</strong> — ${money(o.total)}</p>`).join("")}
+        <p>Le vendeur pourra vous contacter pour confirmer la livraison.</p>
+      </div>
+      <button class="primary full" id="continueShopping">Continuer mes achats</button>`
+    );
+  } catch (e) {
+    console.error("Erreur commande", e);
+    toast("Commande non enregistrée : " + (e.message || "vérifiez les autorisations Supabase."));
+    btn.disabled = false;
+    btn.textContent = "Confirmer la commande";
   }
 }
 
 async function showOrders() {
-  showOnly("ordersSection");
-  await syncUser();
-  const box=document.getElementById("ordersContent");
+  const user = await getUser();
 
-  if(!currentUser) {
-    box.innerHTML='<p>Connectez-vous pour consulter vos commandes.</p><button class="btn primary" onclick="showAccount()">Connexion</button>';
+  if (!user) {
+    accountPanel();
+    toast("Connectez-vous pour voir vos commandes.");
     return;
   }
 
-  const {data,error}=await db.from("orders")
-    .select("id,customer_name,phone,wilaya,address,status,total,created_at")
-    .eq("customer_id",currentUser.id)
-    .order("created_at",{ascending:false});
+  openPanel("Mes commandes", '<div class="empty">Chargement de vos commandes...</div>');
 
-  if(error) {
-    box.innerHTML='<div class="notice error">Impossible de charger les commandes : '+escapeHTML(error.message)+'</div>';
-    return;
+  try {
+    const {data,error} = await db.from("orders")
+      .select("id,total,status,created_at,store_id")
+      .eq("customer_id", user.id)
+      .order("created_at", {ascending:false})
+      .limit(50);
+
+    if (error) throw error;
+
+    panelContent.innerHTML = data?.length
+      ? data.map(o => `
+        <div class="cart-row">
+          <div class="cart-row-info">
+            <strong>Commande ${escapeHTML(o.id.slice(0,8))}</strong>
+            <small>${escapeHTML(o.status || "pending")} · ${escapeHTML(new Date(o.created_at).toLocaleDateString("fr-DZ"))}</small>
+          </div>
+          <strong>${money(o.total)}</strong>
+        </div>`).join("")
+      : '<div class="empty">Vous n’avez pas encore de commande.</div>';
+  } catch (e) {
+    console.error(e);
+    panelContent.innerHTML = '<div class="empty">Impossible de charger les commandes. Vérifiez les politiques RLS.</div>';
   }
-
-  if(!data?.length) {
-    box.innerHTML="<div class='empty'>Vous n'avez pas encore de commandes.</div>";
-    return;
-  }
-
-  box.innerHTML=`<div class="table-wrap"><table>
-    <thead><tr><th>Numéro</th><th>Date</th><th>Total</th><th>État</th></tr></thead>
-    <tbody>${data.map(o=>`
-      <tr><td>${escapeHTML(o.id.slice(0,8))}</td>
-      <td>${o.created_at?new Date(o.created_at).toLocaleDateString("fr-DZ"):"—"}</td>
-      <td>${money(o.total)}</td><td>${escapeHTML(o.status||"pending")}</td></tr>`).join("")}
-    </tbody></table></div>`;
 }
 
-db.auth.onAuthStateChange((_event,session)=>{
-  currentUser=session?.user||null;
+/* Recherche et catégories */
+$("searchForm").addEventListener("submit", e => {
+  e.preventDefault();
+  searchTerm = $("searchInput").value.trim();
+  renderProducts();
 });
 
-(async function init(){
-  if(SUPABASE_KEY==="REMPLACE_PAR_TON_SB_PUBLISHABLE_KEY") {
-    document.getElementById("productsGrid").innerHTML=
-      '<div class="empty">Configuration nécessaire : remplacez la clé Supabase dans le code.</div>';
-    toast("Ajoutez votre clé Supabase publishable.",true);
-    return;
+$("searchInput").addEventListener("input", e => {
+  searchTerm = e.target.value.trim();
+  renderProducts();
+});
+
+$("categories").addEventListener("click", e => {
+  const b = e.target.closest("[data-category]");
+  if (!b) return;
+
+  selectedCategory = b.dataset.category;
+  document.querySelectorAll(".categories button").forEach(x => x.classList.toggle("active", x === b));
+  renderProducts();
+});
+
+$("resetFilters").addEventListener("click", () => {
+  selectedCategory = "all";
+  searchTerm = "";
+  $("searchInput").value = "";
+  document.querySelectorAll(".categories button").forEach((b,i) => b.classList.toggle("active", i === 0));
+  renderProducts();
+});
+
+$("addProductButton").addEventListener("click", openAddProduct);
+$("discoverButton").addEventListener("click", () => $("productsSection").scrollIntoView({behavior:"smooth"}));
+
+productsElement.addEventListener("click", e => {
+  const a = e.target.closest("[data-add]");
+  const f = e.target.closest("[data-favorite]");
+  if (a) addToCart(a.dataset.add);
+  if (f) toggleWish(f.dataset.favorite);
+});
+
+document.querySelector(".bottom-nav").addEventListener("click", e => {
+  const b = e.target.closest("[data-action]");
+  if (!b) return;
+
+  switch (b.dataset.action) {
+    case "home": window.scrollTo({top:0,behavior:"smooth"}); break;
+    case "account": accountPanel(); break;
+    case "orders": showOrders(); break;
+    case "wishlist": renderWishlist(); break;
+    case "cart": renderCart(); break;
   }
-  await syncUser();
-  await loadProducts();
-})();
+});
+
+$("closePanel").addEventListener("click", closePanel);
+
+panelOverlay.addEventListener("click", e => {
+  if (e.target === panelOverlay) closePanel();
+});
+
+panelContent.addEventListener("click", async e => {
+  const plus = e.target.closest("[data-plus]");
+  const minus = e.target.closest("[data-minus]");
+  const remove = e.target.closest("[data-remove]");
+  const add = e.target.closest("[data-add]");
+  const fav = e.target.closest("[data-favorite]");
+
+  if (plus) {
+    const i = cart.find(x => String(x.id) === plus.dataset.plus);
+    const p = products.find(x => pid(x) === plus.dataset.plus);
+    if (i) i.quantity = Math.min(i.quantity + 1, Number(p?.stock) || 99);
+    save();
+    renderCart();
+  }
+
+  if (minus) {
+    const i = cart.find(x => String(x.id) === minus.dataset.minus);
+    if (i) {
+      i.quantity--;
+      if (i.quantity <= 0) cart = cart.filter(x => String(x.id) !== minus.dataset.minus);
+    }
+    save();
+    renderCart();
+  }
+
+  if (remove) {
+    cart = cart.filter(x => String(x.id) !== remove.dataset.remove);
+    save();
+    renderCart();
+  }
+
+  if (add) addToCart(add.dataset.add);
+  if (fav) toggleWish(fav.dataset.favorite);
+  if (e.target.closest("#checkoutButton")) checkoutForm();
+  if (e.target.closest("#continueShopping")) closePanel();
+  if (e.target.closest("#addAnotherProduct")) openAddProduct();
+  if (e.target.closest("#signupButton")) signup();
+  if (e.target.closest("#logoutButton")) logout();
+  if (e.target.closest("#myOrdersButton")) showOrders();
+});
+
+panelContent.addEventListener("submit", async e => {
+  if (e.target.id === "checkoutForm") {
+    e.preventDefault();
+    await submitOrder(e.target);
+  }
+
+  if (e.target.id === "authForm") {
+    e.preventDefault();
+    await login(e.target);
+  }
+
+  if (e.target.id === "addProductForm") {
+    e.preventDefault();
+    await publishProduct(e.target);
+  }
+});
+
+$("year").textContent = new Date().getFullYear();
+badges();
+
+db.auth.getSession().then(({data}) => {
+  currentUser = data?.session?.user || null;
+});
+
+db.auth.onAuthStateChange((_event, session) => {
+  currentUser = session?.user || null;
+});
+
+loadProducts();
 </script>
 </body>
-      </html>
+  </html>
